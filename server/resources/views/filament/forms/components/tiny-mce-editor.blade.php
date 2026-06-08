@@ -14,7 +14,7 @@
                             'link', 'lists', 'table', 'code', 'image', 'preview'
                         ],
 
-                        toolbar: 'undo redo | blocks | bold italic underline | image | code preview',
+                        toolbar: 'undo redo | blocks | bold italic underline | image | accordion | code preview',
 
                         automatic_uploads: true,
 
@@ -51,6 +51,18 @@
                         },
 
                         setup: function (editor) {
+                           editor.ui.registry.addButton('accordion', {
+                                text: 'Accordion',
+                                onAction: function () {
+                                    editor.insertContent(`
+                                        <details>
+                                            <summary>Accordion title</summary>
+                                            <p>Accordion content...</p>
+                                        </details>
+                                    `)
+                                }
+                            })
+
                             editor.on('init', function () {
                                 editor.setContent(@this.get('{{ $getStatePath() }}') ?? '')
                             })
