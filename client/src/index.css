@@ -1,0 +1,40 @@
+@import "tailwindcss";
+@tailwind utilities;
+
+:root {
+  --font-sans: "Onest", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+
+:root {
+  --green-pharma: #00c498;
+  --blue-pharma: #053258;
+  --green-pharma-light: #f5fafa;
+  --green-pharma-dark: #007f61;
+  --blue-pharma-light: #3657c2;
+  --blue-pharma-dark: #021622;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100svh;
+  margin: 0;
+  padding: 0;
+  /*font-family: var(--font-sans), serif;*/
+}
+
+body {
+  background: #f8fafc;
+  font-family: "Onest", sans-serif
+}
+
+.container_lm
+{
+  max-width: 1330px!important;
+}
+
+.text-blue-pharma {
+  color: #053258;
+}
+

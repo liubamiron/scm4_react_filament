@@ -1,0 +1,54 @@
+import {useFeaturedServices} from "../features/pages/hook/useFeaturedPages.ts";
+
+export function HomePage() {
+    const { data: services, isLoading } = useFeaturedServices();
+
+    if (isLoading) return <div>Se încarcă...</div>;
+
+    // FILTER: Only keep items where is_featured is 1 (or true)
+    const featuredServices = services?.filter((item) => item.is_featured === 1 || item.is_featured === true);
+
+    const storageUrl = import.meta.env.VITE_STORAGE_URL;
+
+    return (
+        <div className="bg-slate-50 py-16">
+            <div className="container mx-auto px-4">
+                <h2 className="text-4xl font-bold text-center text-[#003366] mb-12">
+                    Serviciile noastre
+                </h2>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {featuredServices?.map((service) => (
+                        <div key={service.id} className="bg-white rounded-xl shadow-lg flex flex-col">
+                            {/* 1. Image logic - with fallback if null */}
+                            <div className="h-56 w-full overflow-hidden rounded-t-xl bg-slate-200">
+                                {service.image ? (
+                                    <img
+                                        src={service.image ? `${storageUrl}/${service.image}` : '/placeholder.jpg'}
+                                        alt={service.title_ro}
+                                        className="w-full h-full object-cover"
+                                    />
+                                ) : (
+                                    <div className="flex items-center justify-center h-full text-slate-400">
+                                        Fără imagine
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* 2. Content logic */}
+                            <div className="p-6 text-center">
+                                <h3 className="text-xl font-bold text-[#003366]">
+                                    {service.title_ro}
+                                </h3>
+                                <div className="w-16 h-0.5 bg-blue-500 mx-auto my-4" />
+                                <p className="text-slate-600 line-clamp-2">
+                                    {service.content_ro?.replace(/<[^>]*>?/gm, '')}
+                                </p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+}
