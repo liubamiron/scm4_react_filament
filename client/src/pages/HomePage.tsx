@@ -1,8 +1,12 @@
 import {useFeaturedServices} from "../features/pages/hook/useFeaturedPages.ts";
 import {Link} from "@tanstack/react-router";
+import {useLanguage} from "../hooks/useLanguage.ts";
 
 export function HomePage() {
     const { data: services, isLoading } = useFeaturedServices();
+    const language = useLanguage()
+
+    console.log(language);
 
     if (isLoading) return <div>Se încarcă...</div>;
 
@@ -45,13 +49,13 @@ export function HomePage() {
 
                                     <div className="p-6 text-center">
                                         <h3 className="text-xl font-bold text-[#003366]">
-                                            {service.title_ro}
+                                            {service[`title_${language}`]}
                                         </h3>
 
                                         <div className="w-16 h-0.5 bg-blue-500 mx-auto my-4" />
 
                                         <p className="text-slate-600 line-clamp-2">
-                                            {service.content_ro?.replace(/<[^>]*>/g, '')}
+                                            {service[`content_${language}`]?.replace(/<[^>]*>/g, '')}
                                         </p>
                                     </div>
 

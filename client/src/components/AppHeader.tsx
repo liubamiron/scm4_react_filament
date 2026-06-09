@@ -1,10 +1,19 @@
 import { useState } from 'react'
 import { Link } from '@tanstack/react-router'
 import { ChevronDown, Globe, Menu, X } from 'lucide-react'
+import {useLanguageStore} from "../store/languageStore.ts";
 
 function AppHeader() {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [openDropdown, setOpenDropdown] = useState<string | null>(null)
+    const [isLangOpen, setIsLangOpen] = useState(false)
+
+    const languages = [
+        { code: 'ro', label: 'RO' },
+        { code: 'ru', label: 'RU' },
+    ]
+
+    const { language, setLanguage } = useLanguageStore()
 
     const navigation = [
         {
@@ -52,11 +61,45 @@ function AppHeader() {
         <span>
           Instituția Medico-Sanitară Publică Spitalul Clinic Municipal Nr.4
         </span>
+                <div className="relative">
+                    <button
+                        onClick={() => setIsLangOpen(!isLangOpen)}
+                        className="flex items-center gap-2 hover:opacity-80"
+                    >
+                        <Globe size={14} />
 
-                <div className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity">
-                    <Globe size={14} />
-                    <span className="uppercase">RO/RU</span>
-                    <ChevronDown size={12} />
+                        <span className="font-semibold uppercase">
+            {language}
+        </span>
+
+                        <ChevronDown
+                            size={12}
+                            className={`transition-transform ${
+                                isLangOpen ? 'rotate-180' : ''
+                            }`}
+                        />
+                    </button>
+
+                    {isLangOpen && (
+                        <div className="absolute right-0 mt-2 bg-white border border-slate-200 rounded-lg shadow-lg overflow-hidden min-w-[80px] z-50">
+                            {languages.map((lang) => (
+                                <button
+                                    key={lang.code}
+                                    onClick={() => {
+                                        setLanguage(lang.code as 'ro' | 'ru')
+                                        setIsLangOpen(false)
+                                    }}
+                                    className={`w-full text-left px-4 py-2 hover:bg-slate-100 ${
+                                        language === lang.code
+                                            ? 'font-bold text-blue-600'
+                                            : ''
+                                    }`}
+                                >
+                                    {lang.label}
+                                </button>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
 

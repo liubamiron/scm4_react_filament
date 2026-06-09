@@ -1,6 +1,7 @@
 import { Route } from '../routes/pages/$slug'
 import {usePage} from "../features/pages/hook/usePage.ts";
 import { transformImageUrls } from '../utils/transformImageUrls';
+import {ContactPage} from "./ContactPage.tsx";
 
 export function DynamicPage() {
     const { slug } = Route.useParams()
@@ -22,6 +23,11 @@ export function DynamicPage() {
             </div>
         )
     }
+
+    if (slug === "contacte") {
+        return <ContactPage page={page} />;
+    }
+
 
     return (
         <div className="space-y-6 pb-12">
