@@ -1,4 +1,5 @@
 import {useFeaturedServices} from "../features/pages/hook/useFeaturedPages.ts";
+import {Link} from "@tanstack/react-router";
 
 export function HomePage() {
     const { data: services, isLoading } = useFeaturedServices();
@@ -18,35 +19,46 @@ export function HomePage() {
                 </h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {featuredServices?.map((service) => (
-                        <div key={service.id} className="bg-white rounded-xl shadow-lg flex flex-col">
-                            {/* 1. Image logic - with fallback if null */}
-                            <div className="h-56 w-full overflow-hidden rounded-t-xl bg-slate-200">
-                                {service.image ? (
-                                    <img
-                                        src={service.image ? `${storageUrl}/${service.image}` : '/placeholder.jpg'}
-                                        alt={service.title_ro}
-                                        className="w-full h-full object-cover"
-                                    />
-                                ) : (
-                                    <div className="flex items-center justify-center h-full text-slate-400">
-                                        Fără imagine
-                                    </div>
-                                )}
-                            </div>
+                    {featuredServices?.map((service) => {
+                        return (
+                            <Link
+                                key={service.id}
+                                to="/pages/$slug"
+                                params={{ slug: service.slug }}
+                                className="block"
+                            >
+                                <div className="bg-white rounded-xl shadow-lg flex flex-col">
 
-                            {/* 2. Content logic */}
-                            <div className="p-6 text-center">
-                                <h3 className="text-xl font-bold text-[#003366]">
-                                    {service.title_ro}
-                                </h3>
-                                <div className="w-16 h-0.5 bg-blue-500 mx-auto my-4" />
-                                <p className="text-slate-600 line-clamp-2">
-                                    {service.content_ro?.replace(/<[^>]*>?/gm, '')}
-                                </p>
-                            </div>
-                        </div>
-                    ))}
+                                    <div className="h-56 w-full overflow-hidden bg-slate-200">
+                                        {service.image ? (
+                                            <img
+                                                src={`${storageUrl}/${service.image}`}
+                                                alt={service.title_ro}
+                                                className="w-full h-full object-cover"
+                                            />
+                                        ) : (
+                                            <div className="flex items-center justify-center h-full text-slate-400">
+                                                Fără imagine
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <div className="p-6 text-center">
+                                        <h3 className="text-xl font-bold text-[#003366]">
+                                            {service.title_ro}
+                                        </h3>
+
+                                        <div className="w-16 h-0.5 bg-blue-500 mx-auto my-4" />
+
+                                        <p className="text-slate-600 line-clamp-2">
+                                            {service.content_ro?.replace(/<[^>]*>/g, '')}
+                                        </p>
+                                    </div>
+
+                                </div>
+                            </Link>
+                        )
+                    })}
                 </div>
             </div>
         </div>

@@ -5,6 +5,8 @@ export function TransparencyPage() {
     const {data: categories, isLoading, error} = useTransparency()
     const [activeTab, setActiveTab] = useState<number | null>(null)
 
+    const storageUrl = import.meta.env.VITE_STORAGE_URL
+
     if (isLoading) return <div className="p-8 text-center">Se încarcă...</div>
     if (error || !categories) return <div className="p-8 text-center text-red-500">Eroare la încărcare.</div>
 
@@ -52,7 +54,7 @@ export function TransparencyPage() {
                             {doc.title_ro}
                         </span>
                         <a
-                            href={doc.file_path}
+                            href={`${storageUrl}/${doc.file_path}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="px-8 py-2 border border-blue-400 text-blue-500 rounded-md hover:bg-blue-50 transition-colors"
