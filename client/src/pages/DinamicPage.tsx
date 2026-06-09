@@ -34,9 +34,10 @@ export function DynamicPage() {
             </header>
 
             <article
-                className="prose prose-slate max-w-none text-slate-700"
+                className="prose prose-slate max-w-none "
                 dangerouslySetInnerHTML={{ __html: transformImageUrls(page.content_ro) }}
             />
+
         </div>
     )
 }

@@ -10,17 +10,42 @@
                         height: 400,
                         paste_data_images: false,
                         automatic_uploads: true,
+
                         plugins: [
-                            'link', 'lists', 'table', 'code', 'image', 'preview'
+                            'link', 'lists', 'table', 'code', 'image', 'preview', 'blockquote', 'anchor', 'autolink', 'charmap', 'codesample',
+                            'emoticons', 'link', 'lists', 'media', 'searchreplace',
                         ],
 
-                        toolbar: 'undo redo | blocks | bold italic underline | image | accordion | code preview',
+                        toolbar: 'undo redo | blocks | bold italic underline | blockquote| image | accordion | code preview',
+
+                        extended_valid_elements: 'blockquote[class],p[class],span[class]',
+
+                        tinycomments_mode: 'embedded',
+
+                        tinycomments_author: 'Author name',
+
+                        verify_html: false,
+
+                        valid_elements: '*[*]',
 
                         automatic_uploads: true,
 
                         images_upload_url: '/admin/tinymce/upload',
 
+                        image_dimensions: false,
+
                         file_picker_types: 'image',
+
+                        style_formats: [
+                            {
+                                title: 'Quote styles',
+                                items: [
+                                    { title: 'Default', block: 'blockquote' },
+                                    { title: 'Highlighted Quote', block: 'blockquote', classes: 'quote-highlight' },
+                                    { title: 'Info Quote', block: 'blockquote', classes: 'quote-info' }
+                                ]
+                            }
+                        ],
 
                         file_picker_callback: function (cb, value, meta) {
                             if (meta.filetype === 'image') {
@@ -59,6 +84,18 @@
                                             <summary>Accordion title</summary>
                                             <p>Accordion content...</p>
                                         </details>
+                                    `)
+                                }
+                            })
+
+                            editor.ui.registry.addButton('blockquote', {
+                                text: 'Quote',
+                                icon: 'quote',
+                                onAction: function () {
+                                    editor.insertContent(`
+                                        <blockquote>
+                                           <p>Your quote here...</p>
+                                        </blockquote>
                                     `)
                                 }
                             })
