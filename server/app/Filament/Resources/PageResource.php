@@ -55,6 +55,7 @@ class PageResource extends Resource
                    ->columnSpanFull(),
 
                Section::make('Setarile pentru pagina Principala')
+                ->visible(fn (Get $get) => in_array($get('type'), ['general', 'about', 'service']))
                    ->schema([
                        Toggle::make('is_featured')
                            ->label('Arata')
@@ -69,29 +70,38 @@ class PageResource extends Resource
                    ->columns(2),
 
                // Contacts
-               Section::make()
-                   ->visible(fn (Get $get) => $get('type') === 'contact')
-                   ->schema([
-                       Repeater::make('contact_list')
-                           ->schema([
-                               Forms\Components\TextInput::make('nr')
-                                   ->numeric(),
+              Section::make('Contacte (Tabel)')
+                  ->visible(fn (Get $get) => $get('type') === 'contact')
+                  ->columnSpanFull()
+                  ->schema([
+                      Repeater::make('contact_list')
+                          ->label('Tabel Contacte')
+                          ->schema([
+                              Forms\Components\TextInput::make('nr')
+                                  ->label('Nr.')
+                                  ->numeric()
+                                  ->required(),
 
-                               Forms\Components\TextInput::make('dept_ro')
-                                   ->required(),
+                              Forms\Components\TextInput::make('section')
+                                  ->label('Secţia')
+                                  ->required(),
 
-                               Forms\Components\TextInput::make('dept_ru'),
+                              Forms\Components\TextInput::make('name')
+                                  ->label('Nume / Prenume')
+                                  ->required(),
 
-                               Forms\Components\TextInput::make('name_ro'),
+                              Forms\Components\TextInput::make('role')
+                                  ->label('Funcția / Rol'),
 
-                               Forms\Components\TextInput::make('name_ru'),
-
-                               Forms\Components\Textarea::make('phones')
-                                   ->rows(2),
-                           ])
-                           ->columns(2)
-                           ->collapsible(),
-                   ]),
+                              Forms\Components\Textarea::make('phones')
+                                  ->label('Numărul de telefon')
+                                  ->rows(3)
+                                  ->columnSpanFull(),
+                          ])
+                          ->columns(2)
+                          ->collapsible()
+                          ->reorderable(),
+                  ]),
 
                // Multilingual Content
                Tabs::make('Content')

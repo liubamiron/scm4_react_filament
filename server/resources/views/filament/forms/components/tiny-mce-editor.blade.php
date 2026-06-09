@@ -13,10 +13,10 @@
 
                         plugins: [
                             'link', 'lists', 'table', 'code', 'image', 'preview', 'blockquote', 'anchor', 'autolink', 'charmap', 'codesample',
-                            'emoticons', 'link', 'lists', 'media', 'searchreplace',
+                            'emoticons', 'link', 'lists', 'media', 'searchreplace', 'link', 'lists',
                         ],
 
-                        toolbar: 'undo redo | blocks | bold italic underline | blockquote| image | accordion | code preview',
+                        toolbar: 'undo redo | blocks | bold italic underline | blockquote| image | accordion | code preview | link |  align numlist bullist ',
 
                         extended_valid_elements: 'blockquote[class],p[class],span[class]',
 
