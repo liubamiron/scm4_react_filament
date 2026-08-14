@@ -17,6 +17,11 @@ services:
       context: ../server
       dockerfile: Dockerfile.fpm
     container_name: laravel_app
+    # The bind mount below keeps the host's ownership, so the image's www-data
+    # (uid 82) cannot write storage/ or bootstrap/cache. Run PHP as the host
+    # user instead — otherwise Laravel's writes land in the system temp dir
+    # ("tempnam(): file created in the system's temporary directory").
+    user: "${APP_UID:-1000}:${APP_GID:-1000}"
     volumes:
       - ../server:/var/www
     environment:
@@ -51,8 +56,10 @@ services:
     ports:
       - "5173:5173"
     environment:
-      VITE_API_URL: http://api.localhost/api
-      VITE_STORAGE_URL: http://localhost/storage
+      # These are resolved by the browser on the host, not inside the compose
+      # network, so they need nginx's published port (8000:80) — not port 80.
+      VITE_API_URL: http://localhost:8000/api
+      VITE_STORAGE_URL: http://localhost:8000/storage
     volumes:
       - ../client:/app
       - /app/node_modules

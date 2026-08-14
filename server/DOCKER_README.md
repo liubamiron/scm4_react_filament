@@ -80,3 +80,6 @@ DB_HOST=mysql (container)
 DB_DATABASE=laravel
 DB_USERNAME=laravel
 DB_PASSWORD=password
+
+
+[//]: # (http://localhost:8000/admin)

@@ -1,6 +1,15 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { HomePage } from '../pages/HomePage'
+import { createFileRoute, redirect } from '@tanstack/react-router'
+import { resolveLocale } from '../i18n'
 
+/**
+ * "/" carries no language, so send the visitor to their locale's home page.
+ */
 export const Route = createFileRoute('/')({
-    component: HomePage,
+    beforeLoad: () => {
+        throw redirect({
+            to: '/$lang',
+            params: { lang: resolveLocale() },
+            replace: true,
+        })
+    },
 })

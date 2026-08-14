@@ -16,7 +16,7 @@ class Service extends Model
         'excerpt_ru',
         'content_ro',
         'content_ru',
-        'image_path',
+        'image',
         'slug',
         'is_active'
     ];
@@ -28,8 +28,8 @@ class Service extends Model
 
     public function getImageUrlAttribute()
     {
-        return $this->image_path
-            ? asset('storage/' . $this->image_path)
+        return $this->image
+            ? asset('storage/' . $this->image)
             : asset('images/default-service.png');
     }
 }

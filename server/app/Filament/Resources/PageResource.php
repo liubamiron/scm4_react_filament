@@ -55,7 +55,7 @@ class PageResource extends Resource
                    ->columnSpanFull(),
 
                Section::make('Setarile pentru pagina Principala')
-                ->visible(fn (Get $get) => in_array($get('type'), ['general', 'about', 'service']))
+                ->visible(fn (Get $get) => in_array($get('type'), ['general', 'about', 'service',  'partnership']))
                    ->schema([
                        Toggle::make('is_featured')
                            ->label('Arata')
@@ -115,14 +115,12 @@ class PageResource extends Resource
                                    ->required(),
                            ]),
 
-                       Tab::make('RU')
-                           ->schema([
-                               Forms\Components\TextInput::make('title_ru')
-                                   ->required(),
+                      Tab::make('RU')
+                                  ->schema([
+                                      Forms\Components\TextInput::make('title_ru'),
 
-                               TinyMceEditor::make('content_ru')
-                                   ->required(),
-                           ]),
+                                      TinyMceEditor::make('content_ru'),
+                                  ]),
                    ])
                    ->columnSpanFull(),
            ]);

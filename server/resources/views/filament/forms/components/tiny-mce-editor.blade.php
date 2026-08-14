@@ -55,6 +55,10 @@
 
                                 input.onchange = function () {
                                     const file = this.files[0]
+
+                                    const formData = new FormData();
+                                    formData.append('file', file);
+
                                     const reader = new FileReader()
 
                                     reader.onload = function () {

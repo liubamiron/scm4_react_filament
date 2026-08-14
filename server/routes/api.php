@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Models\Event;
 use App\Models\Page;
 use App\Models\Partner;
 use App\Models\TransparencyCategory;
@@ -43,6 +44,25 @@ function registerApiRoutes() {
 
     Route::get('/partners', function () {
         return Partner::all();
+    });
+
+    // The list omits `content` — the cards only need the summary, and the full
+    // article is fetched per event on the detail page.
+    Route::get('/events', function () {
+        return Event::orderBy('date', 'desc')->get([
+            'id',
+            'slug',
+            'title_ro',
+            'title_ru',
+            'description_ro',
+            'description_ru',
+            'date',
+            'image',
+        ]);
+    });
+
+    Route::get('/events/{slug}', function ($slug) {
+        return Event::where('slug', $slug)->firstOrFail();
     });
 
     Route::get('/transparency', function () {

@@ -1,17 +1,20 @@
-import { Route } from '../routes/pages/$slug'
+import { Route } from '../routes/$lang/pages/$slug'
 import {usePage} from "../features/pages/hook/usePage.ts";
 import { transformImageUrls } from '../utils/transformImageUrls';
 import {ContactPage} from "./ContactPage.tsx";
+import { localized, useLocale, useT } from '../i18n'
 
 export function DynamicPage() {
     const { slug } = Route.useParams()
+    const lang = useLocale()
+    const t = useT()
 
     const { data: page, isLoading, error } = usePage(slug)
 
     if (isLoading) {
         return (
             <div className="p-8 text-center animate-pulse">
-                Se încarcă conținutul...
+                {t('common.loadingContent')}
             </div>
         )
     }
@@ -19,7 +22,7 @@ export function DynamicPage() {
     if (error || !page) {
         return (
             <div className="p-8 text-center text-red-500">
-                Pagina nu a fost găsită.
+                {t('common.notFound')}
             </div>
         )
     }
@@ -33,7 +36,7 @@ export function DynamicPage() {
         <div className="space-y-6 pb-12">
             <header className="space-y-2 mt-10">
                 <h1 className="text-3xl font-extrabold text-blue-pharma">
-                    {page.title_ro}
+                    {localized(page, 'title', lang)}
                 </h1>
 
                 <div className="h-0.5 w-20 bg-blue-400 rounded-full" />
@@ -41,7 +44,7 @@ export function DynamicPage() {
 
             <article
                 className="prose prose-slate max-w-none "
-                dangerouslySetInnerHTML={{ __html: transformImageUrls(page.content_ro) }}
+                dangerouslySetInnerHTML={{ __html: transformImageUrls(localized(page, 'content', lang)) }}
             />
 
         </div>

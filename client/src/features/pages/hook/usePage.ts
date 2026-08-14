@@ -6,6 +6,8 @@ export interface Page {
     slug: string
     title_ro: string
     content_ro: string
+    title_ru?: string | null
+    content_ru?: string | null
 }
 
 export function usePage(slug: string) {

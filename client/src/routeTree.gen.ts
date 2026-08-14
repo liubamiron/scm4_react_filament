@@ -9,28 +9,21 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as TransparentaRouteImport } from './routes/transparenta'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as AboutRouteImport } from './routes/about'
+import { Route as LangRouteImport } from './routes/$lang'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as PagesSlugRouteImport } from './routes/pages/$slug'
-import { Route as AboutIstoricRouteImport } from './routes/about.istoric'
-import { Route as AboutEchipaRouteImport } from './routes/about.echipa'
-import { Route as PagesAboutMisiuneaRouteImport } from './routes/pages/about/misiunea'
+import { Route as LangIndexRouteImport } from './routes/$lang/index'
+import { Route as LangTransparentaRouteImport } from './routes/$lang/transparenta'
+import { Route as LangAboutRouteImport } from './routes/$lang/about'
+import { Route as LangEventsIndexRouteImport } from './routes/$lang/events/index'
+import { Route as LangPagesSlugRouteImport } from './routes/$lang/pages/$slug'
+import { Route as LangEventsSlugRouteImport } from './routes/$lang/events/$slug'
+import { Route as LangAboutIstoricRouteImport } from './routes/$lang/about.istoric'
+import { Route as LangAboutEchipaRouteImport } from './routes/$lang/about.echipa'
+import { Route as LangPagesAboutMisiuneaRouteImport } from './routes/$lang/pages/about/misiunea'
 
-const TransparentaRoute = TransparentaRouteImport.update({
-  id: '/transparenta',
-  path: '/transparenta',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
+const LangRoute = LangRouteImport.update({
+  id: '/$lang',
+  path: '/$lang',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -38,121 +31,144 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PagesSlugRoute = PagesSlugRouteImport.update({
+const LangIndexRoute = LangIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => LangRoute,
+} as any)
+const LangTransparentaRoute = LangTransparentaRouteImport.update({
+  id: '/transparenta',
+  path: '/transparenta',
+  getParentRoute: () => LangRoute,
+} as any)
+const LangAboutRoute = LangAboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => LangRoute,
+} as any)
+const LangEventsIndexRoute = LangEventsIndexRouteImport.update({
+  id: '/events/',
+  path: '/events/',
+  getParentRoute: () => LangRoute,
+} as any)
+const LangPagesSlugRoute = LangPagesSlugRouteImport.update({
   id: '/pages/$slug',
   path: '/pages/$slug',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => LangRoute,
 } as any)
-const AboutIstoricRoute = AboutIstoricRouteImport.update({
+const LangEventsSlugRoute = LangEventsSlugRouteImport.update({
+  id: '/events/$slug',
+  path: '/events/$slug',
+  getParentRoute: () => LangRoute,
+} as any)
+const LangAboutIstoricRoute = LangAboutIstoricRouteImport.update({
   id: '/istoric',
   path: '/istoric',
-  getParentRoute: () => AboutRoute,
+  getParentRoute: () => LangAboutRoute,
 } as any)
-const AboutEchipaRoute = AboutEchipaRouteImport.update({
+const LangAboutEchipaRoute = LangAboutEchipaRouteImport.update({
   id: '/echipa',
   path: '/echipa',
-  getParentRoute: () => AboutRoute,
+  getParentRoute: () => LangAboutRoute,
 } as any)
-const PagesAboutMisiuneaRoute = PagesAboutMisiuneaRouteImport.update({
+const LangPagesAboutMisiuneaRoute = LangPagesAboutMisiuneaRouteImport.update({
   id: '/pages/about/misiunea',
   path: '/pages/about/misiunea',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => LangRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRouteWithChildren
-  '/contact': typeof ContactRoute
-  '/transparenta': typeof TransparentaRoute
-  '/about/echipa': typeof AboutEchipaRoute
-  '/about/istoric': typeof AboutIstoricRoute
-  '/pages/$slug': typeof PagesSlugRoute
-  '/pages/about/misiunea': typeof PagesAboutMisiuneaRoute
+  '/$lang': typeof LangRouteWithChildren
+  '/$lang/about': typeof LangAboutRouteWithChildren
+  '/$lang/transparenta': typeof LangTransparentaRoute
+  '/$lang/': typeof LangIndexRoute
+  '/$lang/about/echipa': typeof LangAboutEchipaRoute
+  '/$lang/about/istoric': typeof LangAboutIstoricRoute
+  '/$lang/events/$slug': typeof LangEventsSlugRoute
+  '/$lang/pages/$slug': typeof LangPagesSlugRoute
+  '/$lang/events/': typeof LangEventsIndexRoute
+  '/$lang/pages/about/misiunea': typeof LangPagesAboutMisiuneaRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRouteWithChildren
-  '/contact': typeof ContactRoute
-  '/transparenta': typeof TransparentaRoute
-  '/about/echipa': typeof AboutEchipaRoute
-  '/about/istoric': typeof AboutIstoricRoute
-  '/pages/$slug': typeof PagesSlugRoute
-  '/pages/about/misiunea': typeof PagesAboutMisiuneaRoute
+  '/$lang/about': typeof LangAboutRouteWithChildren
+  '/$lang/transparenta': typeof LangTransparentaRoute
+  '/$lang': typeof LangIndexRoute
+  '/$lang/about/echipa': typeof LangAboutEchipaRoute
+  '/$lang/about/istoric': typeof LangAboutIstoricRoute
+  '/$lang/events/$slug': typeof LangEventsSlugRoute
+  '/$lang/pages/$slug': typeof LangPagesSlugRoute
+  '/$lang/events': typeof LangEventsIndexRoute
+  '/$lang/pages/about/misiunea': typeof LangPagesAboutMisiuneaRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/about': typeof AboutRouteWithChildren
-  '/contact': typeof ContactRoute
-  '/transparenta': typeof TransparentaRoute
-  '/about/echipa': typeof AboutEchipaRoute
-  '/about/istoric': typeof AboutIstoricRoute
-  '/pages/$slug': typeof PagesSlugRoute
-  '/pages/about/misiunea': typeof PagesAboutMisiuneaRoute
+  '/$lang': typeof LangRouteWithChildren
+  '/$lang/about': typeof LangAboutRouteWithChildren
+  '/$lang/transparenta': typeof LangTransparentaRoute
+  '/$lang/': typeof LangIndexRoute
+  '/$lang/about/echipa': typeof LangAboutEchipaRoute
+  '/$lang/about/istoric': typeof LangAboutIstoricRoute
+  '/$lang/events/$slug': typeof LangEventsSlugRoute
+  '/$lang/pages/$slug': typeof LangPagesSlugRoute
+  '/$lang/events/': typeof LangEventsIndexRoute
+  '/$lang/pages/about/misiunea': typeof LangPagesAboutMisiuneaRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/about'
-    | '/contact'
-    | '/transparenta'
-    | '/about/echipa'
-    | '/about/istoric'
-    | '/pages/$slug'
-    | '/pages/about/misiunea'
+    | '/$lang'
+    | '/$lang/about'
+    | '/$lang/transparenta'
+    | '/$lang/'
+    | '/$lang/about/echipa'
+    | '/$lang/about/istoric'
+    | '/$lang/events/$slug'
+    | '/$lang/pages/$slug'
+    | '/$lang/events/'
+    | '/$lang/pages/about/misiunea'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/about'
-    | '/contact'
-    | '/transparenta'
-    | '/about/echipa'
-    | '/about/istoric'
-    | '/pages/$slug'
-    | '/pages/about/misiunea'
+    | '/$lang/about'
+    | '/$lang/transparenta'
+    | '/$lang'
+    | '/$lang/about/echipa'
+    | '/$lang/about/istoric'
+    | '/$lang/events/$slug'
+    | '/$lang/pages/$slug'
+    | '/$lang/events'
+    | '/$lang/pages/about/misiunea'
   id:
     | '__root__'
     | '/'
-    | '/about'
-    | '/contact'
-    | '/transparenta'
-    | '/about/echipa'
-    | '/about/istoric'
-    | '/pages/$slug'
-    | '/pages/about/misiunea'
+    | '/$lang'
+    | '/$lang/about'
+    | '/$lang/transparenta'
+    | '/$lang/'
+    | '/$lang/about/echipa'
+    | '/$lang/about/istoric'
+    | '/$lang/events/$slug'
+    | '/$lang/pages/$slug'
+    | '/$lang/events/'
+    | '/$lang/pages/about/misiunea'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRouteWithChildren
-  ContactRoute: typeof ContactRoute
-  TransparentaRoute: typeof TransparentaRoute
-  PagesSlugRoute: typeof PagesSlugRoute
-  PagesAboutMisiuneaRoute: typeof PagesAboutMisiuneaRoute
+  LangRoute: typeof LangRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/transparenta': {
-      id: '/transparenta'
-      path: '/transparenta'
-      fullPath: '/transparenta'
-      preLoaderRoute: typeof TransparentaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
+    '/$lang': {
+      id: '/$lang'
+      path: '/$lang'
+      fullPath: '/$lang'
+      preLoaderRoute: typeof LangRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -162,56 +178,111 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/pages/$slug': {
-      id: '/pages/$slug'
+    '/$lang/': {
+      id: '/$lang/'
+      path: '/'
+      fullPath: '/$lang/'
+      preLoaderRoute: typeof LangIndexRouteImport
+      parentRoute: typeof LangRoute
+    }
+    '/$lang/transparenta': {
+      id: '/$lang/transparenta'
+      path: '/transparenta'
+      fullPath: '/$lang/transparenta'
+      preLoaderRoute: typeof LangTransparentaRouteImport
+      parentRoute: typeof LangRoute
+    }
+    '/$lang/about': {
+      id: '/$lang/about'
+      path: '/about'
+      fullPath: '/$lang/about'
+      preLoaderRoute: typeof LangAboutRouteImport
+      parentRoute: typeof LangRoute
+    }
+    '/$lang/events/': {
+      id: '/$lang/events/'
+      path: '/events'
+      fullPath: '/$lang/events/'
+      preLoaderRoute: typeof LangEventsIndexRouteImport
+      parentRoute: typeof LangRoute
+    }
+    '/$lang/pages/$slug': {
+      id: '/$lang/pages/$slug'
       path: '/pages/$slug'
-      fullPath: '/pages/$slug'
-      preLoaderRoute: typeof PagesSlugRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/$lang/pages/$slug'
+      preLoaderRoute: typeof LangPagesSlugRouteImport
+      parentRoute: typeof LangRoute
     }
-    '/about/istoric': {
-      id: '/about/istoric'
+    '/$lang/events/$slug': {
+      id: '/$lang/events/$slug'
+      path: '/events/$slug'
+      fullPath: '/$lang/events/$slug'
+      preLoaderRoute: typeof LangEventsSlugRouteImport
+      parentRoute: typeof LangRoute
+    }
+    '/$lang/about/istoric': {
+      id: '/$lang/about/istoric'
       path: '/istoric'
-      fullPath: '/about/istoric'
-      preLoaderRoute: typeof AboutIstoricRouteImport
-      parentRoute: typeof AboutRoute
+      fullPath: '/$lang/about/istoric'
+      preLoaderRoute: typeof LangAboutIstoricRouteImport
+      parentRoute: typeof LangAboutRoute
     }
-    '/about/echipa': {
-      id: '/about/echipa'
+    '/$lang/about/echipa': {
+      id: '/$lang/about/echipa'
       path: '/echipa'
-      fullPath: '/about/echipa'
-      preLoaderRoute: typeof AboutEchipaRouteImport
-      parentRoute: typeof AboutRoute
+      fullPath: '/$lang/about/echipa'
+      preLoaderRoute: typeof LangAboutEchipaRouteImport
+      parentRoute: typeof LangAboutRoute
     }
-    '/pages/about/misiunea': {
-      id: '/pages/about/misiunea'
+    '/$lang/pages/about/misiunea': {
+      id: '/$lang/pages/about/misiunea'
       path: '/pages/about/misiunea'
-      fullPath: '/pages/about/misiunea'
-      preLoaderRoute: typeof PagesAboutMisiuneaRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/$lang/pages/about/misiunea'
+      preLoaderRoute: typeof LangPagesAboutMisiuneaRouteImport
+      parentRoute: typeof LangRoute
     }
   }
 }
 
-interface AboutRouteChildren {
-  AboutEchipaRoute: typeof AboutEchipaRoute
-  AboutIstoricRoute: typeof AboutIstoricRoute
+interface LangAboutRouteChildren {
+  LangAboutEchipaRoute: typeof LangAboutEchipaRoute
+  LangAboutIstoricRoute: typeof LangAboutIstoricRoute
 }
 
-const AboutRouteChildren: AboutRouteChildren = {
-  AboutEchipaRoute: AboutEchipaRoute,
-  AboutIstoricRoute: AboutIstoricRoute,
+const LangAboutRouteChildren: LangAboutRouteChildren = {
+  LangAboutEchipaRoute: LangAboutEchipaRoute,
+  LangAboutIstoricRoute: LangAboutIstoricRoute,
 }
 
-const AboutRouteWithChildren = AboutRoute._addFileChildren(AboutRouteChildren)
+const LangAboutRouteWithChildren = LangAboutRoute._addFileChildren(
+  LangAboutRouteChildren,
+)
+
+interface LangRouteChildren {
+  LangAboutRoute: typeof LangAboutRouteWithChildren
+  LangTransparentaRoute: typeof LangTransparentaRoute
+  LangIndexRoute: typeof LangIndexRoute
+  LangEventsSlugRoute: typeof LangEventsSlugRoute
+  LangPagesSlugRoute: typeof LangPagesSlugRoute
+  LangEventsIndexRoute: typeof LangEventsIndexRoute
+  LangPagesAboutMisiuneaRoute: typeof LangPagesAboutMisiuneaRoute
+}
+
+const LangRouteChildren: LangRouteChildren = {
+  LangAboutRoute: LangAboutRouteWithChildren,
+  LangTransparentaRoute: LangTransparentaRoute,
+  LangIndexRoute: LangIndexRoute,
+  LangEventsSlugRoute: LangEventsSlugRoute,
+  LangPagesSlugRoute: LangPagesSlugRoute,
+  LangEventsIndexRoute: LangEventsIndexRoute,
+  LangPagesAboutMisiuneaRoute: LangPagesAboutMisiuneaRoute,
+}
+
+const LangRouteWithChildren = LangRoute._addFileChildren(LangRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRouteWithChildren,
-  ContactRoute: ContactRoute,
-  TransparentaRoute: TransparentaRoute,
-  PagesSlugRoute: PagesSlugRoute,
-  PagesAboutMisiuneaRoute: PagesAboutMisiuneaRoute,
+  LangRoute: LangRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

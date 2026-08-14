@@ -9,7 +9,7 @@ export interface Page {
     updated_at: string;
 }
 
-export type Language = 'ro' | 'ru';
+export type { Locale as Language } from '../i18n/config';
 
 export interface ServicePage {
     id: number;
@@ -21,12 +21,12 @@ export interface ServicePage {
     content_ro: string;
     title_ru?: string | null;
     content_ru?: string | null;
+    // Stored as a Filament repeater on the page; these rows are not translated.
     contact_list?: Array<{
         nr: number;
-        dept_ro: string;
-        dept_ru?: string;
-        name_ro?: string;
-        name_ru?: string;
+        section: string;
+        name: string;
+        role?: string;
         phones?: string;
     }> | null;
 
@@ -43,6 +43,25 @@ export interface Partner {
     is_active: boolean
     created_at: string
     updated_at: string
+}
+
+/**
+ * `content_*` is only returned by `/events/{id}` — the list endpoint drops it,
+ * so it stays optional here.
+ */
+export interface EventItem {
+    id: number
+    slug: string
+    title_ro: string
+    title_ru?: string | null
+    description_ro: string
+    description_ru?: string | null
+    content_ro?: string
+    content_ru?: string | null
+    date: string
+    image: string | null
+    created_at?: string
+    updated_at?: string
 }
 
 export interface Transparency {

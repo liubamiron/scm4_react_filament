@@ -1,14 +1,17 @@
-import { useState, type JSXElementConstructor, type Key, type ReactElement, type ReactNode, type ReactPortal} from 'react'
+import { useState } from 'react'
 import {useTransparency} from "../features/pages/hook/useTransparency.ts";
+import { localized, useLocale, useT } from "../i18n";
 
 export function TransparencyPage() {
     const {data: categories, isLoading, error} = useTransparency()
     const [activeTab, setActiveTab] = useState<number | null>(null)
+    const lang = useLocale()
+    const t = useT()
 
     const storageUrl = import.meta.env.VITE_STORAGE_URL
 
-    if (isLoading) return <div className="p-8 text-center">Se încarcă...</div>
-    if (error || !categories) return <div className="p-8 text-center text-red-500">Eroare la încărcare.</div>
+    if (isLoading) return <div className="p-8 text-center">{t('common.loading')}</div>
+    if (error || !categories) return <div className="p-8 text-center text-red-500">{t('common.loadError')}</div>
 
     // Set initial tab if not set
     if (activeTab === null && categories.length > 0) {
@@ -31,27 +34,20 @@ export function TransparencyPage() {
                                 : 'bg-white text-slate-700 border-blue-400 hover:bg-blue-50'
                         }`}
                     >
-                        {category.name_ro}
+                        {localized(category, 'name', lang)}
                     </button>
                 ))}
             </div>
 
-            {/* Content Title */}
-            {/*<div className="text-center">*/}
-            {/*    <h1 className="text-4xl font-light text-slate-800">*/}
-            {/*        {currentCategory?.name_ro}*/}
-            {/*    </h1>*/}
-            {/*</div>*/}
-
             {/* Document List */}
             <div className="max-w-4xl mx-auto space-y-4">
-                {currentCategory?.documents.map((doc: { id: Key | null | undefined; title_ro: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined; file_path: string | undefined; }) => (
+                {currentCategory?.documents.map((doc) => (
                     <div
                         key={doc.id}
                         className="flex items-center justify-between py-4 border-b border-slate-100"
                     >
                         <span className="text-lg text-slate-700 font-medium">
-                            {doc.title_ro}
+                            {localized(doc, 'title', lang)}
                         </span>
                         <a
                             href={`${storageUrl}/${doc.file_path}`}
@@ -59,7 +55,7 @@ export function TransparencyPage() {
                             rel="noopener noreferrer"
                             className="px-8 py-2 border border-blue-400 text-blue-500 rounded-md hover:bg-blue-50 transition-colors"
                         >
-                            Vizualizează
+                            {t('transparency.view')}
                         </a>
                     </div>
                 ))}

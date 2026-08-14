@@ -15,8 +15,13 @@ class EventsTable
     {
         return $table
             ->columns([
-                TextColumn::make('title')
+                TextColumn::make('title_ro')
                     ->searchable(),
+                TextColumn::make('title_ru')
+                    ->searchable(),
+                TextColumn::make('slug')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('date')
                     ->date()
                     ->sortable(),

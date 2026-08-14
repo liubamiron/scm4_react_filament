@@ -1,9 +1,12 @@
 import {ContactForm} from "../components/ContactForm.tsx";
 import {transformImageUrls} from "../utils/transformImageUrls.ts";
+import { localized, useLocale, useT } from "../i18n";
 
-export function ContactPage({ page }: { page: any }) {
+export function ContactPage({ page }: { page?: any }) {
+    const lang = useLocale()
+    const t = useT()
 
-    const contacts = page.contact_list ?? [];
+    const contacts = page?.contact_list ?? [];
 
     return (
         <div className="space-y-10 pb-12">
@@ -11,7 +14,7 @@ export function ContactPage({ page }: { page: any }) {
             {/* TITLE */}
             <header className="space-y-2 mt-10">
                 <h1 className="text-3xl font-extrabold text-blue-pharma">
-                    {page.title_ro}
+                    {localized(page, 'title', lang)}
                 </h1>
                 <div className="h-0.5 w-20 bg-blue-400 rounded-full" />
             </header>
@@ -25,11 +28,11 @@ export function ContactPage({ page }: { page: any }) {
 
                         <thead className="bg-blue-50 text-left">
                         <tr>
-                            <th className="p-3">Nr.</th>
-                            <th className="p-3">Nume / Prenume</th>
-                            <th className="p-3">Funcția</th>
-                            <th className="p-3">Secția</th>
-                            <th className="p-3">Telefon</th>
+                            <th className="p-3">{t('contact.nr')}</th>
+                            <th className="p-3">{t('contact.name')}</th>
+                            <th className="p-3">{t('contact.role')}</th>
+                            <th className="p-3">{t('contact.section')}</th>
+                            <th className="p-3">{t('contact.phone')}</th>
                         </tr>
                         </thead>
 
@@ -105,7 +108,7 @@ export function ContactPage({ page }: { page: any }) {
                 <div
                     className="bg-white p-4 border border-blue-400 rounded-xl shadow"
                     dangerouslySetInnerHTML={{
-                        __html: transformImageUrls(page.content_ro)
+                        __html: transformImageUrls(localized(page, 'content', lang))
                     }}
                 />
             </div>

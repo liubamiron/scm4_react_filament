@@ -1,6 +1,6 @@
 // import { Route } from ''
 import { usePage } from './usePage'
-import {Route} from "../../../routes/pages/$slug";
+import {Route} from "../../../routes/$lang/pages/$slug";
 
 
 export function useDynamicPage() {
