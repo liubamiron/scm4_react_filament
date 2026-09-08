@@ -20,7 +20,7 @@
 
     # ВНИМАНИЕ: на new.scm4.md PHP работает как "FPM application served by
     # nginx", а nginx этот файл не читает — там действуют директивы из
-    # deploy/nginx-plesk.conf. Правила ниже нужны только под Apache; правьте
+    # deployment/nginx-plesk.conf. Правила ниже нужны только под Apache; правьте
     # оба файла вместе, иначе они разъедутся.
 
     # The React build is deployed into this directory alongside Laravel, so the
