@@ -19,7 +19,20 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    /*
+     * When the client and the API share an origin (the deployed layout), the
+     * browser never sends a preflight and this list is unused. It matters for
+     * local development, where Vite is on :5173 and Laravel on :8000, and for
+     * any future split-domain setup — so it is driven by the environment
+     * instead of being left open to every origin in production.
+     */
+    'allowed_origins' => array_values(array_filter(array_map(
+        'trim',
+        explode(',', (string) env(
+            'CORS_ALLOWED_ORIGINS',
+            'http://localhost:5173,http://localhost:8000'
+        ))
+    ))),
 
     'allowed_origins_patterns' => [],
 

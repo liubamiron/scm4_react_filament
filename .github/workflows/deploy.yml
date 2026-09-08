@@ -1,0 +1,64 @@
+name: Build deploy branch
+
+# Клиент собирается здесь, а не на сервере: node_modules весит около 300 МБ,
+# а дисковая квота на хостинге — 2 ГБ на всё вместе со старым проектом.
+#
+# Результат складывается в ветку `deploy`, которую тянет Plesk. В `main`
+# собранные файлы не попадают, история остаётся чистой.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: client/package-lock.json
+
+      - name: Установка зависимостей клиента
+        working-directory: client
+        run: npm ci
+
+      # VITE_* читаются на этапе сборки и зашиваются в бандл — в рантайме их
+      # поменять нельзя. Поэтому адрес продакшна задаётся именно здесь, и это
+      # единственное место в репозитории, где он захардкожен.
+      - name: Сборка клиента
+        working-directory: client
+        env:
+          VITE_API_URL: https://new.scm4.md/api
+          VITE_STORAGE_URL: https://new.scm4.md/storage
+        run: npm run build
+
+      # Document root субдомена указывает на server/public, поэтому SPA должна
+      # лежать рядом с index.php Laravel. Порядок отдачи разводит .htaccess.
+      - name: Перенос сборки в public Laravel
+        run: |
+          rm -rf server/public/assets
+          cp -r client/dist/. server/public/
+
+      # Ветка каждый раз пересобирается от свежего main плюс один коммит со
+      # сборкой — так в её истории не копятся старые бандлы.
+      - name: Публикация ветки deploy
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B deploy
+          git add --force server/public
+          git commit -m "Сборка клиента из ${GITHUB_SHA::7}" || echo "Изменений нет"
+          git push --force origin deploy

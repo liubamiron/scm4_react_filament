@@ -18,8 +18,23 @@
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 
-    # Send Requests To Front Controller...
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^ index.php [L]
+    # The React build is deployed into this directory alongside Laravel, so the
+    # SPA's entry point answers "/" rather than Laravel's welcome view.
+    DirectoryIndex index.html index.php
+
+    # Anything that exists on disk — the React bundle, Filament's published
+    # assets, uploads reached through the storage symlink — is served as-is.
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^ - [L]
+
+    # Backend paths belong to Laravel even though no file matches them.
+    RewriteRule ^(api|admin|livewire|up)(/|$) index.php [L]
+
+    # A missing file under /storage is a real 404, not a client-side route;
+    # without this it would be answered with the SPA's HTML.
+    RewriteRule ^storage(/|$) - [R=404,L]
+
+    # Everything else is a client-side route ("/ro/events/foo"): hand it to the
+    # SPA and let TanStack Router resolve it in the browser.
+    RewriteRule ^ index.html [L]
 </IfModule>
