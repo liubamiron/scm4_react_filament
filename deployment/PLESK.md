@@ -13,7 +13,7 @@
 сервере — `node_modules` весит около 300 МБ при квоте 2 ГБ на весь аккаунт.
 Результат складывается в ветку `deploy`, её и тянет Plesk.
 
-Document root субдомена смотрит в `httpdocs/server/public`, где рядом лежат
+Document root субдомена смотрит в `new.scm4.md/server/public`, где рядом лежат
 `index.html` собранного React и `index.php` Laravel. Кому какой запрос
 достаётся — разводится в `nginx-plesk.conf`.
 
@@ -56,15 +56,31 @@ php artisan key:generate --show
 Дальше на сервере:
 
 ```bash
-cd ~/httpdocs/server
+cd ~/new.scm4.md/server
 cp .env.production.example .env
 nano .env    # APP_KEY, DB_DATABASE, DB_USERNAME, DB_PASSWORD, DB_HOST
 ```
 
 ### 4. Зависимости, миграции, права
 
+**Внимание: `php` в командной строке — не тот PHP, что у сайта.** Планировщик и
+SSH на CloudLinux запускают системный 7.2, и `vendor/composer/platform_check.php`
+честно падает с `requires a PHP version ">= 8.3.0"`. Везде нужен полный путь к
+плесковскому бинарнику — у `alt-php` из PHP Selector нет `pdo_mysql`:
+
+    /opt/plesk/php/8.4/bin/php
+
+Проверить, что установлено и с какими расширениями:
+
 ```bash
-cd ~/httpdocs/server
+for P in /opt/alt/php84/usr/bin/php /opt/plesk/php/8.4/bin/php; do
+  echo "== $P"; $P -v 2>&1 | head -1
+  $P -m 2>/dev/null | grep -Ex 'pdo_mysql|mbstring|openssl|fileinfo|gd|intl' | tr '\n' ' '; echo
+done
+```
+
+```bash
+cd ~/new.scm4.md/server
 
 composer install --no-dev --optimize-autoloader
 # если composer не в PATH — в репозитории лежит свой:
@@ -94,6 +110,20 @@ php artisan make:filament-user
 php artisan make:filament-user --name="Admin" --email="..." --password="..."
 ```
 
+**После создания обязательно проставить роль.** `canAccessPanel()` в
+`app/Models/User.php` требует `role === 'admin'`, а колонка `role` в миграции
+создана с `default('client')` — про неё `make:filament-user` ничего не знает.
+Пароль такой пользователь пройдёт, а на панель его не пустят:
+
+```bash
+php artisan tinker --execute='$u = App\Models\User::where("email","<e-mail>")->firstOrFail(); $u->role = "admin"; $u->save(); echo $u->role;'
+```
+
+Этой же командой меняется и пароль (`$u->password = "..."`) — каст
+`'password' => 'hashed'` в модели захеширует его сам. С Filament 4.11.2 у панели
+включён `->profile()`, так что после первого входа пароль меняется уже из
+интерфейса, в меню пользователя справа сверху.
+
 **Не запускать `db:seed`:** сидер в `database/seeders/DatabaseSeeder.php` создаёт
 фабричного `test@example.com` со случайным паролем, войти под ним нельзя.
 
@@ -121,7 +151,7 @@ nginx-директивы применены верно и PHP-FPM запуска
 браузер показывает пустой 500, а стектрейс лежит в логе:
 
 ```bash
-tail -n 50 ~/httpdocs/server/storage/logs/laravel.log
+tail -n 50 ~/new.scm4.md/server/storage/logs/laravel.log
 ```
 
 Если файла нет вообще — нет прав на запись в `storage/` либо нет `vendor/`.
@@ -146,7 +176,7 @@ tail -n 50 ~/httpdocs/server/storage/logs/laravel.log
 Plesk тянет ветку `deploy`. После pull:
 
 ```bash
-cd ~/httpdocs/server
+cd ~/new.scm4.md/server
 composer install --no-dev --optimize-autoloader   # если менялся composer.lock
 php artisan migrate --force                       # если добавились миграции
 php artisan optimize:clear

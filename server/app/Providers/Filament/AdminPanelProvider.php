@@ -28,6 +28,10 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            // Панель разворачивается на shared-хостинге, где консоль есть не у
+            // всех, кто ведёт сайт. Без этой страницы сменить себе пароль можно
+            // было бы только через artisan tinker.
+            ->profile()
             ->colors([
                 'primary' => Color::Amber,
             ])
