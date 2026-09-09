@@ -53,6 +53,5 @@
         <main class="w-full lg:max-w-4xl max-w-[335px]">
             <div id="app">tested</div>
         </main>
-    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js"></script>
     </body>
 </html>

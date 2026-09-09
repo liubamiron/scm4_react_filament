@@ -122,5 +122,9 @@
 </div>
 
  @push('scripts')
-    <script src="https://cdn.tiny.cloud/1/dp8gi9tixz1xkvbr5hub3i4azl46kccgibxe7cev1gsaz684/tinymce/6/tinymce.min.js"></script>
+    {{-- TinyMCE 6.8.6 community (GPL) лежит в public/js/tinymce и намеренно не
+         грузится с cdn.tiny.cloud: облачная сборка привязана к списку
+         разрешённых доменов в чужом кабинете Tiny, и на каждом новом домене
+         редактор встречает контент-менеджера жёлтой плашкой. --}}
+    <script src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
 @endpush
