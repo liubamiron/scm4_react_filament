@@ -72,15 +72,15 @@ export function HomePage() {
                                         lang,
                                         slug: service.slug,
                                     }}
-                                    className="block group"
+                                    className="block"
                                 >
-                                    <article className="bg-white rounded-xl shadow-lg overflow-hidden h-full hover:shadow-xl transition-shadow duration-300">
+                                    <article className="bg-white rounded-xl shadow-lg overflow-hidden h-full">
                                         <div className="h-56 w-full overflow-hidden bg-slate-200">
                                             {service.image ? (
                                                 <img
                                                     src={`${storageUrl}/${service.image}`}
                                                     alt={title}
-                                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                                    className="w-full h-full object-cover"
                                                 />
                                             ) : (
                                                 <div className="flex items-center justify-center h-full text-slate-400">
@@ -130,7 +130,7 @@ export function HomePage() {
                             <Link
                                 to="/$lang/events"
                                 params={{ lang }}
-                                className="shrink-0 text-sm font-semibold text-blue-600 hover:underline"
+                                className="shrink-0 text-sm font-semibold text-blue-600"
                             >
                                 {t("home.newsAll")} →
                             </Link>
@@ -159,7 +159,7 @@ export function HomePage() {
                                             lang,
                                             slug: event.slug,
                                         }}
-                                        className="group block"
+                                        className="block"
                                     >
                                         <article
                                             className={`
@@ -172,9 +172,6 @@ export function HomePage() {
                                                 overflow-hidden
                                                 border border-slate-100
                                                 shadow-sm
-                                                hover:shadow-lg
-                                                transition-shadow
-                                                duration-300
                                             `}
                                         >
                                             {/* Image */}
@@ -227,7 +224,7 @@ export function HomePage() {
                                                     )}
                                                 </time>
 
-                                                <h3 className="mt-3 text-2xl md:text-3xl font-bold leading-tight text-[#003366] group-hover:text-blue-600 transition-colors">
+                                                <h3 className="mt-3 text-2xl md:text-3xl font-bold leading-tight text-[#003366]">
                                                     {title}
                                                 </h3>
 
@@ -249,7 +246,7 @@ export function HomePage() {
                                                     <span className="inline-flex items-center gap-2 text-sm font-semibold text-blue-600">
                                                         {t("events.readMore")}
 
-                                                        <span className="text-lg group-hover:translate-x-1 transition-transform">
+                                                        <span className="text-lg">
                                                             →
                                                         </span>
                                                     </span>
