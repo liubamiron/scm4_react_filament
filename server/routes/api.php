@@ -30,8 +30,16 @@ Route::get('/pages/{slug}', function ($slug) {
     return Page::where('slug', $slug)->firstOrFail();
 });
 
-Route::get('/pages', function () {
-    return Page::all();
+// `?featured=1` narrows the list to the home-page cards. Without it every page
+// comes back with its full HTML body, which is far more than the home page needs.
+Route::get('/pages', function (Request $request) {
+    $query = Page::query();
+
+    if ($request->boolean('featured')) {
+        $query->where('is_featured', true);
+    }
+
+    return $query->get();
 });
 
 Route::get('/partners', function () {

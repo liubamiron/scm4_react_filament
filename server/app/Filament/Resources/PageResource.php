@@ -65,7 +65,17 @@ class PageResource extends Resource
                            ->image()
                            ->disk('public')
                            ->directory('pages-thumbnails')
-                           ->visibility('public'),
+                           ->visibility('public')
+                           // The home-page card shows this at 16:10, so let the
+                           // editor crop to that ratio and save a size that stays
+                           // sharp on retina screens without uploading megabytes.
+                           ->imageEditor()
+                           ->imageEditorAspectRatios(['16:10'])
+                           ->imageResizeMode('cover')
+                           ->imageCropAspectRatio('16:10')
+                           ->imageResizeTargetWidth('1200')
+                           ->imageResizeTargetHeight('750')
+                           ->helperText('Recomandat: minim 1200×750 px. / Рекомендуется: минимум 1200×750 px.'),
                    ])
                    ->columns(2),
 

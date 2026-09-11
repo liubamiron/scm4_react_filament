@@ -8,8 +8,8 @@ import { formatEventDate } from "../utils/formatEventDate.ts";
 const LATEST_NEWS_COUNT = 3;
 
 export function HomePage() {
-    const { data: services, isLoading } = useFeaturedServices();
-    const { data: events } = useEvents();
+    const { data: featuredServices, isLoading: isServicesLoading } = useFeaturedServices();
+    const { data: events, isLoading: isEventsLoading } = useEvents();
 
     const lang = useLocale();
     const t = useT();
@@ -22,20 +22,12 @@ export function HomePage() {
         return `${storageUrl}/${image.replace(/^\/+/, "")}`;
     };
 
-    if (isLoading) {
-        return (
-            <div className="min-h-[400px] flex items-center justify-center">
-                <p className="text-slate-500">
-                    {t("common.loading")}
-                </p>
-            </div>
-        );
-    }
-
-    const featuredServices = services?.filter(
-        (item) =>
-            item.is_featured === 1 ||
-            item.is_featured === true
+    const loadingBlock = (
+        <div className="min-h-[300px] flex items-center justify-center">
+            <p className="text-slate-500">
+                {t("common.loading")}
+            </p>
+        </div>
     );
 
     const latestNews = [...(events ?? [])]
@@ -56,6 +48,7 @@ export function HomePage() {
                         {t("home.servicesTitle")}
                     </h2>
 
+                    {isServicesLoading ? loadingBlock : (
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         {featuredServices?.map((service) => {
                             const title = localized(
@@ -75,7 +68,9 @@ export function HomePage() {
                                     className="block"
                                 >
                                     <article className="bg-white rounded-xl shadow-lg overflow-hidden h-full">
-                                        <div className="h-56 w-full overflow-hidden bg-slate-200">
+                                        {/* 16:10 matches the ratio the admin form crops thumbnails to,
+                                            so uploads are shown whole instead of being cut off. */}
+                                        <div className="aspect-[16/10] w-full overflow-hidden bg-slate-200">
                                             {service.image ? (
                                                 <img
                                                     src={`${storageUrl}/${service.image}`}
@@ -115,9 +110,19 @@ export function HomePage() {
                             );
                         })}
                     </div>
+                    )}
                 </section>
 
                 {/* Latest news */}
+                {isEventsLoading && (
+                    <section className="mt-20">
+                        <h2 className="text-3xl md:text-4xl font-bold text-[#003366] mb-8">
+                            {t("home.newsTitle")}
+                        </h2>
+                        {loadingBlock}
+                    </section>
+                )}
+
                 {latestNews.length > 0 && (
                     <section className="mt-20">
 
@@ -193,8 +198,9 @@ export function HomePage() {
                                                     <img
                                                         src={imageUrl}
                                                         alt={title}
-                                                        className="max-w-[300px]  h-auto
-                                                        object-contain"
+                                                        loading="lazy"
+                                                        decoding="async"
+                                                        className="max-w-[300px] h-auto object-contain"
                                                     />
                                                 ) : (
                                                     <div className="text-slate-400">

@@ -11,9 +11,11 @@
                         paste_data_images: false,
                         automatic_uploads: true,
 
+                        // `blockquote` is a core toolbar button, not a plugin — listing it
+                        // here makes TinyMCE fetch a non-existent plugins/blockquote/plugin.min.js.
                         plugins: [
-                            'link', 'lists', 'table', 'code', 'image', 'preview', 'blockquote', 'anchor', 'autolink', 'charmap', 'codesample',
-                            'emoticons', 'link', 'lists', 'media', 'searchreplace', 'link', 'lists',
+                            'accordion', 'anchor', 'autolink', 'charmap', 'code', 'codesample', 'emoticons',
+                            'image', 'link', 'lists', 'media', 'preview', 'searchreplace', 'table',
                         ],
 
                         toolbar: 'undo redo | blocks | bold italic underline | blockquote| image | accordion | code preview | link |  align numlist bullist ',

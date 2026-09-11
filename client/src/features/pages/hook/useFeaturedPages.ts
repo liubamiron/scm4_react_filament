@@ -1,15 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
+import { apiClient } from '../../../api/client.ts';
 import type {ServicePage} from "../../../types";
 
 export function useFeaturedServices() {
-    return useQuery<ServicePage[]>({
+    return useQuery({
         queryKey: ['pages', 'featured'],
-        queryFn: async () => {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/pages`);
-            if (!response.ok) throw new Error('Failed to fetch services');
-
-            const data: ServicePage[] = await response.json();
-            return data.filter((page: any) => Number(page.is_featured) === 1);
-        },
+        queryFn: () => apiClient<ServicePage[]>('/pages?featured=1'),
+        staleTime: 1000 * 60 * 5,
     });
 }
