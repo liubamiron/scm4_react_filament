@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-BOY_dY-B.js";import{o as t}from"./index-CXl1EHq_.js";var n=e();function r(){let e=t();return(0,n.jsxs)(`div`,{className:`space-y-6`,children:[(0,n.jsx)(`h1`,{className:`text-4xl font-bold text-blue-900`,children:e(`about.title`)}),(0,n.jsx)(`p`,{className:`text-slate-700`,children:e(`about.intro`)})]})}var i=r;export{i as component};

@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-BOY_dY-B.js";var t=e();function n(){return(0,t.jsx)(`div`,{children:`Hello "/about/echipa"!`})}export{n as component};

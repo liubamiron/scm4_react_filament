@@ -1,0 +1,1 @@
+import{r as e,t}from"./jsx-runtime-BOY_dY-B.js";import{c as n,d as r,l as i,p as a,r as o}from"./index-CXl1EHq_.js";var s=e(a()),c=t();function l(){let{lang:e}=o.useParams();return(0,s.useEffect)(()=>{n(e)&&i(e)},[e]),(0,c.jsx)(r,{})}export{l as component};
