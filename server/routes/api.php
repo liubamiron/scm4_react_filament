@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Models\ContactMessage;
 use App\Models\Event;
 use App\Models\Page;
 use App\Models\Partner;
@@ -64,6 +65,20 @@ Route::get('/events', function () {
 Route::get('/events/{slug}', function ($slug) {
     return Event::where('slug', $slug)->firstOrFail();
 });
+
+// The only write endpoint. Messages land in the admin panel ("Mesaje"), nothing
+// is e-mailed. Rate-limited per IP since the form is public and unauthenticated.
+Route::post('/contact-messages', function (Request $request) {
+    $data = $request->validate([
+        'name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'email', 'max:255'],
+        'message' => ['required', 'string', 'max:5000'],
+    ]);
+
+    ContactMessage::create($data);
+
+    return response()->json(['ok' => true], 201);
+})->middleware('throttle:5,1');
 
 Route::get('/transparency', function () {
     return TransparencyCategory::with(['documents' => function ($query) {
