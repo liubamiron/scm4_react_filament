@@ -20,8 +20,7 @@ export function AppFooter() {
         <footer className="mt-16">
             {/* PARTNERS */}
             {activePartners.length > 0 && (
-                <section className="border-y border-slate-200 bg-white px-5 py-10">
-                    <p className="eyebrow mb-6 text-center text-brand-900">{t("footer.partners")}</p>
+                <section className="px-5 py-10">
                     <div className="flex flex-wrap items-stretch justify-center gap-4">
                         {activePartners.map((partner) => (
                             <a
