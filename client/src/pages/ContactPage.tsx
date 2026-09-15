@@ -64,29 +64,6 @@ export function ContactPage({ page }: { page?: ContactPageData }) {
                 <div className="h-1 w-20 rounded-full bg-blue-400" />
             </header>
 
-            {/* ADDRESS + MAP */}
-            <section className="grid gap-6 lg:grid-cols-5">
-                <div className="flex flex-col gap-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm lg:col-span-2 md:p-8">
-                    <SectionHeading icon={MapPin}>{t("contact.infoTitle")}</SectionHeading>
-                    <div
-                        className="prose prose-slate max-w-none leading-relaxed prose-p:my-1 prose-a:text-blue-600"
-                        dangerouslySetInnerHTML={{ __html: content }}
-                    />
-                </div>
-
-                <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm lg:col-span-3">
-                    <div className="border-b border-slate-100 px-6 py-4">
-                        <SectionHeading icon={MapPin}>{t("contact.mapTitle")}</SectionHeading>
-                    </div>
-                    <iframe
-                        className="block h-[320px] w-full md:h-[400px]"
-                        loading="lazy"
-                        title="map"
-                        src="https://www.google.com/maps?q=Strada+Columna+150+Chisinau&output=embed"
-                    />
-                </div>
-            </section>
-
             {/* STAFF DIRECTORY */}
             {contacts.length > 0 && (
                 <section className="space-y-5">
@@ -159,6 +136,29 @@ export function ContactPage({ page }: { page?: ContactPageData }) {
                     <div className="lg:col-span-2">
                         <ContactForm />
                     </div>
+                </div>
+            </section>
+
+            {/* ADDRESS + MAP */}
+            <section className="grid gap-6 lg:grid-cols-5">
+                <div className="flex flex-col gap-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm lg:col-span-2 md:p-8">
+                    <SectionHeading icon={MapPin}>{t("contact.infoTitle")}</SectionHeading>
+                    <div
+                        className="prose prose-slate max-w-none leading-relaxed prose-p:my-1 prose-a:text-blue-600"
+                        dangerouslySetInnerHTML={{ __html: content }}
+                    />
+                </div>
+
+                <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm lg:col-span-3">
+                    <div className="border-b border-slate-100 px-6 py-4">
+                        <SectionHeading icon={MapPin}>{t("contact.mapTitle")}</SectionHeading>
+                    </div>
+                    <iframe
+                        className="block h-[320px] w-full md:h-[400px]"
+                        loading="lazy"
+                        title="map"
+                        src="https://www.google.com/maps?q=Strada+Columna+150+Chisinau&output=embed"
+                    />
                 </div>
             </section>
         </div>
