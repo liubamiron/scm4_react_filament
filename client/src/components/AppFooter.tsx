@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { usePartners } from "../features/pages/hook/usePartners.ts";
 import { localePath, navigation } from "./navigation.ts";
+import { PartnersStrip } from "./PartnersStrip.tsx";
 import { useLocale, useT } from "../i18n";
 
 // Mirrors the header: same horizontal inset (px-5), same brand-200 bar with
@@ -11,7 +12,6 @@ export function AppFooter() {
     const lang = useLocale();
     const t = useT();
 
-    const storageUrl = import.meta.env.VITE_STORAGE_URL;
     const activePartners = (partners ?? []).filter((p) => p.is_active !== false);
 
     const linkClass = "font-medium text-white/85 transition hover:text-white";
@@ -20,26 +20,8 @@ export function AppFooter() {
         <footer className="mt-16">
             {/* PARTNERS */}
             {activePartners.length > 0 && (
-                <section className="px-5 py-10">
-                    <div className="flex flex-wrap items-stretch justify-center gap-4">
-                        {activePartners.map((partner) => (
-                            <a
-                                key={partner.id}
-                                href={partner.link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                title={partner.name}
-                                className="flex h-24 w-40 items-center justify-center rounded-xl border border-slate-200 bg-white p-4 transition hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-md"
-                            >
-                                <img
-                                    src={`${storageUrl}/${partner.logo}`}
-                                    alt={partner.name}
-                                    loading="lazy"
-                                    className="max-h-full max-w-full object-contain"
-                                />
-                            </a>
-                        ))}
-                    </div>
+                <section aria-label={t("footer.partners")} className="px-5 py-12">
+                    <PartnersStrip partners={activePartners} />
                 </section>
             )}
 

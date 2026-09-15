@@ -59,9 +59,12 @@ export function EventCard({ event, featured = false }: { event: EventItem; featu
                     featured ? 'lg:grid-cols-2' : 'lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]'
                 }`}
             >
+                {/* Every card gets the same fixed-ratio box on a tinted background;
+                    the image sits inside it whole (never cropped) and is only ever
+                    scaled down, never up, so small uploads don't go blurry. */}
                 <div
-                    className={`flex items-center justify-center overflow-hidden bg-brand-50 ${
-                        featured ? 'h-64 sm:h-80 lg:h-full lg:min-h-[380px]' : 'h-56 lg:h-full lg:min-h-[240px]'
+                    className={`flex items-center justify-center overflow-hidden bg-brand-50 p-5 lg:self-center ${
+                        featured ? 'aspect-[4/3] w-full' : 'aspect-[3/2] w-full'
                     }`}
                 >
                     {imageUrl ? (
@@ -69,7 +72,7 @@ export function EventCard({ event, featured = false }: { event: EventItem; featu
                             src={imageUrl}
                             alt={title}
                             loading={featured ? 'eager' : 'lazy'}
-                            className="h-full w-full object-contain p-6"
+                            className="max-h-full max-w-full object-contain"
                         />
                     ) : (
                         <span className="text-slate-400">{t('common.noImage')}</span>
