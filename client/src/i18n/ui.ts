@@ -77,7 +77,6 @@ const ro = {
     'footer.address': 'str. Columna, nr. 150, mun. Chișinău, MD-2024',
     'footer.phone': '(022) 29 56 78',
     'footer.email': 'scm4@ms.md',
-    'footer.tagline': 'Îngrijire medicală cu respect și profesionalism pentru fiecare pacient.',
 } as const
 
 export type UiKey = keyof typeof ro
@@ -154,7 +153,6 @@ const ru: Record<UiKey, string> = {
     'footer.address': 'ул. Колумна, 150, мун. Кишинёв, MD-2024',
     'footer.phone': '(022) 29 56 78',
     'footer.email': 'scm4@ms.md',
-    'footer.tagline': 'Медицинская помощь с уважением и профессионализмом для каждого пациента.',
 }
 
 export const messages: Record<Locale, Record<UiKey, string>> = { ro, ru }

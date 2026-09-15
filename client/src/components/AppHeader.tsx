@@ -1,63 +1,8 @@
 import { useState } from 'react'
-import { Link, type LinkProps } from '@tanstack/react-router'
+import { Link } from '@tanstack/react-router'
 import { ChevronDown, Globe, Menu, X } from 'lucide-react'
 import { LOCALE_LABELS, SUPPORTED_LOCALES, useLocale, useSwitchLocale, useT } from '../i18n'
-import type { UiKey } from '../i18n'
-
-type NavChild = { labelKey: UiKey; slug: string }
-type NavItem = { labelKey: UiKey; href: string; children?: NavChild[] }
-
-/**
- * Several menu entries (/servicii, /sections, /legislation, /donations,
- * /partnership) point at routes that have not been built yet, so
- * the target cannot be checked against the route tree. They 404 exactly as
- * they did before the locale prefix was introduced.
- */
-const localePath = (lang: string, href: string) =>
-    `/${lang}${href}` as unknown as LinkProps['to']
-
-const navigation: NavItem[] = [
-    {
-        labelKey: 'nav.about',
-        href: '/about',
-        children: [
-            { labelKey: 'sub.history', slug: 'istoric' },
-            { labelKey: 'sub.team', slug: 'echipa' },
-            { labelKey: 'sub.mission', slug: 'misiunea' },
-        ],
-    },
-    { labelKey: 'nav.transparency', href: '/transparenta' },
-    {
-        labelKey: 'nav.services',
-        href: '/servicii',
-        children: [
-            { labelKey: 'sub.geriatric', slug: 'serviciu-geriatric' },
-            { labelKey: 'sub.palliative', slug: 'ingrijiri-paliative' },
-            { labelKey: 'sub.forPatients', slug: 'pentru-pacienti' },
-        ],
-    },
-    {
-        labelKey: 'nav.sections',
-        href: '/sections',
-        children: [
-            { labelKey: 'sub.geriatric', slug: 'serviciu-geriatric' },
-            { labelKey: 'sub.palliative', slug: 'ingrijiri-paliative' },
-            { labelKey: 'sub.forPatients', slug: 'pentru-pacienti' },
-        ],
-    },
-    { labelKey: 'nav.sections', href: '/sections' },
-    { labelKey: 'nav.legislation', href: '/pages/legislatie' },
-    { labelKey: 'nav.events', href: '/events' },
-    { labelKey: 'nav.donations', href: '/donations' },
-    {
-        labelKey: 'nav.partnership',
-        href: '/partnership',
-        children: [
-            { labelKey: 'sub.collaboration', slug: 'colaborare' },
-            { labelKey: 'sub.volunteering', slug: 'voluntariat' },
-        ],
-    },
-]
+import { localePath, navigation } from './navigation'
 
 function AppHeader() {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
