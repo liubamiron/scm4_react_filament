@@ -72,17 +72,14 @@ export interface Transparency {
     sort_order: number
     created_at: string
     updated_at: string,
-    documents: [
-        {
-            id: number,
-            transparency_category_id: number,
-            title_ro: string,
-            title_ru: string,
-            file_path: string,
-            is_active: number,
-            created_at: string,
-            updated_at: string
-
-        }
-    ]
+    documents: Array<{
+        id: number
+        transparency_category_id: number
+        title_ro: string
+        title_ru: string
+        file_path: string
+        is_active: number
+        created_at: string
+        updated_at: string
+    }>
 }

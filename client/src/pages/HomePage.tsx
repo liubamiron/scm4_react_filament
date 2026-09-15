@@ -1,9 +1,11 @@
-import { useFeaturedServices } from "../features/pages/hook/useFeaturedPages.ts";
 import { Link } from "@tanstack/react-router";
+import { ArrowRight } from "lucide-react";
+import { useFeaturedServices } from "../features/pages/hook/useFeaturedPages.ts";
+import { useEvents } from "../features/pages/hook/useEvents.ts";
+import { PageStatus } from "../components/PageStatus.tsx";
+import { EventCard } from "./EventsPage.tsx";
 import { localized, useLocale, useT } from "../i18n";
 import { transformImageUrls } from "../utils/transformImageUrls.ts";
-import { useEvents } from "../features/pages/hook/useEvents.ts";
-import { formatEventDate } from "../utils/formatEventDate.ts";
 
 const LATEST_NEWS_COUNT = 3;
 
@@ -16,92 +18,58 @@ export function HomePage() {
 
     const storageUrl = import.meta.env.VITE_STORAGE_URL;
 
-    const getImageUrl = (image?: string | null) => {
-        if (!image) return null;
-
-        return `${storageUrl}/${image.replace(/^\/+/, "")}`;
-    };
-
-    const loadingBlock = (
-        <div className="min-h-[300px] flex items-center justify-center">
-            <p className="text-slate-500">
-                {t("common.loading")}
-            </p>
-        </div>
-    );
-
     const latestNews = [...(events ?? [])]
-        .sort(
-            (a, b) =>
-                new Date(b.date).getTime() -
-                new Date(a.date).getTime()
-        )
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
         .slice(0, LATEST_NEWS_COUNT);
 
     return (
-        <main className="bg-slate-50 min-h-screen py-16">
-            <div className="container mx-auto px-4">
+        <div className="page">
+            {/* Services */}
+            <section className="space-y-8">
+                <h2 className="section-title text-center">{t("home.servicesTitle")}</h2>
 
-                {/* Services */}
-                <section>
-                    <h2 className="text-4xl font-bold text-center text-[#003366] mb-12">
-                        {t("home.servicesTitle")}
-                    </h2>
-
-                    {isServicesLoading ? loadingBlock : (
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {isServicesLoading ? (
+                    <PageStatus>{t("common.loading")}</PageStatus>
+                ) : (
+                    <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
                         {featuredServices?.map((service) => {
-                            const title = localized(
-                                service,
-                                "title",
-                                lang
-                            );
+                            const title = localized(service, "title", lang);
 
                             return (
                                 <Link
                                     key={service.id}
                                     to="/$lang/pages/$slug"
-                                    params={{
-                                        lang,
-                                        slug: service.slug,
-                                    }}
-                                    className="block"
+                                    params={{ lang, slug: service.slug }}
+                                    className="group block"
                                 >
-                                    <article className="bg-white rounded-xl shadow-lg overflow-hidden h-full">
+                                    <article className="card h-full overflow-hidden transition hover:-translate-y-0.5 hover:shadow-md">
                                         {/* 16:10 matches the ratio the admin form crops thumbnails to,
                                             so uploads are shown whole instead of being cut off. */}
-                                        <div className="aspect-[16/10] w-full overflow-hidden bg-slate-200">
+                                        <div className="aspect-[16/10] w-full overflow-hidden bg-brand-50">
                                             {service.image ? (
                                                 <img
                                                     src={`${storageUrl}/${service.image}`}
                                                     alt={title}
-                                                    className="w-full h-full object-cover"
+                                                    className="h-full w-full object-cover"
                                                 />
                                             ) : (
-                                                <div className="flex items-center justify-center h-full text-slate-400">
+                                                <div className="flex h-full items-center justify-center text-slate-400">
                                                     {t("common.noImage")}
                                                 </div>
                                             )}
                                         </div>
 
                                         <div className="p-6 text-center">
-                                            <h3 className="text-xl font-bold text-[#003366]">
+                                            <h3 className="text-xl font-bold text-brand-900 transition group-hover:text-brand-700">
                                                 {title}
                                             </h3>
 
-                                            <div className="w-16 h-0.5 bg-blue-500 mx-auto my-4" />
+                                            <div className="title-rule mx-auto" />
 
                                             <div
-                                                className="prose prose-slate max-w-none line-clamp-3"
+                                                className="content-prose mt-4 line-clamp-3"
                                                 dangerouslySetInnerHTML={{
-                                                    __html:
-                                                        transformImageUrls(
-                                                            localized(
-                                                                service,
-                                                                "content",
-                                                                lang
-                                                            )
-                                                        ),
+                                                    __html: transformImageUrls(localized(service, "content", lang)),
                                                 }}
                                             />
                                         </div>
@@ -110,162 +78,32 @@ export function HomePage() {
                             );
                         })}
                     </div>
+                )}
+            </section>
+
+            {/* Latest news */}
+            {(isEventsLoading || latestNews.length > 0) && (
+                <section className="space-y-8 pt-6">
+                    <div className="flex items-end justify-between gap-6">
+                        <h2 className="section-title">{t("home.newsTitle")}</h2>
+
+                        <Link to="/$lang/events" params={{ lang }} className="link-accent shrink-0">
+                            {t("home.newsAll")}
+                            <ArrowRight className="h-4 w-4" />
+                        </Link>
+                    </div>
+
+                    {isEventsLoading ? (
+                        <PageStatus>{t("common.loading")}</PageStatus>
+                    ) : (
+                        <div className="space-y-6">
+                            {latestNews.map((event) => (
+                                <EventCard key={event.id} event={event} />
+                            ))}
+                        </div>
                     )}
                 </section>
-
-                {/* Latest news */}
-                {isEventsLoading && (
-                    <section className="mt-20">
-                        <h2 className="text-3xl md:text-4xl font-bold text-[#003366] mb-8">
-                            {t("home.newsTitle")}
-                        </h2>
-                        {loadingBlock}
-                    </section>
-                )}
-
-                {latestNews.length > 0 && (
-                    <section className="mt-20">
-
-                        {/* Header */}
-                        <div className="flex items-end justify-between gap-6 mb-8">
-                            <h2 className="text-3xl md:text-4xl font-bold text-[#003366]">
-                                {t("home.newsTitle")}
-                            </h2>
-
-                            <Link
-                                to="/$lang/events"
-                                params={{ lang }}
-                                className="shrink-0 text-sm font-semibold text-blue-600"
-                            >
-                                {t("home.newsAll")} →
-                            </Link>
-                        </div>
-
-                        {/* News */}
-                        <div className="space-y-8">
-                            {latestNews.map((event, index) => {
-                                const title = localized(
-                                    event,
-                                    "title",
-                                    lang
-                                );
-
-                                const imageUrl = getImageUrl(
-                                    event.image
-                                );
-
-                                const isReversed = index % 2 === 1;
-
-                                return (
-                                    <Link
-                                        key={event.id}
-                                        to="/$lang/events/$slug"
-                                        params={{
-                                            lang,
-                                            slug: event.slug,
-                                        }}
-                                        className="block"
-                                    >
-                                        <article
-                                            className={`
-                                                grid grid-cols-1
-                                                ${isReversed
-                                                ? "lg:grid-cols-[70%_30%]"
-                                                : "lg:grid-cols-[30%_70%]"
-                                            }
-                                                bg-white rounded-2xl
-                                                overflow-hidden
-                                                border border-slate-100
-                                                shadow-sm
-                                            `}
-                                        >
-                                            {/* Image */}
-                                            <div
-                                                className={`
-                                                    relative
-                                                    overflow-hidden
-                                                    bg-slate-200
-                                                    flex
-                                                    items-center
-                                                    justify-center
-                                                    ${isReversed
-                                                    ? "lg:col-start-2"
-                                                    : "lg:col-start-1"
-                                                }
-                                                `}
-                                            >
-                                                {imageUrl ? (
-                                                    <img
-                                                        src={imageUrl}
-                                                        alt={title}
-                                                        loading="lazy"
-                                                        decoding="async"
-                                                        className="max-w-[300px] h-auto object-contain"
-                                                    />
-                                                ) : (
-                                                    <div className="text-slate-400">
-                                                        {t("common.noImage")}
-                                                    </div>
-                                                )}
-                                            </div>
-
-                                            {/* Content */}
-                                            <div
-                                                className={`
-                                                    flex flex-col justify-center
-                                                    p-7 md:p-10
-                                                    ${isReversed
-                                                    ? "lg:col-start-1 lg:row-start-1"
-                                                    : "lg:col-start-2 lg:row-start-1"
-                                                }
-                                                `}
-                                            >
-                                                <time
-                                                    dateTime={event.date}
-                                                    className="text-sm font-medium text-blue-600"
-                                                >
-                                                    {formatEventDate(
-                                                        event.date,
-                                                        lang
-                                                    )}
-                                                </time>
-
-                                                <h3 className="mt-3 text-2xl md:text-3xl font-bold leading-tight text-[#003366]">
-                                                    {title}
-                                                </h3>
-
-                                                <div
-                                                    className="mt-5 prose prose-slate max-w-none line-clamp-4"
-                                                    dangerouslySetInnerHTML={{
-                                                        __html:
-                                                            transformImageUrls(
-                                                                localized(
-                                                                    event,
-                                                                    "description",
-                                                                    lang
-                                                                )
-                                                            ),
-                                                    }}
-                                                />
-
-                                                <div className="mt-8">
-                                                    <span className="inline-flex items-center gap-2 text-sm font-semibold text-blue-600">
-                                                        {t("events.readMore")}
-
-                                                        <span className="text-lg">
-                                                            →
-                                                        </span>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </article>
-                                    </Link>
-                                );
-                            })}
-                        </div>
-                    </section>
-                )}
-            </div>
-        </main>
+            )}
+        </div>
     );
 }

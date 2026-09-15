@@ -33,8 +33,8 @@ export function ContactForm() {
 
     const inputClass =
         "w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 " +
-        "placeholder:text-slate-400 transition focus:border-blue-400 focus:bg-white focus:outline-none " +
-        "focus:ring-2 focus:ring-blue-100";
+        "placeholder:text-slate-400 transition focus:border-brand-200 focus:bg-white focus:outline-none " +
+        "focus:ring-2 focus:ring-brand-100";
 
     if (send.isSuccess) {
         return (
@@ -118,7 +118,7 @@ export function ContactForm() {
                 <button
                     type="submit"
                     disabled={send.isPending}
-                    className="inline-flex items-center gap-2 rounded-lg bg-[#053258] px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#0a4a80] disabled:cursor-not-allowed disabled:opacity-60"
+                    className="btn-primary"
                 >
                     <Send className="h-4 w-4" />
                     {send.isPending ? t("contact.formSending") : t("contact.formSend")}

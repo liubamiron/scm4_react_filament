@@ -7,6 +7,8 @@ import type { Locale } from './config'
  */
 const ro = {
     'site.name': 'Instituția Medico-Sanitară Publică Spitalul Clinic Municipal Nr.4',
+    'site.name1': 'Instituția Medico-Sanitară Publică',
+    'site.name2': 'Spitalul Clinic Municipal Nr.4',
 
     'nav.about': 'Despre Noi',
     'nav.transparency': 'Transparență',
@@ -42,6 +44,7 @@ const ro = {
     'home.newsAll': 'Toate noutățile',
 
     'transparency.view': 'Vizualizează',
+    'transparency.empty': 'Nu există documente în această categorie.',
 
     'events.title': 'Evenimente',
     'events.empty': 'Nu există evenimente publicate.',
@@ -83,6 +86,8 @@ export type UiKey = keyof typeof ro
 
 const ru: Record<UiKey, string> = {
     'site.name': 'Публичное медико-санитарное учреждение Муниципальная клиническая больница №4',
+    'site.name1': 'Публичное медико-санитарное учреждение',
+    'site.name2': 'Муниципальная клиническая больница №4',
 
     'nav.about': 'О нас',
     'nav.transparency': 'Прозрачность',
@@ -118,6 +123,7 @@ const ru: Record<UiKey, string> = {
     'home.newsAll': 'Все новости',
 
     'transparency.view': 'Посмотреть',
+    'transparency.empty': 'В этой категории пока нет документов.',
 
     'events.title': 'События',
     'events.empty': 'Опубликованных событий нет.',

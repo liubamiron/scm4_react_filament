@@ -2,17 +2,25 @@
 @tailwind utilities;
 @plugin "@tailwindcss/typography";
 
-:root {
-  --font-sans: "Onest", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-}
+/*
+ * Brand palette. Every blue on the site comes from here — use `text-brand-900`,
+ * `bg-brand-200`, ... instead of hex values or Tailwind's generic blues.
+ *
+ *   brand-900  headings, header/footer bar text
+ *   brand-700  links, accents, primary buttons
+ *   brand-500  footer body
+ *   brand-200  header top bar / footer bottom bar
+ *   brand-50   light tints (badges, hover backgrounds)
+ */
+@theme {
+  --font-sans: "Onest", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 
-:root {
-  --green-pharma: #00c498;
-  --blue-pharma: #053258;
-  --green-pharma-light: #f5fafa;
-  --green-pharma-dark: #007f61;
-  --blue-pharma-light: #3657c2;
-  --blue-pharma-dark: #021622;
+  --color-brand-50: #eef5fa;
+  --color-brand-100: #d9e9f3;
+  --color-brand-200: #8ec2d6;
+  --color-brand-500: #4786c7;
+  --color-brand-700: #0e67b9;
+  --color-brand-900: #003366;
 }
 
 html,
@@ -22,27 +30,80 @@ body,
   min-height: 100svh;
   margin: 0;
   padding: 0;
-  /*font-family: var(--font-sans), serif;*/
 }
 
 body {
   background: #f8fafc;
-  font-family: "Onest", sans-serif
+  font-family: var(--font-sans);
+  color: var(--color-slate-700);
 }
 
-.container_lm
-{
-  max-width: 1330px!important;
+.container_lm {
+  max-width: 1330px !important;
 }
 
-.text-blue-pharma {
-  color: #053258;
+/* ---------------------------------------------------------------------------
+ * Shared building blocks. Pages compose these instead of restating the same
+ * Tailwind strings, so spacing and type stay identical from page to page.
+ * ------------------------------------------------------------------------- */
+@layer components {
+  /* Vertical rhythm of a page: top/bottom padding + gap between blocks. */
+  .page {
+    @apply py-10 md:py-14 space-y-10;
+  }
+
+  /* h1 of a page, followed by .title-rule. */
+  .page-title {
+    @apply text-3xl md:text-4xl font-extrabold tracking-tight text-brand-900;
+  }
+
+  .title-rule {
+    @apply mt-3 h-1 w-16 rounded-full bg-brand-700;
+  }
+
+  /* h2 inside a page. */
+  .section-title {
+    @apply text-2xl md:text-3xl font-bold tracking-tight text-brand-900;
+  }
+
+  /* Small uppercase label above a block (footer columns, list headers). */
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.2em];
+  }
+
+  .card {
+    @apply rounded-2xl border border-slate-200 bg-white shadow-sm;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center gap-2 rounded-lg bg-brand-700 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-900 disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center gap-2 rounded-lg border border-brand-700 px-5 py-2 text-sm font-semibold text-brand-700 transition hover:bg-brand-50;
+  }
+
+  .link-accent {
+    @apply inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700 transition hover:text-brand-900;
+  }
+
+  /* Centered loading / error / empty message for a whole page. */
+  .page-status {
+    @apply flex min-h-[320px] items-center justify-center text-center text-slate-500;
+  }
+
+  /* HTML bodies coming from the admin editor. */
+  .content-prose {
+    @apply prose prose-slate max-w-none leading-relaxed;
+    --tw-prose-headings: var(--color-brand-900);
+    --tw-prose-links: var(--color-brand-700);
+  }
 }
 
 .prose blockquote {
   background: white;
   padding: 10px 20px;
-  border-left: 4px solid #126bc6;
+  border-left: 4px solid var(--color-brand-700);
   border-radius: 8px;
   margin: 16px 0;
   color: #374151;

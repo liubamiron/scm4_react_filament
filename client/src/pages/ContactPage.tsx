@@ -25,9 +25,9 @@ function PhoneLinks({ phones, className = "" }: { phones?: string; className?: s
                 <li key={phone}>
                     <a
                         href={`tel:${phone.replace(/\s+/g, "")}`}
-                        className="inline-flex items-center gap-1.5 whitespace-nowrap text-slate-700 transition hover:text-[#053258]"
+                        className="inline-flex items-center gap-1.5 whitespace-nowrap text-slate-700 transition hover:text-brand-700"
                     >
-                        <Phone className="h-3.5 w-3.5 shrink-0 text-blue-500" />
+                        <Phone className="h-3.5 w-3.5 shrink-0 text-brand-700" />
                         {phone}
                     </a>
                 </li>
@@ -38,8 +38,8 @@ function PhoneLinks({ phones, className = "" }: { phones?: string; className?: s
 
 function SectionHeading({ icon: Icon, children }: { icon: typeof Users; children: React.ReactNode }) {
     return (
-        <h2 className="flex items-center gap-2.5 text-xl font-bold text-[#053258]">
-            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+        <h2 className="flex items-center gap-2.5 text-xl font-bold text-brand-900">
+            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-50 text-brand-700">
                 <Icon className="h-5 w-5" />
             </span>
             {children}
@@ -55,13 +55,11 @@ export function ContactPage({ page }: { page?: ContactPageData }) {
     const content = transformImageUrls(localized(page, "content", lang));
 
     return (
-        <div className="space-y-14 pb-16">
+        <div className="page">
             {/* TITLE */}
-            <header className="mt-10 space-y-2">
-                <h1 className="text-3xl font-extrabold text-[#053258] md:text-4xl">
-                    {localized(page, "title", lang)}
-                </h1>
-                <div className="h-1 w-20 rounded-full bg-blue-400" />
+            <header>
+                <h1 className="page-title">{localized(page, "title", lang)}</h1>
+                <div className="title-rule" />
             </header>
 
             {/* STAFF DIRECTORY */}
@@ -70,9 +68,9 @@ export function ContactPage({ page }: { page?: ContactPageData }) {
                     <SectionHeading icon={Users}>{t("contact.staffTitle")}</SectionHeading>
 
                     {/* Desktop table */}
-                    <div className="hidden overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm md:block">
+                    <div className="card hidden overflow-hidden md:block">
                         <table className="w-full text-sm">
-                            <thead className="bg-[#053258] text-left text-xs font-semibold uppercase tracking-wide text-white">
+                            <thead className="bg-brand-900 text-left text-xs font-semibold uppercase tracking-wide text-white">
                                 <tr>
                                     <th className="w-14 px-5 py-3.5">{t("contact.nr")}</th>
                                     <th className="px-5 py-3.5">{t("contact.name")}</th>
@@ -83,13 +81,13 @@ export function ContactPage({ page }: { page?: ContactPageData }) {
                             </thead>
                             <tbody className="divide-y divide-slate-100">
                                 {contacts.map((item) => (
-                                    <tr key={item.nr} className="transition hover:bg-blue-50/40">
+                                    <tr key={item.nr} className="transition hover:bg-brand-50/60">
                                         <td className="px-5 py-4 font-medium text-slate-400">{item.nr}</td>
                                         <td className="px-5 py-4 font-semibold text-slate-900">{item.name}</td>
                                         <td className="px-5 py-4 text-slate-600">{item.role}</td>
                                         <td className="px-5 py-4">
                                             {item.section && (
-                                                <span className="inline-block rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">
+                                                <span className="inline-block rounded-full bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700">
                                                     {item.section}
                                                 </span>
                                             )}
@@ -108,10 +106,10 @@ export function ContactPage({ page }: { page?: ContactPageData }) {
                         {contacts.map((item) => (
                             <div
                                 key={item.nr}
-                                className="space-y-3 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
+                                className="card space-y-3 p-5"
                             >
                                 {item.section && (
-                                    <span className="inline-block rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">
+                                    <span className="inline-block rounded-full bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700">
                                         {item.section}
                                     </span>
                                 )}
@@ -127,7 +125,7 @@ export function ContactPage({ page }: { page?: ContactPageData }) {
             )}
 
             {/* CONTACT FORM */}
-            <section className="rounded-2xl border border-slate-200 bg-white shadow-sm">
+            <section className="card">
                 <div className="grid gap-8 p-6 md:p-8 lg:grid-cols-3">
                     <div className="space-y-3 lg:col-span-1">
                         <SectionHeading icon={MessageSquare}>{t("contact.formTitle")}</SectionHeading>
@@ -141,15 +139,15 @@ export function ContactPage({ page }: { page?: ContactPageData }) {
 
             {/* ADDRESS + MAP */}
             <section className="grid gap-6 lg:grid-cols-5">
-                <div className="flex flex-col gap-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm lg:col-span-2 md:p-8">
+                <div className="card flex flex-col gap-5 p-6 md:p-8 lg:col-span-2">
                     <SectionHeading icon={MapPin}>{t("contact.infoTitle")}</SectionHeading>
                     <div
-                        className="prose prose-slate max-w-none leading-relaxed prose-p:my-1 prose-a:text-blue-600"
+                        className="content-prose prose-p:my-1"
                         dangerouslySetInnerHTML={{ __html: content }}
                     />
                 </div>
 
-                <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm lg:col-span-3">
+                <div className="card overflow-hidden lg:col-span-3">
                     <div className="border-b border-slate-100 px-6 py-4">
                         <SectionHeading icon={MapPin}>{t("contact.mapTitle")}</SectionHeading>
                     </div>

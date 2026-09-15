@@ -18,8 +18,9 @@ export function RootLayout({ children }: RootLayoutProps) {
             {/* 1. Top Navigation Bar (Fixed) */}
            <AppHeader />
 
-            {/* 2. Main Content Scroll Area */}
-            <main className="md:px-0 px-5">
+            {/* 2. Main Content Scroll Area — pages supply their own vertical rhythm via `.page`. */}
+            {/* px-5 matches the header/footer inset so titles line up with the bar text. */}
+            <main className="min-h-[60vh] px-5">
                 {children}
             </main>
 

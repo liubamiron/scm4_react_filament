@@ -20,7 +20,7 @@ function AppHeader() {
     return (
         <header className="w-full bg-white shadow-sm sticky top-0 z-50">
             {/* Top Bar */}
-            <div className="bg-[#8ec2d6] py-3 flex justify-between items-center font-medium text-[#003366] px-5">
+            <div className="flex items-center justify-between bg-brand-200 px-5 py-3 text-sm font-medium text-brand-900 md:text-base">
         <span>
           {t('site.name')}
         </span>
@@ -55,7 +55,7 @@ function AppHeader() {
                                     }}
                                     className={`w-full text-left px-4 py-2 hover:bg-slate-100 ${
                                         lang === code
-                                            ? 'font-bold text-blue-600'
+                                            ? 'font-bold text-brand-700'
                                             : ''
                                     }`}
                                 >
@@ -68,7 +68,7 @@ function AppHeader() {
             </div>
 
             {/* Main Navigation */}
-            <nav className="mx-auto flex items-center justify-between pr-2">
+            <nav className="flex items-center justify-between px-5">
                 <Link to="/$lang" params={{ lang }} className="flex items-center gap-3">
                     <img
                         src="/img/scm4_logo.jpg"
@@ -85,8 +85,7 @@ function AppHeader() {
                             {item.children ? (
                                 <button
                                     onClick={() => toggleDropdown(item.labelKey)}
-                                    className="py-2 px-2 font-medium text-slate-600 hover:text-[#0e67b9] hover:bg-slate-100 rounded-md
-                                    flex items-center gap-1"
+                                    className="flex items-center gap-1 rounded-md px-2 py-2 font-medium text-slate-600 transition hover:bg-brand-50 hover:text-brand-700"
                                 >
                                     {t(item.labelKey)}
                                     <ChevronDown
@@ -99,7 +98,7 @@ function AppHeader() {
                             ) : (
                                 <Link
                                     to={localePath(lang, item.href)}
-                                    className="px-2 py-2 font-medium text-slate-600 hover:text-[#0e67b9] hover:bg-slate-100 rounded-md"
+                                    className="rounded-md px-2 py-2 font-medium text-slate-600 transition hover:bg-brand-50 hover:text-brand-700"
                                 >
                                     {t(item.labelKey)}
                                 </Link>
@@ -117,7 +116,7 @@ function AppHeader() {
                                                 slug: child.slug,
                                             }}
                                             onClick={() => setOpenDropdown(null)}
-                                            className="block px-4 py-2 text-slate-600 hover:bg-blue-50 hover:text-blue-700"
+                                            className="block px-4 py-2 text-slate-600 transition hover:bg-brand-50 hover:text-brand-700"
                                         >
                                             {t(child.labelKey)}
                                         </Link>
