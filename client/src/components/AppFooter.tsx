@@ -5,6 +5,9 @@ import { localePath, navigation } from "./navigation.ts";
 import { PartnersStrip } from "./PartnersStrip.tsx";
 import { useLocale, useT } from "../i18n";
 
+// Header menu entries that are left out of the footer link list.
+const FOOTER_HIDDEN = ["/servicii", "/sections", "/donations"];
+
 // Mirrors the header: same horizontal inset (px-5), same brand-200 bar with
 // brand-900 text, square edges, and the same link size as the header menu.
 export function AppFooter() {
@@ -15,6 +18,12 @@ export function AppFooter() {
     const activePartners = (partners ?? []).filter((p) => p.is_active !== false);
 
     const linkClass = "font-medium text-white/85 transition hover:text-white";
+    const subLinkClass = "text-white/70 transition hover:text-white";
+
+    // The footer shows a trimmed copy of the header menu.
+    const footerNav = navigation.filter((item) => !FOOTER_HIDDEN.includes(item.href));
+    const groups = footerNav.filter((item) => item.children);
+    const plain = footerNav.filter((item) => !item.children);
 
     return (
         <footer className="mt-16">
@@ -27,7 +36,7 @@ export function AppFooter() {
 
             {/* BODY */}
             <div className="bg-brand-500 text-white">
-                <div className="grid gap-10 px-5 py-12 md:grid-cols-[1.3fr_1fr_1fr]">
+                <div className="grid gap-10 px-5 pb-12 pt-6 md:grid-cols-[1fr_2.2fr_1fr]">
                     {/* Brand */}
                     <div className="space-y-4">
                         <Link to="/$lang" params={{ lang }} className="inline-flex items-center gap-3">
@@ -42,28 +51,51 @@ export function AppFooter() {
                         </p>
                     </div>
 
-                    {/* Navigation — same entries as the header menu */}
+                    {/* Navigation — the header menu minus FOOTER_HIDDEN. Each group with
+                        sub-pages gets its own column, the plain links share one, so
+                        the block stays as short as the contact column beside it. */}
                     <div>
-                        <h3 className="text-[15px] eyebrow uppercase mb-4 text-[#003366]">{t("footer.navigation")}</h3>
-                        <ul className="grid grid-cols-2 gap-x-6 gap-y-2.5">
-                            {navigation.map((item) => (
-                                <li key={item.href}>
+                        <div className="grid grid-cols-2 gap-x-6 gap-y-6 sm:grid-cols-3">
+                            {groups.map((item) => (
+                                <div key={item.href}>
                                     <Link to={localePath(lang, item.href)} className={linkClass}>
                                         {t(item.labelKey)}
                                     </Link>
-                                </li>
+                                    <ul className="mt-2 space-y-1.5 text-sm">
+                                        {item.children!.map((child) => (
+                                            <li key={child.slug}>
+                                                <Link
+                                                    to="/$lang/pages/$slug"
+                                                    params={{ lang, slug: child.slug }}
+                                                    className={subLinkClass}
+                                                >
+                                                    {t(child.labelKey)}
+                                                </Link>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
                             ))}
-                            <li>
-                                <Link to="/$lang/pages/$slug" params={{ lang, slug: "contacte" }} className={linkClass}>
-                                    {t("nav.contacts")}
-                                </Link>
-                            </li>
-                        </ul>
+
+                            <ul className="space-y-1.5">
+                                {plain.map((item) => (
+                                    <li key={item.href}>
+                                        <Link to={localePath(lang, item.href)} className={linkClass}>
+                                            {t(item.labelKey)}
+                                        </Link>
+                                    </li>
+                                ))}
+                                <li>
+                                    <Link to="/$lang/pages/$slug" params={{ lang, slug: "contacte" }} className={linkClass}>
+                                        {t("nav.contacts")}
+                                    </Link>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
 
                     {/* Contact */}
                     <div>
-                        <h3 className="text-[15px] eyebrow uppercase mb-4 text-[#003366]">{t("footer.contact")}</h3>
                         <ul className="space-y-3 text-white/85">
                             <li className="flex items-start gap-3">
                                 <MapPin className="mt-1 h-4 w-4 shrink-0 text-brand-200" />

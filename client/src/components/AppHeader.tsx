@@ -136,19 +136,60 @@ function AppHeader() {
                 </button>
             </nav>
 
-            {/* Mobile Menu */}
+            {/* Mobile Menu — same entries as the desktop menu: groups expand to
+                their sub-pages, plain items link directly. Capped in height so
+                the sticky header never traps the list off-screen. */}
             {isMenuOpen && (
-                <div className="lg:hidden bg-white border-t py-4 px-4 space-y-2">
-                    {navigation.map((item) => (
-                        <Link
-                            key={item.labelKey}
-                            to={localePath(lang, item.href)}
-                            onClick={() => setIsMenuOpen(false)}
-                            className="block px-4 py-3 font-medium text-slate-700 rounded-xl"
-                        >
-                            {t(item.labelKey)}
-                        </Link>
-                    ))}
+                <div className="lg:hidden max-h-[calc(100vh-8rem)] overflow-y-auto border-t border-slate-100 bg-white px-4 py-3">
+                    <ul className="space-y-1">
+                        {navigation.map((item) => (
+                            <li key={item.labelKey}>
+                                {item.children ? (
+                                    <button
+                                        onClick={() => toggleDropdown(item.labelKey)}
+                                        aria-expanded={openDropdown === item.labelKey}
+                                        className="flex w-full items-center justify-between rounded-md px-4 py-3 font-medium text-slate-700 transition hover:bg-brand-50 hover:text-brand-700"
+                                    >
+                                        {t(item.labelKey)}
+                                        <ChevronDown
+                                            size={16}
+                                            className={`text-slate-400 transition-transform ${
+                                                openDropdown === item.labelKey ? 'rotate-180' : ''
+                                            }`}
+                                        />
+                                    </button>
+                                ) : (
+                                    <Link
+                                        to={localePath(lang, item.href)}
+                                        onClick={() => setIsMenuOpen(false)}
+                                        className="block rounded-md px-4 py-3 font-medium text-slate-700 transition hover:bg-brand-50 hover:text-brand-700"
+                                    >
+                                        {t(item.labelKey)}
+                                    </Link>
+                                )}
+
+                                {item.children && openDropdown === item.labelKey && (
+                                    <ul className="ml-4 border-l-2 border-brand-100 pl-2">
+                                        {item.children.map((child) => (
+                                            <li key={child.slug}>
+                                                <Link
+                                                    to="/$lang/pages/$slug"
+                                                    params={{ lang, slug: child.slug }}
+                                                    onClick={() => {
+                                                        setOpenDropdown(null)
+                                                        setIsMenuOpen(false)
+                                                    }}
+                                                    className="block rounded-md px-4 py-2.5 text-slate-600 transition hover:bg-brand-50 hover:text-brand-700"
+                                                >
+                                                    {t(child.labelKey)}
+                                                </Link>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
+                            </li>
+                        ))}
+                    </ul>
                 </div>
             )}
         </header>

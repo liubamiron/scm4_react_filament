@@ -42,6 +42,11 @@ body {
   max-width: 1330px !important;
 }
 
+/* Phone tab bar: keep it above the home-indicator area on notched phones. */
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
 /* ---------------------------------------------------------------------------
  * Shared building blocks. Pages compose these instead of restating the same
  * Tailwind strings, so spacing and type stay identical from page to page.

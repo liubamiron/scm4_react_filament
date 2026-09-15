@@ -17,9 +17,6 @@ import { Route as LangAboutRouteImport } from './routes/$lang/about'
 import { Route as LangEventsIndexRouteImport } from './routes/$lang/events/index'
 import { Route as LangPagesSlugRouteImport } from './routes/$lang/pages/$slug'
 import { Route as LangEventsSlugRouteImport } from './routes/$lang/events/$slug'
-import { Route as LangAboutIstoricRouteImport } from './routes/$lang/about.istoric'
-import { Route as LangAboutEchipaRouteImport } from './routes/$lang/about.echipa'
-import { Route as LangPagesAboutMisiuneaRouteImport } from './routes/$lang/pages/about/misiunea'
 
 const LangRoute = LangRouteImport.update({
   id: '/$lang',
@@ -61,60 +58,36 @@ const LangEventsSlugRoute = LangEventsSlugRouteImport.update({
   path: '/events/$slug',
   getParentRoute: () => LangRoute,
 } as any)
-const LangAboutIstoricRoute = LangAboutIstoricRouteImport.update({
-  id: '/istoric',
-  path: '/istoric',
-  getParentRoute: () => LangAboutRoute,
-} as any)
-const LangAboutEchipaRoute = LangAboutEchipaRouteImport.update({
-  id: '/echipa',
-  path: '/echipa',
-  getParentRoute: () => LangAboutRoute,
-} as any)
-const LangPagesAboutMisiuneaRoute = LangPagesAboutMisiuneaRouteImport.update({
-  id: '/pages/about/misiunea',
-  path: '/pages/about/misiunea',
-  getParentRoute: () => LangRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$lang': typeof LangRouteWithChildren
-  '/$lang/about': typeof LangAboutRouteWithChildren
+  '/$lang/about': typeof LangAboutRoute
   '/$lang/transparenta': typeof LangTransparentaRoute
   '/$lang/': typeof LangIndexRoute
-  '/$lang/about/echipa': typeof LangAboutEchipaRoute
-  '/$lang/about/istoric': typeof LangAboutIstoricRoute
   '/$lang/events/$slug': typeof LangEventsSlugRoute
   '/$lang/pages/$slug': typeof LangPagesSlugRoute
   '/$lang/events/': typeof LangEventsIndexRoute
-  '/$lang/pages/about/misiunea': typeof LangPagesAboutMisiuneaRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/$lang/about': typeof LangAboutRouteWithChildren
+  '/$lang/about': typeof LangAboutRoute
   '/$lang/transparenta': typeof LangTransparentaRoute
   '/$lang': typeof LangIndexRoute
-  '/$lang/about/echipa': typeof LangAboutEchipaRoute
-  '/$lang/about/istoric': typeof LangAboutIstoricRoute
   '/$lang/events/$slug': typeof LangEventsSlugRoute
   '/$lang/pages/$slug': typeof LangPagesSlugRoute
   '/$lang/events': typeof LangEventsIndexRoute
-  '/$lang/pages/about/misiunea': typeof LangPagesAboutMisiuneaRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$lang': typeof LangRouteWithChildren
-  '/$lang/about': typeof LangAboutRouteWithChildren
+  '/$lang/about': typeof LangAboutRoute
   '/$lang/transparenta': typeof LangTransparentaRoute
   '/$lang/': typeof LangIndexRoute
-  '/$lang/about/echipa': typeof LangAboutEchipaRoute
-  '/$lang/about/istoric': typeof LangAboutIstoricRoute
   '/$lang/events/$slug': typeof LangEventsSlugRoute
   '/$lang/pages/$slug': typeof LangPagesSlugRoute
   '/$lang/events/': typeof LangEventsIndexRoute
-  '/$lang/pages/about/misiunea': typeof LangPagesAboutMisiuneaRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -124,24 +97,18 @@ export interface FileRouteTypes {
     | '/$lang/about'
     | '/$lang/transparenta'
     | '/$lang/'
-    | '/$lang/about/echipa'
-    | '/$lang/about/istoric'
     | '/$lang/events/$slug'
     | '/$lang/pages/$slug'
     | '/$lang/events/'
-    | '/$lang/pages/about/misiunea'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/$lang/about'
     | '/$lang/transparenta'
     | '/$lang'
-    | '/$lang/about/echipa'
-    | '/$lang/about/istoric'
     | '/$lang/events/$slug'
     | '/$lang/pages/$slug'
     | '/$lang/events'
-    | '/$lang/pages/about/misiunea'
   id:
     | '__root__'
     | '/'
@@ -149,12 +116,9 @@ export interface FileRouteTypes {
     | '/$lang/about'
     | '/$lang/transparenta'
     | '/$lang/'
-    | '/$lang/about/echipa'
-    | '/$lang/about/istoric'
     | '/$lang/events/$slug'
     | '/$lang/pages/$slug'
     | '/$lang/events/'
-    | '/$lang/pages/about/misiunea'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -220,62 +184,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LangEventsSlugRouteImport
       parentRoute: typeof LangRoute
     }
-    '/$lang/about/istoric': {
-      id: '/$lang/about/istoric'
-      path: '/istoric'
-      fullPath: '/$lang/about/istoric'
-      preLoaderRoute: typeof LangAboutIstoricRouteImport
-      parentRoute: typeof LangAboutRoute
-    }
-    '/$lang/about/echipa': {
-      id: '/$lang/about/echipa'
-      path: '/echipa'
-      fullPath: '/$lang/about/echipa'
-      preLoaderRoute: typeof LangAboutEchipaRouteImport
-      parentRoute: typeof LangAboutRoute
-    }
-    '/$lang/pages/about/misiunea': {
-      id: '/$lang/pages/about/misiunea'
-      path: '/pages/about/misiunea'
-      fullPath: '/$lang/pages/about/misiunea'
-      preLoaderRoute: typeof LangPagesAboutMisiuneaRouteImport
-      parentRoute: typeof LangRoute
-    }
   }
 }
 
-interface LangAboutRouteChildren {
-  LangAboutEchipaRoute: typeof LangAboutEchipaRoute
-  LangAboutIstoricRoute: typeof LangAboutIstoricRoute
-}
-
-const LangAboutRouteChildren: LangAboutRouteChildren = {
-  LangAboutEchipaRoute: LangAboutEchipaRoute,
-  LangAboutIstoricRoute: LangAboutIstoricRoute,
-}
-
-const LangAboutRouteWithChildren = LangAboutRoute._addFileChildren(
-  LangAboutRouteChildren,
-)
-
 interface LangRouteChildren {
-  LangAboutRoute: typeof LangAboutRouteWithChildren
+  LangAboutRoute: typeof LangAboutRoute
   LangTransparentaRoute: typeof LangTransparentaRoute
   LangIndexRoute: typeof LangIndexRoute
   LangEventsSlugRoute: typeof LangEventsSlugRoute
   LangPagesSlugRoute: typeof LangPagesSlugRoute
   LangEventsIndexRoute: typeof LangEventsIndexRoute
-  LangPagesAboutMisiuneaRoute: typeof LangPagesAboutMisiuneaRoute
 }
 
 const LangRouteChildren: LangRouteChildren = {
-  LangAboutRoute: LangAboutRouteWithChildren,
+  LangAboutRoute: LangAboutRoute,
   LangTransparentaRoute: LangTransparentaRoute,
   LangIndexRoute: LangIndexRoute,
   LangEventsSlugRoute: LangEventsSlugRoute,
   LangPagesSlugRoute: LangPagesSlugRoute,
   LangEventsIndexRoute: LangEventsIndexRoute,
-  LangPagesAboutMisiuneaRoute: LangPagesAboutMisiuneaRoute,
 }
 
 const LangRouteWithChildren = LangRoute._addFileChildren(LangRouteChildren)

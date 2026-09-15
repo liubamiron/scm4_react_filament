@@ -19,7 +19,6 @@ const ro = {
     'nav.donations': 'Donații',
     'nav.partnership': 'Parteneriat',
     'nav.home': 'Acasă',
-    'nav.pages': 'Pagini',
     'nav.contacts': 'Contacte',
 
     'sub.history': 'Istoric',
@@ -71,7 +70,7 @@ const ro = {
     'contact.formError': 'Mesajul nu a putut fi trimis. Încercați din nou.',
 
     'about.title': 'Despre noi',
-    'about.intro': 'Aceasta este pagina Despre noi.',
+    'about.empty': 'Nu există încă pagini în această secțiune.',
 
     'footer.rights': 'Toate drepturile rezervate.',
     'footer.partners': 'Partenerii noștri',
@@ -98,7 +97,6 @@ const ru: Record<UiKey, string> = {
     'nav.donations': 'Пожертвования',
     'nav.partnership': 'Партнёрство',
     'nav.home': 'Главная',
-    'nav.pages': 'Страницы',
     'nav.contacts': 'Контакты',
 
     'sub.history': 'История',
@@ -150,7 +148,7 @@ const ru: Record<UiKey, string> = {
     'contact.formError': 'Не удалось отправить сообщение. Попробуйте ещё раз.',
 
     'about.title': 'О нас',
-    'about.intro': 'Это страница «О нас».',
+    'about.empty': 'В этом разделе пока нет страниц.',
 
     'footer.rights': 'Все права защищены.',
     'footer.partners': 'Наши партнёры',

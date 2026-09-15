@@ -32,13 +32,18 @@ Route::get('/pages/{slug}', function ($slug) {
     return Page::where('slug', $slug)->firstOrFail();
 });
 
-// `?featured=1` narrows the list to the home-page cards. Without it every page
-// comes back with its full HTML body, which is far more than the home page needs.
+// `?featured=1` narrows the list to the home-page cards and `?type=about` to one
+// section of the site. Without a filter every page comes back with its full
+// HTML body, which is far more than any listing needs.
 Route::get('/pages', function (Request $request) {
     $query = Page::query();
 
     if ($request->boolean('featured')) {
         $query->where('is_featured', true);
+    }
+
+    if ($request->filled('type')) {
+        $query->where('type', $request->string('type'));
     }
 
     return $query->get();

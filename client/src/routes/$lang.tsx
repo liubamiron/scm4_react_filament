@@ -1,6 +1,6 @@
-import { useEffect } from 'react'
-import { Outlet, createFileRoute, redirect } from '@tanstack/react-router'
-import { isLocale, persistLocale, resolveLocale } from '../i18n'
+import { createFileRoute, redirect } from '@tanstack/react-router'
+import { isLocale, resolveLocale } from '../i18n'
+import { LocaleLayout } from '../layouts/LocaleLayout'
 
 export const Route = createFileRoute('/$lang')({
     beforeLoad: ({ params, location }) => {
@@ -17,13 +17,3 @@ export const Route = createFileRoute('/$lang')({
     },
     component: LocaleLayout,
 })
-
-function LocaleLayout() {
-    const { lang } = Route.useParams()
-
-    useEffect(() => {
-        if (isLocale(lang)) persistLocale(lang)
-    }, [lang])
-
-    return <Outlet />
-}
