@@ -71,6 +71,13 @@ const ro = {
     'about.intro': 'Aceasta este pagina Despre noi.',
 
     'footer.rights': 'Toate drepturile rezervate.',
+    'footer.partners': 'Partenerii noștri',
+    'footer.navigation': 'Navigare',
+    'footer.contact': 'Contacte',
+    'footer.address': 'str. Columna, nr. 150, mun. Chișinău, MD-2024',
+    'footer.phone': '(022) 29 56 78',
+    'footer.email': 'scm4@ms.md',
+    'footer.tagline': 'Îngrijire medicală cu respect și profesionalism pentru fiecare pacient.',
 } as const
 
 export type UiKey = keyof typeof ro
@@ -141,6 +148,13 @@ const ru: Record<UiKey, string> = {
     'about.intro': 'Это страница «О нас».',
 
     'footer.rights': 'Все права защищены.',
+    'footer.partners': 'Наши партнёры',
+    'footer.navigation': 'Навигация',
+    'footer.contact': 'Контакты',
+    'footer.address': 'ул. Колумна, 150, мун. Кишинёв, MD-2024',
+    'footer.phone': '(022) 29 56 78',
+    'footer.email': 'scm4@ms.md',
+    'footer.tagline': 'Медицинская помощь с уважением и профессионализмом для каждого пациента.',
 }
 
 export const messages: Record<Locale, Record<UiKey, string>> = { ro, ru }

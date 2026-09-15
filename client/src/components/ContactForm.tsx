@@ -4,21 +4,27 @@ import { CheckCircle2, Send } from "lucide-react";
 import { apiClient } from "../api/client.ts";
 import { useT } from "../i18n";
 
-type FormState = { name: string; email: string; message: string };
+// `website` is a honeypot — hidden from people, filled by bots. The API silently
+// drops submissions where it is non-empty or that arrive too soon after render.
+type FormState = { name: string; email: string; message: string; website: string };
 
-const EMPTY: FormState = { name: "", email: "", message: "" };
+const EMPTY: FormState = { name: "", email: "", message: "", website: "" };
 
 export function ContactForm() {
     const t = useT();
     const [form, setForm] = useState<FormState>(EMPTY);
+    const [startedAt, setStartedAt] = useState(() => Date.now());
 
     const send = useMutation({
         mutationFn: (data: FormState) =>
             apiClient<{ ok: boolean }>("/contact-messages", {
                 method: "POST",
-                body: JSON.stringify(data),
+                body: JSON.stringify({ ...data, started_at: startedAt }),
             }),
-        onSuccess: () => setForm(EMPTY),
+        onSuccess: () => {
+            setForm(EMPTY);
+            setStartedAt(Date.now());
+        },
     });
 
     const update = (field: keyof FormState) =>
@@ -54,6 +60,18 @@ export function ContactForm() {
             }}
             className="grid gap-4 sm:grid-cols-2"
         >
+            {/* Honeypot: visually removed, excluded from tab order and screen readers. */}
+            <div className="absolute -left-[9999px] h-0 w-0 overflow-hidden" aria-hidden="true">
+                <input
+                    name="website"
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={form.website}
+                    onChange={update("website")}
+                />
+            </div>
+
             <label className="block sm:col-span-1">
                 <span className="mb-1.5 block text-sm font-medium text-slate-700">{t("contact.formName")}</span>
                 <input

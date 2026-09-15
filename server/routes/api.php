@@ -1,12 +1,13 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use App\Models\ContactMessage;
 use App\Models\Event;
 use App\Models\Page;
 use App\Models\Partner;
 use App\Models\TransparencyCategory;
+use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,14 +69,26 @@ Route::get('/events/{slug}', function ($slug) {
 
 // The only write endpoint. Messages land in the admin panel ("Mesaje"), nothing
 // is e-mailed. Rate-limited per IP since the form is public and unauthenticated.
+//
+// Bot filtering, both silent (respond 201 so the bot thinks it worked):
+//  - `website` is a honeypot: hidden from humans by CSS, bots fill every field.
+//  - `started_at` is the ms timestamp the form was rendered; a human needs a
+//    few seconds to type a message, a script posts instantly.
 Route::post('/contact-messages', function (Request $request) {
     $data = $request->validate([
         'name' => ['required', 'string', 'max:255'],
         'email' => ['required', 'email', 'max:255'],
         'message' => ['required', 'string', 'max:5000'],
+        'website' => ['nullable', 'string'],
+        'started_at' => ['required', 'integer'],
     ]);
 
-    ContactMessage::create($data);
+    $elapsedMs = now()->getTimestampMs() - $data['started_at'];
+    $looksLikeBot = filled($data['website']) || $elapsedMs < 3000;
+
+    if (! $looksLikeBot) {
+        ContactMessage::create(Arr::only($data, ['name', 'email', 'message']));
+    }
 
     return response()->json(['ok' => true], 201);
 })->middleware('throttle:5,1');
@@ -84,6 +97,6 @@ Route::get('/transparency', function () {
     return TransparencyCategory::with(['documents' => function ($query) {
         $query->where('is_active', true);
     }])
-    ->orderBy('sort_order', 'asc')
-    ->get();
+        ->orderBy('sort_order', 'asc')
+        ->get();
 });
