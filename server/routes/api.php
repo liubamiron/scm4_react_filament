@@ -49,6 +49,12 @@ Route::get('/pages', function (Request $request) {
     return $query->get();
 });
 
+// Feeds the site menu: every page's type, slug and title, without the HTML
+// bodies. The client groups these by `type` into the header/footer entries.
+Route::get('/menu', function () {
+    return Page::orderBy('id')->get(['id', 'type', 'slug', 'title_ro', 'title_ru']);
+});
+
 Route::get('/partners', function () {
     return Partner::all();
 });

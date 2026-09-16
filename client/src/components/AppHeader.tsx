@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { Link } from '@tanstack/react-router'
 import { ChevronDown, Globe, Menu, X } from 'lucide-react'
 import { LOCALE_LABELS, SUPPORTED_LOCALES, useLocale, useSwitchLocale, useT } from '../i18n'
-import { localePath, navigation } from './navigation'
+import { localePath } from './navigation'
+import { useNavigation } from './useNavigation'
 
 function AppHeader() {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -12,6 +13,7 @@ function AppHeader() {
     const lang = useLocale()
     const switchLocale = useSwitchLocale()
     const t = useT()
+    const navigation = useNavigation()
 
     const toggleDropdown = (name: string) => {
         setOpenDropdown((prev) => (prev === name ? null : name))
@@ -97,7 +99,7 @@ function AppHeader() {
                                 </button>
                             ) : (
                                 <Link
-                                    to={localePath(lang, item.href)}
+                                    to={localePath(lang, item.href!)}
                                     className="rounded-md px-2 py-2 font-medium text-slate-600 transition hover:bg-brand-50 hover:text-brand-700"
                                 >
                                     {t(item.labelKey)}
@@ -118,7 +120,7 @@ function AppHeader() {
                                             onClick={() => setOpenDropdown(null)}
                                             className="block px-4 py-2 text-slate-600 transition hover:bg-brand-50 hover:text-brand-700"
                                         >
-                                            {t(child.labelKey)}
+                                            {child.label}
                                         </Link>
                                     ))}
                                 </div>
@@ -160,7 +162,7 @@ function AppHeader() {
                                     </button>
                                 ) : (
                                     <Link
-                                        to={localePath(lang, item.href)}
+                                        to={localePath(lang, item.href!)}
                                         onClick={() => setIsMenuOpen(false)}
                                         className="block rounded-md px-4 py-3 font-medium text-slate-700 transition hover:bg-brand-50 hover:text-brand-700"
                                     >
@@ -181,7 +183,7 @@ function AppHeader() {
                                                     }}
                                                     className="block rounded-md px-4 py-2.5 text-slate-600 transition hover:bg-brand-50 hover:text-brand-700"
                                                 >
-                                                    {t(child.labelKey)}
+                                                    {child.label}
                                                 </Link>
                                             </li>
                                         ))}

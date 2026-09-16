@@ -1,12 +1,13 @@
 import { Link } from "@tanstack/react-router";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { usePartners } from "../features/pages/hook/usePartners.ts";
-import { localePath, navigation } from "./navigation.ts";
+import { localePath } from "./navigation.ts";
+import { useNavigation } from "./useNavigation.ts";
 import { PartnersStrip } from "./PartnersStrip.tsx";
-import { useLocale, useT } from "../i18n";
+import { useLocale, useT, type UiKey } from "../i18n";
 
 // Header menu entries that are left out of the footer link list.
-const FOOTER_HIDDEN = ["/servicii", "/sections", "/donations"];
+const FOOTER_HIDDEN: UiKey[] = ["nav.services", "nav.sections", "nav.donations"];
 
 // Mirrors the header: same horizontal inset (px-5), same brand-200 bar with
 // brand-900 text, square edges, and the same link size as the header menu.
@@ -14,6 +15,7 @@ export function AppFooter() {
     const { data: partners } = usePartners();
     const lang = useLocale();
     const t = useT();
+    const navigation = useNavigation();
 
     const activePartners = (partners ?? []).filter((p) => p.is_active !== false);
 
@@ -21,7 +23,7 @@ export function AppFooter() {
     const subLinkClass = "text-white/70 transition hover:text-white";
 
     // The footer shows a trimmed copy of the header menu.
-    const footerNav = navigation.filter((item) => !FOOTER_HIDDEN.includes(item.href));
+    const footerNav = navigation.filter((item) => !FOOTER_HIDDEN.includes(item.labelKey));
     const groups = footerNav.filter((item) => item.children);
     const plain = footerNav.filter((item) => !item.children);
 
@@ -57,10 +59,14 @@ export function AppFooter() {
                     <div>
                         <div className="grid grid-cols-2 gap-x-6 gap-y-6 sm:grid-cols-3">
                             {groups.map((item) => (
-                                <div key={item.href}>
-                                    <Link to={localePath(lang, item.href)} className={linkClass}>
-                                        {t(item.labelKey)}
-                                    </Link>
+                                <div key={item.labelKey}>
+                                    {item.href ? (
+                                        <Link to={localePath(lang, item.href)} className={linkClass}>
+                                            {t(item.labelKey)}
+                                        </Link>
+                                    ) : (
+                                        <span className={linkClass}>{t(item.labelKey)}</span>
+                                    )}
                                     <ul className="mt-2 space-y-1.5 text-sm">
                                         {item.children!.map((child) => (
                                             <li key={child.slug}>
@@ -69,7 +75,7 @@ export function AppFooter() {
                                                     params={{ lang, slug: child.slug }}
                                                     className={subLinkClass}
                                                 >
-                                                    {t(child.labelKey)}
+                                                    {child.label}
                                                 </Link>
                                             </li>
                                         ))}
@@ -79,17 +85,12 @@ export function AppFooter() {
 
                             <ul className="space-y-1.5">
                                 {plain.map((item) => (
-                                    <li key={item.href}>
-                                        <Link to={localePath(lang, item.href)} className={linkClass}>
+                                    <li key={item.labelKey}>
+                                        <Link to={localePath(lang, item.href!)} className={linkClass}>
                                             {t(item.labelKey)}
                                         </Link>
                                     </li>
                                 ))}
-                                <li>
-                                    <Link to="/$lang/pages/$slug" params={{ lang, slug: "contacte" }} className={linkClass}>
-                                        {t("nav.contacts")}
-                                    </Link>
-                                </li>
                             </ul>
                         </div>
                     </div>

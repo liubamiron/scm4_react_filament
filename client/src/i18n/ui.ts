@@ -21,15 +21,6 @@ const ro = {
     'nav.home': 'Acasă',
     'nav.contacts': 'Contacte',
 
-    'sub.history': 'Istoric',
-    'sub.team': 'Echipa',
-    'sub.mission': 'Misiunea',
-    'sub.geriatric': 'Serviciu Geriatric',
-    'sub.palliative': 'Îngrijiri Paliative',
-    'sub.forPatients': 'Pentru Pacienți',
-    'sub.collaboration': 'Colaborare',
-    'sub.volunteering': 'Voluntariat',
-
     'common.loading': 'Se încarcă...',
     'common.loadingContent': 'Se încarcă conținutul...',
     'common.loadingPartners': 'Se încarcă partenerii...',
@@ -98,15 +89,6 @@ const ru: Record<UiKey, string> = {
     'nav.partnership': 'Партнёрство',
     'nav.home': 'Главная',
     'nav.contacts': 'Контакты',
-
-    'sub.history': 'История',
-    'sub.team': 'Команда',
-    'sub.mission': 'Миссия',
-    'sub.geriatric': 'Гериатрическая служба',
-    'sub.palliative': 'Паллиативная помощь',
-    'sub.forPatients': 'Для пациентов',
-    'sub.collaboration': 'Сотрудничество',
-    'sub.volunteering': 'Волонтёрство',
 
     'common.loading': 'Загрузка...',
     'common.loadingContent': 'Загрузка содержимого...',

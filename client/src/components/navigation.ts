@@ -1,49 +1,38 @@
 import type { LinkProps } from '@tanstack/react-router'
 import type { UiKey } from '../i18n'
-
-export type NavChild = { labelKey: UiKey; slug: string }
-export type NavItem = { labelKey: UiKey; href: string; children?: NavChild[] }
+import type { ServicePage } from '../types'
 
 /**
- * Several menu entries (/servicii, /sections, /legislation, /donations,
- * /partnership) point at routes that have not been built yet, so
- * the target cannot be checked against the route tree. They 404 exactly as
- * they did before the locale prefix was introduced.
+ * One header/footer entry. Either a fixed link (`href`) or a CMS category
+ * (`pageType`) whose entry is built from the admin panel's pages of that type
+ * — see `useNavigation` for how a category turns into a link or a dropdown.
+ * A category may also carry an `href` to its own listing route (e.g. /about),
+ * used as the group heading link in the footer.
+ */
+export type NavItem = {
+    labelKey: UiKey
+    href?: string
+    pageType?: ServicePage['type']
+}
+
+/**
+ * /donations points at a route that has not been built yet, so the target
+ * cannot be checked against the route tree. It 404s exactly as it did before
+ * the locale prefix was introduced.
  */
 export const localePath = (lang: string, href: string) =>
     `/${lang}${href}` as unknown as LinkProps['to']
 
-// Shared by the header menu and the footer link list.
+// Shared by the header menu and the footer link list. `general` pages are not a
+// menu category — they are linked individually (Legislație) or not at all.
 export const navigation: NavItem[] = [
-    {
-        labelKey: 'nav.about',
-        href: '/about',
-        children: [
-            { labelKey: 'sub.history', slug: 'istoric' },
-            { labelKey: 'sub.team', slug: 'echipa' },
-            { labelKey: 'sub.mission', slug: 'misiunea' },
-        ],
-    },
+    { labelKey: 'nav.about', href: '/about', pageType: 'about' },
     { labelKey: 'nav.transparency', href: '/transparenta' },
-    {
-        labelKey: 'nav.services',
-        href: '/servicii',
-        children: [
-            { labelKey: 'sub.geriatric', slug: 'serviciu-geriatric' },
-            { labelKey: 'sub.palliative', slug: 'ingrijiri-paliative' },
-            { labelKey: 'sub.forPatients', slug: 'pentru-pacienti' },
-        ],
-    },
-    { labelKey: 'nav.sections', href: '/sections' },
+    { labelKey: 'nav.services', pageType: 'service' },
+    { labelKey: 'nav.sections', pageType: 'section' },
     { labelKey: 'nav.legislation', href: '/pages/legislatie' },
     { labelKey: 'nav.events', href: '/events' },
     { labelKey: 'nav.donations', href: '/donations' },
-    {
-        labelKey: 'nav.partnership',
-        href: '/partnership',
-        children: [
-            { labelKey: 'sub.collaboration', slug: 'colaborare' },
-            { labelKey: 'sub.volunteering', slug: 'voluntariat' },
-        ],
-    },
+    { labelKey: 'nav.partnership', pageType: 'partnership' },
+    { labelKey: 'nav.contacts', pageType: 'contact' },
 ]
