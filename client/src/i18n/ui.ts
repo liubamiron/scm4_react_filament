@@ -40,6 +40,9 @@ const ro = {
     'events.empty': 'Nu există evenimente publicate.',
     'events.readMore': 'Citește mai mult',
     'events.back': 'Înapoi la evenimente',
+    'events.pagination': 'Paginare evenimente',
+    'events.prevPage': 'Pagina anterioară',
+    'events.nextPage': 'Pagina următoare',
 
     'contact.nr': 'Nr.',
     'contact.name': 'Nume / Prenume',
@@ -109,6 +112,9 @@ const ru: Record<UiKey, string> = {
     'events.empty': 'Опубликованных событий нет.',
     'events.readMore': 'Читать далее',
     'events.back': 'Назад к событиям',
+    'events.pagination': 'Страницы событий',
+    'events.prevPage': 'Предыдущая страница',
+    'events.nextPage': 'Следующая страница',
 
     'contact.nr': '№',
     'contact.name': 'Имя / Фамилия',

@@ -52,7 +52,7 @@ export function HomePage() {
                     {isEventsLoading ? (
                         <PageStatus>{t("common.loading")}</PageStatus>
                     ) : (
-                        <div className="space-y-6">
+                        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
                             {latestNews.map((event) => (
                                 <EventCard key={event.id} event={event} />
                             ))}
