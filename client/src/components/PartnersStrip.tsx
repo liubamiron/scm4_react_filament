@@ -46,7 +46,7 @@ export function PartnersStrip({ partners }: { partners: Partner[] }) {
     };
 
     const arrowClass =
-        "absolute top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-slate-200 bg-white/95 text-brand-900 shadow-sm transition hover:bg-brand-50 md:hidden";
+        "absolute top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-slate-200 bg-white/95 text-brand-900 shadow-sm hover:bg-brand-50 md:hidden";
 
     return (
         <div className="relative">
@@ -72,7 +72,7 @@ export function PartnersStrip({ partners }: { partners: Partner[] }) {
                         target="_blank"
                         rel="noopener noreferrer"
                         title={partner.name}
-                        className="flex h-20 shrink-0 snap-center items-center opacity-90 transition hover:opacity-100"
+                        className="flex h-20 shrink-0 snap-center items-center opacity-90 hover:opacity-100"
                     >
                         <img
                             src={`${storageUrl}/${partner.logo}`}

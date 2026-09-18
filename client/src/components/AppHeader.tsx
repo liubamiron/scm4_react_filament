@@ -40,7 +40,7 @@ function AppHeader() {
 
                         <ChevronDown
                             size={12}
-                            className={`transition-transform ${
+                            className={`${
                                 isLangOpen ? 'rotate-180' : ''
                             }`}
                         />
@@ -87,12 +87,12 @@ function AppHeader() {
                             {item.children ? (
                                 <button
                                     onClick={() => toggleDropdown(item.labelKey)}
-                                    className="flex items-center gap-1 rounded-md px-2 py-2 font-medium text-slate-600 transition hover:bg-brand-50 hover:text-brand-700"
+                                    className="flex items-center gap-1 rounded-md px-2 py-2 font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-700"
                                 >
                                     {t(item.labelKey)}
                                     <ChevronDown
                                         size={14}
-                                        className={`text-slate-400 transition-transform ${
+                                        className={`text-slate-400 ${
                                             openDropdown === item.labelKey ? 'rotate-180' : ''
                                         }`}
                                     />
@@ -100,7 +100,7 @@ function AppHeader() {
                             ) : (
                                 <Link
                                     to={localePath(lang, item.href!)}
-                                    className="rounded-md px-2 py-2 font-medium text-slate-600 transition hover:bg-brand-50 hover:text-brand-700"
+                                    className="rounded-md px-2 py-2 font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-700"
                                 >
                                     {t(item.labelKey)}
                                 </Link>
@@ -118,7 +118,7 @@ function AppHeader() {
                                                 slug: child.slug,
                                             }}
                                             onClick={() => setOpenDropdown(null)}
-                                            className="block px-4 py-2 text-slate-600 transition hover:bg-brand-50 hover:text-brand-700"
+                                            className="block px-4 py-2 text-slate-600 hover:bg-brand-50 hover:text-brand-700"
                                         >
                                             {child.label}
                                         </Link>
@@ -150,12 +150,12 @@ function AppHeader() {
                                     <button
                                         onClick={() => toggleDropdown(item.labelKey)}
                                         aria-expanded={openDropdown === item.labelKey}
-                                        className="flex w-full items-center justify-between rounded-md px-4 py-3 font-medium text-slate-700 transition hover:bg-brand-50 hover:text-brand-700"
+                                        className="flex w-full items-center justify-between rounded-md px-4 py-3 font-medium text-slate-700 hover:bg-brand-50 hover:text-brand-700"
                                     >
                                         {t(item.labelKey)}
                                         <ChevronDown
                                             size={16}
-                                            className={`text-slate-400 transition-transform ${
+                                            className={`text-slate-400 ${
                                                 openDropdown === item.labelKey ? 'rotate-180' : ''
                                             }`}
                                         />
@@ -164,7 +164,7 @@ function AppHeader() {
                                     <Link
                                         to={localePath(lang, item.href!)}
                                         onClick={() => setIsMenuOpen(false)}
-                                        className="block rounded-md px-4 py-3 font-medium text-slate-700 transition hover:bg-brand-50 hover:text-brand-700"
+                                        className="block rounded-md px-4 py-3 font-medium text-slate-700 hover:bg-brand-50 hover:text-brand-700"
                                     >
                                         {t(item.labelKey)}
                                     </Link>
@@ -181,7 +181,7 @@ function AppHeader() {
                                                         setOpenDropdown(null)
                                                         setIsMenuOpen(false)
                                                     }}
-                                                    className="block rounded-md px-4 py-2.5 text-slate-600 transition hover:bg-brand-50 hover:text-brand-700"
+                                                    className="block rounded-md px-4 py-2.5 text-slate-600 hover:bg-brand-50 hover:text-brand-700"
                                                 >
                                                     {child.label}
                                                 </Link>

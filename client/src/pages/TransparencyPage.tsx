@@ -35,7 +35,7 @@ export function TransparencyPage() {
                     <button
                         key={category.id}
                         onClick={() => setActiveTab(category.id)}
-                        className={`rounded-full px-5 py-2 text-sm font-semibold transition ${
+                        className={`rounded-full px-5 py-2 text-sm font-semibold ${
                             activeTab === category.id
                                 ? 'bg-brand-700 text-white shadow-sm'
                                 : 'border border-slate-200 bg-white text-slate-600 hover:border-brand-200 hover:text-brand-700'

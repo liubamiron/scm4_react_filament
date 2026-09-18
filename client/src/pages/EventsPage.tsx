@@ -63,7 +63,7 @@ function Pagination({ page, totalPages }: { page: number; totalPages: number }) 
     })
 
     const arrowClass =
-        'inline-flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 text-brand-700 transition hover:bg-brand-50'
+        'inline-flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 text-brand-700 hover:bg-brand-50'
 
     return (
         <nav aria-label={t('events.pagination')} className="flex flex-wrap items-center justify-center gap-2">
@@ -82,7 +82,7 @@ function Pagination({ page, totalPages }: { page: number; totalPages: number }) 
                     key={n}
                     {...pageLink(n)}
                     aria-current={n === page ? 'page' : undefined}
-                    className={`inline-flex h-10 min-w-10 items-center justify-center rounded-lg px-3 text-sm font-semibold transition ${
+                    className={`inline-flex h-10 min-w-10 items-center justify-center rounded-lg px-3 text-sm font-semibold ${
                         n === page
                             ? 'bg-brand-700 text-white'
                             : 'border border-slate-200 text-brand-900 hover:bg-brand-50'
@@ -150,7 +150,7 @@ function EventRow({ event, reversed }: { event: EventItem; reversed: boolean }) 
     return (
         <Link to="/$lang/events/$slug" params={{ lang, slug: event.slug }} className="group block">
             <article
-                className={`card grid grid-cols-1 overflow-hidden transition hover:shadow-md lg:h-[340px] ${
+                className={`card grid grid-cols-1 overflow-hidden hover:shadow-md lg:h-[340px] ${
                     reversed
                         ? 'lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]'
                         : 'lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]'
@@ -165,7 +165,7 @@ function EventRow({ event, reversed }: { event: EventItem; reversed: boolean }) 
                         {formatEventDate(event.date, lang)}
                     </time>
 
-                    <h2 className="mt-2 text-xl font-bold leading-tight text-brand-900 transition group-hover:text-brand-700 line-clamp-2 md:text-2xl">
+                    <h2 className="mt-2 text-xl font-bold leading-tight text-brand-900 group-hover:text-brand-700 line-clamp-2 md:text-2xl">
                         {title}
                     </h2>
 
@@ -176,7 +176,7 @@ function EventRow({ event, reversed }: { event: EventItem; reversed: boolean }) 
 
                     <span className="link-accent mt-6">
                         {t('events.readMore')}
-                        <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
+                        <ArrowRight className="h-4 w-4 group-hover:translate-x-1" />
                     </span>
                 </div>
             </article>
@@ -191,7 +191,7 @@ export function EventCard({ event }: { event: EventItem }) {
 
     return (
         <Link to="/$lang/events/$slug" params={{ lang, slug: event.slug }} className="group block h-full">
-            <article className="card flex h-full flex-col overflow-hidden transition hover:-translate-y-0.5 hover:shadow-md">
+            <article className="card flex h-full flex-col overflow-hidden hover:-translate-y-0.5 hover:shadow-md">
                 <div className="h-56 w-full">
                     <EventImage src={imageUrl} alt={title} />
                 </div>
@@ -201,7 +201,7 @@ export function EventCard({ event }: { event: EventItem }) {
                         {formatEventDate(event.date, lang)}
                     </time>
 
-                    <h3 className="mt-2 text-lg font-bold leading-snug text-brand-900 transition group-hover:text-brand-700 line-clamp-3">
+                    <h3 className="mt-2 text-lg font-bold leading-snug text-brand-900 group-hover:text-brand-700 line-clamp-3">
                         {title}
                     </h3>
 
@@ -212,7 +212,7 @@ export function EventCard({ event }: { event: EventItem }) {
 
                     <span className="link-accent mt-auto pt-5">
                         {t('events.readMore')}
-                        <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
+                        <ArrowRight className="h-4 w-4 group-hover:translate-x-1" />
                     </span>
                 </div>
             </article>

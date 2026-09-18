@@ -14,7 +14,7 @@ export function PageCard({ page }: { page: ServicePage }) {
 
     return (
         <Link to="/$lang/pages/$slug" params={{ lang, slug: page.slug }} className="group block">
-            <article className="card h-full overflow-hidden transition hover:-translate-y-0.5 hover:shadow-md">
+            <article className="card h-full overflow-hidden hover:-translate-y-0.5 hover:shadow-md">
                 {/* 16:10 matches the ratio the admin form crops thumbnails to,
                     so uploads are shown whole instead of being cut off. */}
                 <div className="aspect-[16/10] w-full overflow-hidden bg-brand-50">
@@ -32,7 +32,7 @@ export function PageCard({ page }: { page: ServicePage }) {
                 </div>
 
                 <div className="p-6 text-center">
-                    <h3 className="text-xl font-bold text-brand-900 transition group-hover:text-brand-700">
+                    <h3 className="text-xl font-bold text-brand-900 group-hover:text-brand-700">
                         {title}
                     </h3>
 

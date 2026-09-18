@@ -25,7 +25,7 @@ function PhoneLinks({ phones, className = "" }: { phones?: string; className?: s
                 <li key={phone}>
                     <a
                         href={`tel:${phone.replace(/\s+/g, "")}`}
-                        className="inline-flex items-center gap-1.5 whitespace-nowrap text-slate-700 transition hover:text-brand-700"
+                        className="inline-flex items-center gap-1.5 whitespace-nowrap text-slate-700 hover:text-brand-700"
                     >
                         <Phone className="h-3.5 w-3.5 shrink-0 text-brand-700" />
                         {phone}
@@ -81,7 +81,7 @@ export function ContactPage({ page }: { page?: ContactPageData }) {
                             </thead>
                             <tbody className="divide-y divide-slate-100">
                                 {contacts.map((item) => (
-                                    <tr key={item.nr} className="transition hover:bg-brand-50/60">
+                                    <tr key={item.nr} className=" hover:bg-brand-50/60">
                                         <td className="px-5 py-4 font-medium text-slate-400">{item.nr}</td>
                                         <td className="px-5 py-4 font-semibold text-slate-900">{item.name}</td>
                                         <td className="px-5 py-4 text-slate-600">{item.role}</td>

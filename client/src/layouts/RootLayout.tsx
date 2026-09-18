@@ -47,7 +47,7 @@ function NavItem({ to, params, icon, label, exact = false }: { to: string, param
             to={to}
             params={params}
             activeOptions={{ exact }}
-            className="flex flex-col items-center gap-1 text-slate-400 transition-colors [&.active]:text-blue-600 [&.active]:font-bold"
+            className="flex flex-col items-center gap-1 text-slate-400 [&.active]:text-blue-600 [&.active]:font-bold"
         >
             {icon}
             <span className="text-[10px] uppercase tracking-wider">{label}</span>

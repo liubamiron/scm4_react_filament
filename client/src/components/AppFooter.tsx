@@ -23,8 +23,8 @@ export function AppFooter() {
 
     const activePartners = (partners ?? []).filter((p) => p.is_active !== false);
 
-    const linkClass = "font-medium text-white/85 transition hover:text-white";
-    const subLinkClass = "text-white/70 transition hover:text-white";
+    const linkClass = "font-medium text-white/85 hover:text-white";
+    const subLinkClass = "text-white/70 hover:text-white";
 
     // The footer shows a trimmed copy of the header menu.
     const footerNav = navigation.filter((item) => !FOOTER_HIDDEN.includes(item.labelKey));
