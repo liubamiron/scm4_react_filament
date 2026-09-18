@@ -1,0 +1,1 @@
+function e(e){let t=`https://new.scm4.md/storage`.replace(/\/storage\/?$/,``);return e.replace(/src=(['"])(?:\.\.\/)*storage\//g,`src=$1${t}/storage/`)}export{e as t};

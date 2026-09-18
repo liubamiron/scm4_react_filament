@@ -1,0 +1,1 @@
+import{v as e}from"./i18n-pF6LqayN.js";var t=e();function n({children:e,error:n=!1}){return(0,t.jsx)(`div`,{className:`page-status ${n?`text-red-600`:`animate-pulse`}`,children:(0,t.jsx)(`p`,{children:e})})}export{n as t};

@@ -1,0 +1,1 @@
+import{U as e,V as t,c as n,f as r,l as i,v as a}from"./i18n-pF6LqayN.js";import{y as o}from"./index-Dir2sWsv.js";var s=e(t(),1),c=a();function l(){let{lang:e}=r({from:`/$lang`});return(0,s.useEffect)(()=>{n(e)&&i(e)},[e]),(0,c.jsx)(o,{})}var u=l;export{u as component};

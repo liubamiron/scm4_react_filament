@@ -1,0 +1,1 @@
+import{n as e}from"./EventsPage-DwPZf9RZ.js";var t=e;export{t as component};
