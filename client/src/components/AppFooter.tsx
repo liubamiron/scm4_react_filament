@@ -6,8 +6,12 @@ import { useNavigation } from "./useNavigation.ts";
 import { PartnersStrip } from "./PartnersStrip.tsx";
 import { useLocale, useT, type UiKey } from "../i18n";
 
-// Header menu entries that are left out of the footer link list.
+// Fixed menu entries that are left out of the footer link list. CMS pages are
+// filtered by their own `show_in_footer` flag instead.
 const FOOTER_HIDDEN: UiKey[] = ["nav.services", "nav.sections"];
+
+// A group longer than this flows into two columns and takes two grid cells.
+const SINGLE_COLUMN_MAX = 4;
 
 // Mirrors the header: same horizontal inset (px-5), same brand-200 bar with
 // brand-900 text, square edges, and the same link size as the header menu.
@@ -15,7 +19,7 @@ export function AppFooter() {
     const { data: partners } = usePartners();
     const lang = useLocale();
     const t = useT();
-    const navigation = useNavigation();
+    const navigation = useNavigation("footer");
 
     const activePartners = (partners ?? []).filter((p) => p.is_active !== false);
 
@@ -58,30 +62,36 @@ export function AppFooter() {
                         the block stays as short as the contact column beside it. */}
                     <div>
                         <div className="grid grid-cols-2 gap-x-6 gap-y-6 sm:grid-cols-3">
-                            {groups.map((item) => (
-                                <div key={item.labelKey}>
-                                    {item.href ? (
-                                        <Link to={localePath(lang, item.href)} className={linkClass}>
-                                            {t(item.labelKey)}
-                                        </Link>
-                                    ) : (
-                                        <span className={linkClass}>{t(item.labelKey)}</span>
-                                    )}
-                                    <ul className="mt-2 space-y-1.5 text-sm">
-                                        {item.children!.map((child) => (
-                                            <li key={child.slug}>
-                                                <Link
-                                                    to="/$lang/pages/$slug"
-                                                    params={{ lang, slug: child.slug }}
-                                                    className={subLinkClass}
-                                                >
-                                                    {child.label}
-                                                </Link>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            ))}
+                            {groups.map((item) => {
+                                const wide = item.children!.length > SINGLE_COLUMN_MAX;
+
+                                return (
+                                    <div key={item.labelKey} className={wide ? "col-span-2" : undefined}>
+                                        {item.href ? (
+                                            <Link to={localePath(lang, item.href)} className={linkClass}>
+                                                {t(item.labelKey)}
+                                            </Link>
+                                        ) : (
+                                            <span className={linkClass}>{t(item.labelKey)}</span>
+                                        )}
+                                        {/* `columns-2` fills top-to-bottom, so the list reads in
+                                            order; `break-inside-avoid` keeps a link on one column. */}
+                                        <ul className={`mt-2 space-y-1.5 text-sm ${wide ? "columns-2 gap-x-6" : ""}`}>
+                                            {item.children!.map((child) => (
+                                                <li key={child.slug} className="break-inside-avoid">
+                                                    <Link
+                                                        to="/$lang/pages/$slug"
+                                                        params={{ lang, slug: child.slug }}
+                                                        className={subLinkClass}
+                                                    >
+                                                        {child.label}
+                                                    </Link>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                );
+                            })}
 
                             <ul className="space-y-1.5">
                                 {plain.map((item) => (

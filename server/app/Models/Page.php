@@ -11,6 +11,8 @@ class Page extends Model
         'slug',
         'is_featured',
         'image',
+        'show_in_header',
+        'show_in_footer',
         'title_ro',
         'title_ru',
         'content_ro',
@@ -19,6 +21,8 @@ class Page extends Model
     ];
 
     protected $casts = [
-        'contact_list' => 'array'
+        'contact_list' => 'array',
+        'show_in_header' => 'boolean',
+        'show_in_footer' => 'boolean',
     ];
 }

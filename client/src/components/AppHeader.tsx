@@ -13,7 +13,7 @@ function AppHeader() {
     const lang = useLocale()
     const switchLocale = useSwitchLocale()
     const t = useT()
-    const navigation = useNavigation()
+    const navigation = useNavigation('header')
 
     const toggleDropdown = (name: string) => {
         setOpenDropdown((prev) => (prev === name ? null : name))

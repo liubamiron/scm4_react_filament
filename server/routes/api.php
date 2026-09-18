@@ -50,9 +50,18 @@ Route::get('/pages', function (Request $request) {
 });
 
 // Feeds the site menu: every page's type, slug and title, without the HTML
-// bodies. The client groups these by `type` into the header/footer entries.
+// bodies. The client groups these by `type` into the header/footer entries
+// and applies the `show_in_*` flags per menu.
 Route::get('/menu', function () {
-    return Page::orderBy('id')->get(['id', 'type', 'slug', 'title_ro', 'title_ru']);
+    return Page::orderBy('id')->get([
+        'id',
+        'type',
+        'slug',
+        'title_ro',
+        'title_ru',
+        'show_in_header',
+        'show_in_footer',
+    ]);
 });
 
 Route::get('/partners', function () {

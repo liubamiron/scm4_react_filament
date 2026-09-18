@@ -17,6 +17,9 @@ export interface ServicePage {
     slug: string;
     is_featured: number | boolean;
     image: string | null;
+    // Which menus list the page. Both off → reachable by URL only.
+    show_in_header: boolean;
+    show_in_footer: boolean;
     title_ro: string;
     content_ro: string;
     title_ru?: string | null;

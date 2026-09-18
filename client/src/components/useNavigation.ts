@@ -12,25 +12,35 @@ export type ResolvedNavChild = { label: string; slug: string }
  */
 export type ResolvedNavItem = { labelKey: UiKey; href?: string; children?: ResolvedNavChild[] }
 
+export type Menu = 'header' | 'footer'
+
+const FLAG: Record<Menu, 'show_in_header' | 'show_in_footer'> = {
+    header: 'show_in_header',
+    footer: 'show_in_footer',
+}
+
 /**
- * The site menu with CMS categories resolved against the admin panel's pages:
+ * The site menu with CMS categories resolved against the admin panel's pages
+ * flagged for the given menu:
  *
  *  - several pages of that type → dropdown listing them
  *  - exactly one page          → direct link to that page
- *  - none yet                  → link to the category's listing route, or
+ *  - none                      → link to the category's listing route, or
  *                                hidden when it has none
  *
  * Fixed entries pass through unchanged. While the menu request is in flight,
  * categories behave as if they had no pages, so the header renders at once.
  */
-export function useNavigation(): ResolvedNavItem[] {
+export function useNavigation(menu: Menu): ResolvedNavItem[] {
     const lang = useLocale()
     const { data: pages } = useMenuPages()
+
+    const listed = (pages ?? []).filter((page) => page[FLAG[menu]])
 
     return navigation.flatMap(({ labelKey, href, pageType }) => {
         if (!pageType) return [{ labelKey, href }]
 
-        const ofType = (pages ?? []).filter((page) => page.type === pageType)
+        const ofType = listed.filter((page) => page.type === pageType)
 
         if (ofType.length > 1) {
             return [

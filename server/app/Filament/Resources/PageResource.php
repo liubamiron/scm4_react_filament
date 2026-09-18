@@ -55,6 +55,23 @@ class PageResource extends Resource
                    ->unique(ignoreRecord: true)
                    ->columnSpanFull(),
 
+               // Where the page is listed. Both off → reachable by URL only.
+               Section::make('Meniu')
+                   ->schema([
+                       Toggle::make('show_in_header')
+                           ->label('Arata in header')
+                           ->helperText('Meniul din partea de sus a site-ului. / Меню в шапке сайта.')
+                           ->default(true)
+                           ->inline(false),
+
+                       Toggle::make('show_in_footer')
+                           ->label('Arata in footer')
+                           ->helperText('Lista de linkuri din subsolul site-ului. / Список ссылок в подвале сайта.')
+                           ->default(true)
+                           ->inline(false),
+                   ])
+                   ->columns(2),
+
                Section::make('Setarile pentru pagina Principala')
                 ->visible(fn (Get $get) => in_array($get('type'), ['general', 'about', 'service', 'partnership', 'donations']))
                    ->schema([
@@ -144,6 +161,12 @@ class PageResource extends Resource
                Tables\Columns\TextColumn::make('type')->badge(),
                Tables\Columns\TextColumn::make('title_ro')->label('Titlu (RO)'),
                Tables\Columns\TextColumn::make('slug'),
+               Tables\Columns\IconColumn::make('show_in_header')
+                   ->label('Header')
+                   ->boolean(),
+               Tables\Columns\IconColumn::make('show_in_footer')
+                   ->label('Footer')
+                   ->boolean(),
            ])
            ->filters([
                Tables\Filters\SelectFilter::make('type')
