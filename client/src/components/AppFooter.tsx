@@ -10,7 +10,7 @@ import { useLocale, useT, type UiKey } from "../i18n";
 // filtered by their own `show_in_footer` flag instead.
 const FOOTER_HIDDEN: UiKey[] = ["nav.services", "nav.sections"];
 
-// A group longer than this flows into two columns and takes two grid cells.
+// A link list longer than this flows into two columns and takes two grid cells.
 const SINGLE_COLUMN_MAX = 4;
 
 // Mirrors the header: same horizontal inset (px-5), same brand-200 bar with
@@ -93,9 +93,15 @@ export function AppFooter() {
                                 );
                             })}
 
-                            <ul className="space-y-1.5">
+                            {/* Plain links follow the same rule as a group's sub-pages:
+                                past SINGLE_COLUMN_MAX they flow into two columns. */}
+                            <ul
+                                className={`space-y-1.5 ${
+                                    plain.length > SINGLE_COLUMN_MAX ? "col-span-2 columns-2 gap-x-6" : ""
+                                }`}
+                            >
                                 {plain.map((item) => (
-                                    <li key={item.labelKey}>
+                                    <li key={item.labelKey} className="break-inside-avoid">
                                         <Link to={localePath(lang, item.href!)} className={linkClass}>
                                             {t(item.labelKey)}
                                         </Link>
