@@ -13,7 +13,7 @@ export type { Locale as Language } from '../i18n/config';
 
 export interface ServicePage {
     id: number;
-    type: 'service' | 'about' | 'general' | 'section' | 'partnership' | 'contact';
+    type: 'service' | 'about' | 'general' | 'section' | 'partnership' | 'donations' | 'contact';
     slug: string;
     is_featured: number | boolean;
     image: string | null;

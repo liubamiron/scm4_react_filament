@@ -42,6 +42,7 @@ class PageResource extends Resource
                        'service' => '🏥 Servicii Medicale',
                        'section' => '🏢 Secții',
                        'partnership' => '🤝 Parteneriat',
+                       'donations' => '💝 Donații',
                        'contact' => '📞 Contact',
                    ])
                    ->default('general')
@@ -55,7 +56,7 @@ class PageResource extends Resource
                    ->columnSpanFull(),
 
                Section::make('Setarile pentru pagina Principala')
-                ->visible(fn (Get $get) => in_array($get('type'), ['general', 'about', 'service',  'partnership']))
+                ->visible(fn (Get $get) => in_array($get('type'), ['general', 'about', 'service', 'partnership', 'donations']))
                    ->schema([
                        Toggle::make('is_featured')
                            ->label('Arata')
@@ -150,6 +151,7 @@ class PageResource extends Resource
                        'about' => 'Despre Noi',
                        'service' => 'Servicii',
                        'partnership' => 'Parteneriat',
+                       'donations' => 'Donații',
                    ]),
            ])
            ->actions([

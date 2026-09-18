@@ -7,7 +7,7 @@ import { PartnersStrip } from "./PartnersStrip.tsx";
 import { useLocale, useT, type UiKey } from "../i18n";
 
 // Header menu entries that are left out of the footer link list.
-const FOOTER_HIDDEN: UiKey[] = ["nav.services", "nav.sections", "nav.donations"];
+const FOOTER_HIDDEN: UiKey[] = ["nav.services", "nav.sections"];
 
 // Mirrors the header: same horizontal inset (px-5), same brand-200 bar with
 // brand-900 text, square edges, and the same link size as the header menu.

@@ -15,11 +15,8 @@ export type NavItem = {
     pageType?: ServicePage['type']
 }
 
-/**
- * /donations points at a route that has not been built yet, so the target
- * cannot be checked against the route tree. It 404s exactly as it did before
- * the locale prefix was introduced.
- */
+// Fixed hrefs are joined to the locale as plain strings, so the target is not
+// checked against the route tree.
 export const localePath = (lang: string, href: string) =>
     `/${lang}${href}` as unknown as LinkProps['to']
 
@@ -32,7 +29,7 @@ export const navigation: NavItem[] = [
     { labelKey: 'nav.sections', pageType: 'section' },
     { labelKey: 'nav.legislation', href: '/pages/legislatie' },
     { labelKey: 'nav.events', href: '/events' },
-    { labelKey: 'nav.donations', href: '/donations' },
+    { labelKey: 'nav.donations', pageType: 'donations' },
     { labelKey: 'nav.partnership', pageType: 'partnership' },
     { labelKey: 'nav.contacts', pageType: 'contact' },
 ]
