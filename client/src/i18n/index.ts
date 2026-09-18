@@ -10,5 +10,6 @@ export {
 } from './config'
 
 export { localized } from './content'
+export { hreflangLinks } from './hreflang'
 export { messages, translate, type UiKey } from './ui'
 export { useLocale, useSwitchLocale, useT } from './useLocale'

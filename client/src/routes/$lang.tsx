@@ -1,8 +1,13 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
-import { isLocale, resolveLocale } from '../i18n'
+import { hreflangLinks, isLocale, resolveLocale } from '../i18n'
 import { LocaleLayout } from '../layouts/LocaleLayout'
 
 export const Route = createFileRoute('/$lang')({
+    // The alternates depend on the full path, which only the innermost match
+    // carries — this route's own match is just "/$lang".
+    head: ({ matches }) => ({
+        links: hreflangLinks(matches[matches.length - 1]?.pathname ?? ''),
+    }),
     beforeLoad: ({ params, location }) => {
         if (isLocale(params.lang)) return
 
