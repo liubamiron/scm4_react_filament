@@ -9,6 +9,8 @@ const ro = {
     'site.name': 'Instituția Medico-Sanitară Publică Spitalul Clinic Municipal Nr.4',
     'site.name1': 'Instituția Medico-Sanitară Publică',
     'site.name2': 'Spitalul Clinic Municipal Nr.4',
+    'site.title': 'Spitalul Clinic Municipal Nr.4 — IMSP SCM Nr.4, Chișinău',
+    'site.description': 'Instituția Medico-Sanitară Publică Spitalul Clinic Municipal Nr.4 din Chișinău: servicii medicale, secții, noutăți și contacte.',
 
     'nav.about': 'Despre Noi',
     'nav.transparency': 'Transparență',
@@ -81,6 +83,8 @@ const ru: Record<UiKey, string> = {
     'site.name': 'Публичное медико-санитарное учреждение Муниципальная клиническая больница №4',
     'site.name1': 'Публичное медико-санитарное учреждение',
     'site.name2': 'Муниципальная клиническая больница №4',
+    'site.title': 'Муниципальная клиническая больница №4 — ПМСУ МКБ №4, Кишинёв',
+    'site.description': 'Публичное медико-санитарное учреждение Муниципальная клиническая больница №4, Кишинёв: медицинские услуги, отделения, новости и контакты.',
 
     'nav.about': 'О нас',
     'nav.transparency': 'Прозрачность',

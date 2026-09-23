@@ -27,6 +27,11 @@ class PartnerForm
                     ->openable()
                     ->downloadable()
                     ->imageEditor()
+                    // Logos are shown at most 180×80 in the partners strip.
+                    ->imageResizeMode('contain')
+                    ->imageResizeTargetWidth('480')
+                    ->imageResizeTargetHeight('240')
+                    ->imageResizeUpscale(false)
                     ->required()
                     ->columnSpan(1),
 

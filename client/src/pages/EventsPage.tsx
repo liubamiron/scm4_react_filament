@@ -130,6 +130,7 @@ function EventImage({ src, alt, eager = false }: { src: string | null; alt: stri
                     src={src}
                     alt={alt}
                     loading={eager ? 'eager' : 'lazy'}
+                    decoding="async"
                     className="max-h-full max-w-full object-contain"
                 />
             ) : (

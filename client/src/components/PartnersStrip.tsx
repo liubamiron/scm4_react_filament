@@ -78,6 +78,8 @@ export function PartnersStrip({ partners }: { partners: Partner[] }) {
                             src={`${storageUrl}/${partner.logo}`}
                             alt={partner.name}
                             loading="lazy"
+                            decoding="async"
+                            height={80}
                             className="h-full w-auto max-w-[180px] object-contain"
                         />
                     </a>

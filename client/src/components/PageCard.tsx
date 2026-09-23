@@ -22,6 +22,9 @@ export function PageCard({ page }: { page: ServicePage }) {
                         <img
                             src={`${storageUrl}/${page.image}`}
                             alt={title}
+                            width={1200}
+                            height={750}
+                            decoding="async"
                             className="h-full w-full object-cover"
                         />
                     ) : (

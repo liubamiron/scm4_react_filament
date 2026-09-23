@@ -47,7 +47,7 @@ export function AppFooter() {
                     <div className="space-y-4">
                         <Link to="/$lang" params={{ lang }} className="inline-flex items-center gap-3">
                             {/* Transparent white emblem, generated from the header logo's caduceus. */}
-                            <img src="/img/logo_white.png" alt="" className="h-12 w-auto object-contain" />
+                            <img src="/img/logo_white.png" alt="" width={256} height={234} loading="lazy" className="h-12 w-auto object-contain" />
                             <span className="font-serif text-2xl font-semibold tracking-wide">IMSP SCM Nr.4</span>
                         </Link>
                         <p className="max-w-xs text-sm leading-relaxed text-white/85">

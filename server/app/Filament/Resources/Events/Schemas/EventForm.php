@@ -73,7 +73,13 @@ class EventForm
                     ->disk('public')
                     ->directory('events')
                     ->visibility('public')
-                    ->imageEditor(),
+                    ->imageEditor()
+                    // Shrinks phone photos in the browser before upload; the
+                    // widest place an event image is shown is the detail page.
+                    ->imageResizeMode('contain')
+                    ->imageResizeTargetWidth('1600')
+                    ->imageResizeTargetHeight('1600')
+                    ->imageResizeUpscale(false),
             ]);
     }
 }

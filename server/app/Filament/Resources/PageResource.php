@@ -93,6 +93,7 @@ class PageResource extends Resource
                            ->imageCropAspectRatio('16:10')
                            ->imageResizeTargetWidth('1200')
                            ->imageResizeTargetHeight('750')
+                           ->imageResizeUpscale(false)
                            ->helperText('Recomandat: minim 1200×750 px. / Рекомендуется: минимум 1200×750 px.'),
                    ])
                    ->columns(2),

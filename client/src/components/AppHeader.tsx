@@ -75,6 +75,9 @@ function AppHeader() {
                     <img
                         src="/img/scm4_logo.jpg"
                         alt={t('site.name')}
+                        width={742}
+                        height={212}
+                        fetchPriority="high"
                         className="w-62.5 h-15.5"
                     />
                 </Link>
