@@ -1,11 +1,15 @@
 # Развёртывание на Plesk (host.md)
 
-Процедура первичной установки бэкенда на субдомен `new.scm4.md` и того, что
-приходится повторять при обновлениях.
+Процедура установки сайта на `scm4.md` и того, что приходится повторять при
+обновлениях.
+
+Проект изначально ставился на субдомен `new.scm4.md` и оттуда переехал на
+основной домен (см. «Переезд на основной домен»). Каталог на диске при этом
+остался прежним — `~/new.scm4.md/`, поэтому пути ниже содержат `new.scm4.md`:
+это имя папки, а не адрес сайта.
 
 Файл лежит рядом с `nginx-plesk.conf` по той же причине, что и он: панель Plesk
-ничего не версионирует, и при переезде на основной домен восстанавливать
-настройку пришлось бы по памяти.
+ничего не версионирует, и восстанавливать настройку пришлось бы по памяти.
 
 ## Как устроен деплой
 
@@ -13,7 +17,7 @@
 сервере — `node_modules` весит около 300 МБ при квоте 2 ГБ на весь аккаунт.
 Результат складывается в ветку `deploy`, её и тянет Plesk.
 
-Document root субдомена смотрит в `new.scm4.md/server/public`, где рядом лежат
+Document root домена `scm4.md` смотрит в `new.scm4.md/server/public`, где рядом лежат
 `index.html` собранного React и `index.php` Laravel. Кому какой запрос
 достаётся — разводится в `nginx-plesk.conf`.
 
@@ -25,7 +29,7 @@ Document root субдомена смотрит в `new.scm4.md/server/public`, 
 
 ### 1. nginx-директивы
 
-Websites & Domains → new.scm4.md → Apache & nginx Settings → поле
+Websites & Domains → scm4.md → Apache & nginx Settings → поле
 «Additional nginx directives» → вставить содержимое `nginx-plesk.conf` → Apply.
 
 PHP должен работать в режиме **FPM application served by nginx**. В этом режиме
@@ -131,10 +135,10 @@ php artisan tinker --execute='$u = App\Models\User::where("email","<e-mail>")->f
 
 | Адрес | Ожидаемый ответ |
 | --- | --- |
-| `https://new.scm4.md/ru` | Главная страница сайта |
-| `https://new.scm4.md/up` | Страница health-check Laravel |
-| `https://new.scm4.md/api/partners` | `[]` или JSON-массив |
-| `https://new.scm4.md/admin` | Форма входа Filament |
+| `https://scm4.md/ru` | Главная страница сайта |
+| `https://scm4.md/up` | Страница health-check Laravel |
+| `https://scm4.md/api/partners` | `[]` или JSON-массив |
+| `https://scm4.md/admin` | Форма входа Filament |
 
 Пустой `[]` — это успех, а не ошибка: таблица просто ещё не наполнена.
 
@@ -168,7 +172,7 @@ tail -n 50 ~/new.scm4.md/server/storage/logs/laravel.log
    правки `.env` при этом ни на что не влияют. Лечится `optimize:clear`.
 
 **Админка открывается, но вход не проходит.** Проверить `SESSION_DOMAIN` в
-`.env` — там должен стоять текущий хост, — и что субдомен работает по HTTPS:
+`.env` — там должен стоять текущий хост, — и что домен работает по HTTPS:
 рядом стоит `SESSION_SECURE_COOKIE=true`, по http такая кука не ставится.
 
 ## Обновления
@@ -187,10 +191,41 @@ php artisan optimize:clear
 
 ## Переезд на основной домен
 
-1. Сменить `VITE_API_URL` и `VITE_STORAGE_URL` в `.github/workflows/deploy.yml` —
-   это единственное место в репозитории, где захардкожен адрес продакшна:
-   `VITE_*` читаются на этапе сборки и зашиваются в бандл, в рантайме их
-   поменять нельзя.
-2. В `server/.env` сменить `APP_URL`, `SESSION_DOMAIN` и `CORS_ALLOWED_ORIGINS`.
-3. Перенести директивы из `nginx-plesk.conf` в настройки нового домена.
-4. `php artisan optimize:clear`.
+Сайт переезжал с `new.scm4.md` на `scm4.md` без копирования: основной домен
+просто направлен в тот же каталог. База (`scmmd_new`) и загруженные файлы в
+`server/storage/app/public` остаются на месте, а дубль проекта не съедает квоту.
+
+Адрес в бандл не зашит: `VITE_API_URL=/api` и `VITE_STORAGE_URL=/storage` в
+`deploy.yml` относительные, так что одна и та же сборка работает на обоих
+доменах и на время переезда пересборка не нужна.
+
+1. **Бэкап.** Backup Manager, или хотя бы скачать старый document root
+   `scm4.md` и выгрузить дамп старой базы (Databases → Export Dump). Дамп
+   `scmmd_new` — тоже.
+2. **Hosting Settings** домена `scm4.md` → Document root →
+   `new.scm4.md/server/public`. Субдомен лежит в том же webspace, Plesk это
+   разрешает.
+3. **PHP Settings** `scm4.md` → PHP 8.4, режим «FPM application served by nginx».
+4. **Apache & nginx Settings** `scm4.md` → вставить `nginx-plesk.conf`.
+5. **SSL/TLS** → Let's Encrypt на `scm4.md` и `www.scm4.md`, включить
+   постоянный редирект HTTP → HTTPS.
+6. **`server/.env`**: `DB_*` не трогать, сменить только
+   `APP_URL=https://scm4.md`, `SESSION_DOMAIN=scm4.md`,
+   `CORS_ALLOWED_ORIGINS=https://scm4.md`. Затем
+   `/opt/plesk/php/8.4/bin/php artisan optimize:clear`. Сессия админки
+   сбросится один раз — кука привязана к домену.
+7. **Абсолютные ссылки в контенте.** TinyMCE пишет относительные
+   `../storage/...`, но проверить стоит:
+
+   ```sql
+   SELECT id, slug FROM pages
+   WHERE content_ro LIKE '%new.scm4.md%' OR content_ru LIKE '%new.scm4.md%';
+   ```
+
+   Найденное исправить через
+   `UPDATE pages SET content_ro = REPLACE(content_ro, 'https://new.scm4.md', '')`
+   (и так же `content_ru`, и другие таблицы с `content_*`).
+8. **Проверка** — таблица из раздела «Проверка» выше.
+9. **`new.scm4.md`** → 301-редирект на `https://scm4.md` (Hosting Settings
+   субдомена или Websites & Domains → Forwarding). Старые файлы и базу старого
+   сайта удалить после проверки бэкапа — это освобождает квоту.

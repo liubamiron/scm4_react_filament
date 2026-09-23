@@ -36,13 +36,14 @@ jobs:
         run: npm ci
 
       # VITE_* читаются на этапе сборки и зашиваются в бандл — в рантайме их
-      # поменять нельзя. Поэтому адрес продакшна задаётся именно здесь, и это
-      # единственное место в репозитории, где он захардкожен.
+      # поменять нельзя. Поэтому пути относительные: SPA и Laravel отдаются с
+      # одного origin, и один и тот же бандл работает на любом домене, который
+      # смотрит в server/public (scm4.md, new.scm4.md), без пересборки.
       - name: Сборка клиента
         working-directory: client
         env:
-          VITE_API_URL: https://new.scm4.md/api
-          VITE_STORAGE_URL: https://new.scm4.md/storage
+          VITE_API_URL: /api
+          VITE_STORAGE_URL: /storage
         run: npm run build
 
       # Document root субдомена указывает на server/public, поэтому SPA должна

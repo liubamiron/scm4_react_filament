@@ -18,7 +18,7 @@
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 
-    # ВНИМАНИЕ: на new.scm4.md PHP работает как "FPM application served by
+    # ВНИМАНИЕ: на scm4.md PHP работает как "FPM application served by
     # nginx", а nginx этот файл не читает — там действуют директивы из
     # deployment/nginx-plesk.conf. Правила ниже нужны только под Apache; правьте
     # оба файла вместе, иначе они разъедутся.
