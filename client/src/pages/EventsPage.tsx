@@ -117,21 +117,21 @@ function useEventCardData(event: EventItem) {
     }
 }
 
-// Fills a fixed-size box on a tinted background. The image is shown whole
-// (never cropped) and only ever scaled down, never up, so small uploads
+// Fills a fixed-size box on a padded, tinted background. The image is shown
+// whole (never cropped) and only ever scaled down, never up, so small uploads
 // keep their quality.
-function EventImage({ src, alt, eager = false }: { src: string | null; alt: string; eager?: boolean }) {
+function EventImage({ src, alt }: { src: string | null; alt: string }) {
     const t = useT()
 
     return (
-        <div className="flex h-full w-full items-center justify-center overflow-hidden bg-brand-50">
+        <div className="flex h-full w-full items-center justify-center overflow-hidden bg-brand-50 p-4 md:p-6">
             {src ? (
                 <img
                     src={src}
                     alt={alt}
-                    loading={eager ? 'eager' : 'lazy'}
+                    loading="lazy"
                     decoding="async"
-                    className="max-h-full max-w-full object-contain"
+                    className="max-h-full max-w-full rounded-xl object-contain shadow-sm"
                 />
             ) : (
                 <span className="text-slate-400">{t('common.noImage')}</span>
