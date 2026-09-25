@@ -1,0 +1,1 @@
+import{n as e}from"./EventsPage-Dan6bRVN.js";var t=e;export{t as component};
