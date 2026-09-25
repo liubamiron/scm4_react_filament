@@ -25,7 +25,7 @@ export function PageCard({ page }: { page: ServicePage }) {
                             alt={title}
                             loading="lazy"
                             decoding="async"
-                            className="max-h-full max-w-full rounded-xl object-contain shadow-sm"
+                            className="max-h-full max-w-full rounded-md object-contain shadow-sm"
                         />
                     </div>
                 ) : (
@@ -35,7 +35,7 @@ export function PageCard({ page }: { page: ServicePage }) {
                 )}
 
                 <div className="p-6 text-center">
-                    <h3 className="text-xl font-bold text-brand-900 group-hover:text-brand-700">
+                    <h3 className="font-serif text-xl font-semibold text-brand-900 group-hover:text-brand-700">
                         {title}
                     </h3>
 

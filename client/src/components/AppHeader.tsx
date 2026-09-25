@@ -40,7 +40,7 @@ function AppHeader() {
     return (
         <header className="w-full bg-white shadow-sm sticky top-0 z-50">
             {/* Top Bar */}
-            <div className="flex items-center justify-between bg-brand-200 px-5 py-3 text-sm font-medium text-brand-900 md:text-base">
+            <div className="flex items-center justify-between border-b-2 border-gold-500 bg-brand-950 px-5 py-2.5 text-sm tracking-wide text-white/85">
         <span>
           {t('site.name')}
         </span>
@@ -65,7 +65,7 @@ function AppHeader() {
                     </button>
 
                     {isLangOpen && (
-                        <div className="absolute right-0 mt-2 bg-white border border-slate-200 rounded-lg shadow-lg overflow-hidden min-w-[80px] z-50">
+                        <div className="absolute right-0 mt-2 bg-white text-slate-700 border border-slate-200 rounded-md shadow-lg overflow-hidden min-w-[80px] z-50">
                             {SUPPORTED_LOCALES.map((code) => (
                                 <button
                                     key={code}

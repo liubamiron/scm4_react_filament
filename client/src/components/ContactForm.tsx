@@ -38,7 +38,7 @@ export function ContactForm() {
 
     if (send.isSuccess) {
         return (
-            <div className="flex flex-col items-center gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 px-6 py-12 text-center">
+            <div className="flex flex-col items-center gap-3 rounded-md border border-emerald-200 bg-emerald-50 px-6 py-12 text-center">
                 <CheckCircle2 className="h-12 w-12 text-emerald-500" />
                 <p className="text-lg font-semibold text-emerald-800">{t("contact.formSent")}</p>
                 <button

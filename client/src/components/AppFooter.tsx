@@ -14,8 +14,8 @@ const FOOTER_HIDDEN: UiKey[] = ["nav.services", "nav.sections"];
 // A link list longer than this flows into two columns and takes two grid cells.
 const SINGLE_COLUMN_MAX = 4;
 
-// Mirrors the header: same horizontal inset (px-5), same brand-200 bar with
-// brand-900 text, square edges, and the same link size as the header menu.
+// Mirrors the header: same horizontal inset (px-5), the same brand-950 colour
+// with a gold rule, square edges, and the same link size as the header menu.
 export function AppFooter() {
     const { data: partners } = usePartners();
     const lang = useLocale();
@@ -42,7 +42,7 @@ export function AppFooter() {
             )}
 
             {/* BODY */}
-            <div className="bg-brand-500 text-white">
+            <div className="border-t-2 border-gold-500 bg-brand-950 text-white">
                 <div className="grid gap-10 px-5 py-10 text-sm md:grid-cols-[1.1fr_2fr_1.1fr]">
                     {/* Brand */}
                     <div className="space-y-4">
@@ -114,17 +114,17 @@ export function AppFooter() {
                     <div>
                         <ul className="space-y-2.5 text-white/85">
                             <li className="flex items-start gap-3">
-                                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-brand-200" />
+                                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-gold-300" />
                                 <span>{t("footer.address")}</span>
                             </li>
                             <li className="flex items-center gap-3">
-                                <Phone className="h-4 w-4 shrink-0 text-brand-200" />
+                                <Phone className="h-4 w-4 shrink-0 text-gold-300" />
                                 <a href={`tel:${t("footer.phone").replace(/[^\d+]/g, "")}`} className={linkClass}>
                                     {t("footer.phone")}
                                 </a>
                             </li>
                             <li className="flex items-center gap-3">
-                                <Mail className="h-4 w-4 shrink-0 text-brand-200" />
+                                <Mail className="h-4 w-4 shrink-0 text-gold-300" />
                                 <a href={`mailto:${t("footer.email")}`} className={linkClass}>
                                     {t("footer.email")}
                                 </a>
@@ -134,8 +134,8 @@ export function AppFooter() {
                 </div>
             </div>
 
-            {/* BOTTOM BAR — identical to the header's top bar */}
-            <div className="flex flex-col items-center justify-end gap-1 bg-brand-200 px-5 py-3 text-sm  text-gray-700 sm:flex-row md:text-base shadow-sm border-b-gray-600">
+            {/* BOTTOM BAR */}
+            <div className="flex flex-col items-center justify-end gap-1 border-t border-white/10 bg-brand-950 px-5 py-4 text-xs tracking-wide text-white/55 sm:flex-row">
                 <span>© {new Date().getFullYear()} — {t("footer.rights")}</span>
             </div>
         </footer>

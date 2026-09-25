@@ -11,9 +11,14 @@
  *   brand-500  footer body
  *   brand-200  header top bar / footer bottom bar
  *   brand-50   light tints (badges, hover backgrounds)
+ *   brand-950  header top bar, footer, primary buttons
+ *   gold-500   thin accents: title rules, footer rule, footer icons
+ *
+ * Headings use the serif face (same as the logo wordmark), body text Onest.
  */
 @theme {
   --font-sans: "Onest", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-serif: "Playfair Display", Georgia, "Times New Roman", serif;
 
   --color-brand-50: #eef5fa;
   --color-brand-100: #d9e9f3;
@@ -21,6 +26,10 @@
   --color-brand-500: #4786c7;
   --color-brand-700: #0e67b9;
   --color-brand-900: #003366;
+  --color-brand-950: #00213f;
+
+  --color-gold-300: #d9c49b;
+  --color-gold-500: #b08d57;
 }
 
 html,
@@ -59,33 +68,33 @@ body {
 
   /* h1 of a page, followed by .title-rule. */
   .page-title {
-    @apply text-3xl md:text-4xl font-extrabold tracking-tight text-brand-900;
+    @apply font-serif text-3xl md:text-4xl font-semibold text-brand-900;
   }
 
   .title-rule {
-    @apply mt-3 h-1 w-16 rounded-full bg-brand-700;
+    @apply mt-4 h-0.5 w-14 bg-gold-500;
   }
 
   /* h2 inside a page. */
   .section-title {
-    @apply text-2xl md:text-3xl font-bold tracking-tight text-brand-900;
+    @apply font-serif text-2xl md:text-3xl font-semibold text-brand-900;
   }
 
   /* Small uppercase label above a block (footer columns, list headers). */
   .eyebrow {
-    @apply text-xs font-semibold uppercase tracking-[0.2em];
+    @apply text-xs font-semibold uppercase tracking-[0.2em] text-gold-500;
   }
 
   .card {
-    @apply rounded-2xl border border-slate-200 bg-white shadow-sm;
+    @apply rounded-md border border-slate-200 bg-white shadow-[0_1px_3px_rgba(0,33,63,0.06)] transition-shadow hover:shadow-[0_8px_24px_rgba(0,33,63,0.08)];
   }
 
   .btn-primary {
-    @apply inline-flex items-center gap-2 rounded-lg bg-brand-700 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-900 disabled:cursor-not-allowed disabled:opacity-60;
+    @apply inline-flex items-center gap-2 rounded-md bg-brand-950 px-6 py-3 text-sm font-semibold tracking-wide text-white shadow-sm hover:bg-brand-900 disabled:cursor-not-allowed disabled:opacity-60;
   }
 
   .btn-outline {
-    @apply inline-flex items-center gap-2 rounded-lg border border-brand-700 px-5 py-2 text-sm font-semibold text-brand-700 hover:bg-brand-50;
+    @apply inline-flex items-center gap-2 rounded-md border border-brand-700 px-5 py-2 text-sm font-semibold text-brand-700 hover:bg-brand-50;
   }
 
   .link-accent {
@@ -109,7 +118,8 @@ body {
   background: white;
   padding: 10px 20px;
   border-left: 4px solid var(--color-brand-700);
-  border-radius: 8px;
+  border-left-color: var(--color-gold-500);
+  border-radius: 4px;
   margin: 16px 0;
   color: #374151;
   font-style: italic;

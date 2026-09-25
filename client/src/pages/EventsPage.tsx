@@ -132,7 +132,7 @@ function EventImage({ src, alt }: { src: string | null; alt: string }) {
                     alt={alt}
                     loading="lazy"
                     decoding="async"
-                    className="max-h-full max-w-full rounded-xl object-contain shadow-sm"
+                    className="max-h-full max-w-full rounded-md object-contain shadow-sm"
                 />
             ) : (
                 <span className="text-slate-400">{t('common.noImage')}</span>
@@ -167,7 +167,7 @@ function EventRow({ event, reversed }: { event: EventItem; reversed: boolean }) 
                         {formatEventDate(event.date, lang)}
                     </time>
 
-                    <h2 className="mt-2 text-xl font-bold leading-tight text-brand-900 group-hover:text-brand-700 line-clamp-2 md:text-2xl">
+                    <h2 className="mt-2 font-serif text-xl font-semibold leading-tight text-brand-900 group-hover:text-brand-700 line-clamp-2 md:text-2xl">
                         {title}
                     </h2>
 
@@ -196,7 +196,7 @@ export function EventListItem({ event }: { event: EventItem }) {
     return (
         <Link to="/$lang/events/$slug" params={{ lang, slug: event.slug }} className="group block">
             <article className="card flex items-center gap-6 overflow-hidden p-4 hover:border-brand-700">
-                <div className="h-20 w-28 shrink-0 overflow-hidden rounded-xl bg-brand-50 sm:w-32">
+                <div className="h-20 w-28 shrink-0 overflow-hidden rounded-md bg-brand-50 sm:w-32">
                     {imageUrl && (
                         <img
                             src={imageUrl}

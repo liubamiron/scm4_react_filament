@@ -3,7 +3,7 @@ import { ArrowRight, MapPin, Phone } from "lucide-react";
 import { useLocale, useT } from "../i18n";
 import { MAPS_URL, telHref } from "./contactLinks.ts";
 
-const iconBoxClass = "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-700";
+const iconBoxClass = "flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-700";
 const labelClass = "block text-xs font-semibold uppercase tracking-wide text-slate-500";
 
 // Address (opens the map) and phone at the top of the home page, pushed to the
