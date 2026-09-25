@@ -42,15 +42,15 @@ export function AppFooter() {
 
             {/* BODY */}
             <div className="bg-brand-500 text-white">
-                <div className="grid gap-10 px-5 pb-12 pt-6 md:grid-cols-[1fr_2.2fr_1fr]">
+                <div className="grid gap-10 px-5 py-10 text-sm md:grid-cols-[1.1fr_2fr_1.1fr]">
                     {/* Brand */}
                     <div className="space-y-4">
                         <Link to="/$lang" params={{ lang }} className="inline-flex items-center gap-3">
                             {/* Transparent white emblem, generated from the header logo's caduceus. */}
-                            <img src="/img/logo_white.png" alt="" width={256} height={234} loading="lazy" className="h-12 w-auto object-contain" />
-                            <span className="font-serif text-2xl font-semibold tracking-wide">IMSP SCM Nr.4</span>
+                            <img src="/img/logo_white.png" alt="" width={256} height={234} loading="lazy" className="h-10 w-auto object-contain" />
+                            <span className="font-serif text-xl font-semibold tracking-wide">IMSP SCM Nr.4</span>
                         </Link>
-                        <p className="max-w-xs text-sm leading-relaxed text-white/85">
+                        <p className="leading-relaxed text-white/80">
                             {t("site.name1")}
                             <br />
                             {t("site.name2")}
@@ -76,7 +76,7 @@ export function AppFooter() {
                                         )}
                                         {/* `columns-2` fills top-to-bottom, so the list reads in
                                             order; `break-inside-avoid` keeps a link on one column. */}
-                                        <ul className={`mt-2 space-y-1.5 text-sm ${wide ? "columns-2 gap-x-6" : ""}`}>
+                                        <ul className={`mt-2 space-y-1.5 ${wide ? "columns-2 gap-x-6" : ""}`}>
                                             {item.children!.map((child) => (
                                                 <li key={child.slug} className="break-inside-avoid">
                                                     <Link
@@ -113,9 +113,9 @@ export function AppFooter() {
 
                     {/* Contact */}
                     <div>
-                        <ul className="space-y-3 text-white/85">
+                        <ul className="space-y-2.5 text-white/85">
                             <li className="flex items-start gap-3">
-                                <MapPin className="mt-1 h-4 w-4 shrink-0 text-brand-200" />
+                                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-brand-200" />
                                 <span>{t("footer.address")}</span>
                             </li>
                             <li className="flex items-center gap-3">
