@@ -177,7 +177,7 @@ function EventRow({ event, reversed }: { event: EventItem; reversed: boolean }) 
 
                     <span className="link-accent mt-6">
                         {t('events.readMore')}
-                        <ArrowRight className="h-4 w-4 group-hover:translate-x-1" />
+                        <ArrowRight className="h-4 w-4" />
                     </span>
                 </div>
             </article>
@@ -213,8 +213,41 @@ export function EventCard({ event }: { event: EventItem }) {
 
                     <span className="link-accent mt-auto pt-5">
                         {t('events.readMore')}
-                        <ArrowRight className="h-4 w-4 group-hover:translate-x-1" />
+                        <ArrowRight className="h-4 w-4" />
                     </span>
+                </div>
+            </article>
+        </Link>
+    )
+}
+
+// Compact row for the home page: thumbnail, date and title, no excerpt. Sits
+// beside the large card of the newest event.
+export function EventListItem({ event }: { event: EventItem }) {
+    const { lang, title, imageUrl } = useEventCardData(event)
+
+    return (
+        <Link to="/$lang/events/$slug" params={{ lang, slug: event.slug }} className="group block">
+            <article className="card flex items-center gap-4 overflow-hidden p-3 hover:border-brand-700">
+                <div className="h-20 w-28 shrink-0 overflow-hidden rounded-xl bg-brand-50">
+                    {imageUrl && (
+                        <img
+                            src={imageUrl}
+                            alt={title}
+                            loading="lazy"
+                            decoding="async"
+                            className="h-full w-full object-cover"
+                        />
+                    )}
+                </div>
+
+                <div className="min-w-0 pr-2">
+                    <time dateTime={event.date} className="text-xs font-semibold text-brand-700">
+                        {formatEventDate(event.date, lang)}
+                    </time>
+                    <h3 className="mt-1 font-bold leading-snug text-brand-900 group-hover:text-brand-700 line-clamp-2">
+                        {title}
+                    </h3>
                 </div>
             </article>
         </Link>
