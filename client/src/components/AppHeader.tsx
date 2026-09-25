@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from '@tanstack/react-router'
-import { ChevronDown, Globe, Menu, X } from 'lucide-react'
+import { ChevronDown, Globe, Mail, MapPin, Menu, Phone, X } from 'lucide-react'
 import { LOCALE_LABELS, SUPPORTED_LOCALES, useLocale, useSwitchLocale, useT } from '../i18n'
 import { localePath } from './navigation'
 import { useNavigation } from './useNavigation'
+import { MAPS_URL, telHref } from './contactLinks'
 
 function AppHeader() {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -14,6 +15,22 @@ function AppHeader() {
     const switchLocale = useSwitchLocale()
     const t = useT()
     const navigation = useNavigation('header')
+
+    // The open mobile menu covers the whole screen; stop the page behind it
+    // from scrolling.
+    useEffect(() => {
+        if (!isMenuOpen) return
+        const previous = document.body.style.overflow
+        document.body.style.overflow = 'hidden'
+        return () => {
+            document.body.style.overflow = previous
+        }
+    }, [isMenuOpen])
+
+    const closeMenu = () => {
+        setIsMenuOpen(false)
+        setOpenDropdown(null)
+    }
 
     const toggleDropdown = (name: string) => {
         setOpenDropdown((prev) => (prev === name ? null : name))
@@ -135,66 +152,115 @@ function AppHeader() {
                 {/* Mobile Button */}
                 <button
                     className="lg:hidden p-2 text-slate-600"
-                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    aria-label={t('common.openMenu')}
+                    aria-expanded={isMenuOpen}
+                    onClick={() => setIsMenuOpen(true)}
                 >
-                    {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+                    <Menu size={28} />
                 </button>
             </nav>
 
-            {/* Mobile Menu — same entries as the desktop menu: groups expand to
-                their sub-pages, plain items link directly. Capped in height so
-                the sticky header never traps the list off-screen. */}
+            {/* Mobile Menu — a full-screen sheet over the site (and the bottom
+                tab bar) with its own logo row and close button. Same entries
+                as the desktop menu: groups expand to their sub-pages, plain
+                items link directly. Contacts sit at the bottom. */}
             {isMenuOpen && (
-                <div className="lg:hidden max-h-[calc(100vh-8rem)] overflow-y-auto border-t border-slate-100 bg-white px-4 py-3">
-                    <ul className="space-y-1">
-                        {navigation.map((item) => (
-                            <li key={item.labelKey}>
-                                {item.children ? (
+                <div className="fixed inset-0 z-[60] flex flex-col bg-white lg:hidden">
+                    <div className="flex items-center justify-between border-b border-slate-100 px-5">
+                        <Link to="/$lang" params={{ lang }} onClick={closeMenu}>
+                            <img src="/img/scm4_logo.jpg" alt={t('site.name')} width={742} height={212} className="h-auto w-40 py-3" />
+                        </Link>
+                        <div className="flex items-center gap-3">
+                            {/* The top bar's language switcher is hidden under the sheet. */}
+                            <div role="group" aria-label={t('common.language')} className="flex rounded-full border border-slate-200 p-0.5">
+                                {SUPPORTED_LOCALES.map((code) => (
                                     <button
-                                        onClick={() => toggleDropdown(item.labelKey)}
-                                        aria-expanded={openDropdown === item.labelKey}
-                                        className="flex w-full items-center justify-between rounded-md px-4 py-3 font-medium text-slate-700 hover:bg-brand-50 hover:text-brand-700"
+                                        key={code}
+                                        onClick={() => switchLocale(code)}
+                                        aria-pressed={lang === code}
+                                        className={`rounded-full px-3 py-1 text-sm font-semibold uppercase ${
+                                            lang === code ? 'bg-brand-700 text-white' : 'text-slate-600'
+                                        }`}
                                     >
-                                        {t(item.labelKey)}
-                                        <ChevronDown
-                                            size={16}
-                                            className={`text-slate-400 ${
-                                                openDropdown === item.labelKey ? 'rotate-180' : ''
-                                            }`}
-                                        />
+                                        {code}
                                     </button>
-                                ) : (
-                                    <Link
-                                        to={localePath(lang, item.href!)}
-                                        onClick={() => setIsMenuOpen(false)}
-                                        className="block rounded-md px-4 py-3 font-medium text-slate-700 hover:bg-brand-50 hover:text-brand-700"
-                                    >
-                                        {t(item.labelKey)}
-                                    </Link>
-                                )}
+                                ))}
+                            </div>
+                            <button className="p-2 text-slate-600" aria-label={t('common.closeMenu')} onClick={closeMenu}>
+                                <X size={28} />
+                            </button>
+                        </div>
+                    </div>
 
-                                {item.children && openDropdown === item.labelKey && (
-                                    <ul className="ml-4 border-l-2 border-brand-100 pl-2">
-                                        {item.children.map((child) => (
-                                            <li key={child.slug}>
-                                                <Link
-                                                    to="/$lang/pages/$slug"
-                                                    params={{ lang, slug: child.slug }}
-                                                    onClick={() => {
-                                                        setOpenDropdown(null)
-                                                        setIsMenuOpen(false)
-                                                    }}
-                                                    className="block rounded-md px-4 py-2.5 text-slate-600 hover:bg-brand-50 hover:text-brand-700"
-                                                >
-                                                    {child.label}
-                                                </Link>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                )}
+                    <div className="flex-1 overflow-y-auto px-4 py-3">
+                        <ul className="space-y-1">
+                            {navigation.map((item) => (
+                                <li key={item.labelKey}>
+                                    {item.children ? (
+                                        <button
+                                            onClick={() => toggleDropdown(item.labelKey)}
+                                            aria-expanded={openDropdown === item.labelKey}
+                                            className="flex w-full items-center justify-between rounded-md px-4 py-3 font-medium text-slate-700 hover:bg-brand-50 hover:text-brand-700"
+                                        >
+                                            {t(item.labelKey)}
+                                            <ChevronDown
+                                                size={16}
+                                                className={`text-slate-400 ${
+                                                    openDropdown === item.labelKey ? 'rotate-180' : ''
+                                                }`}
+                                            />
+                                        </button>
+                                    ) : (
+                                        <Link
+                                            to={localePath(lang, item.href!)}
+                                            onClick={closeMenu}
+                                            className="block rounded-md px-4 py-3 font-medium text-slate-700 hover:bg-brand-50 hover:text-brand-700"
+                                        >
+                                            {t(item.labelKey)}
+                                        </Link>
+                                    )}
+
+                                    {item.children && openDropdown === item.labelKey && (
+                                        <ul className="ml-4 border-l-2 border-brand-100 pl-2">
+                                            {item.children.map((child) => (
+                                                <li key={child.slug}>
+                                                    <Link
+                                                        to="/$lang/pages/$slug"
+                                                        params={{ lang, slug: child.slug }}
+                                                        onClick={closeMenu}
+                                                        className="block rounded-md px-4 py-2.5 text-slate-600 hover:bg-brand-50 hover:text-brand-700"
+                                                    >
+                                                        {child.label}
+                                                    </Link>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
+                                </li>
+                            ))}
+                        </ul>
+
+                        <ul className="mt-4 space-y-3 border-t border-slate-100 px-4 pt-5 text-sm text-slate-700">
+                            <li>
+                                <a href={MAPS_URL} target="_blank" rel="noopener noreferrer" className="flex items-start gap-3 hover:text-brand-700">
+                                    <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-brand-700" />
+                                    {t('footer.address')}
+                                </a>
                             </li>
-                        ))}
-                    </ul>
+                            <li>
+                                <a href={telHref(t('footer.phone'))} className="flex items-center gap-3 font-semibold hover:text-brand-700">
+                                    <Phone className="h-4 w-4 shrink-0 text-brand-700" />
+                                    {t('footer.phone')}
+                                </a>
+                            </li>
+                            <li>
+                                <a href={`mailto:${t('footer.email')}`} className="flex items-center gap-3 hover:text-brand-700">
+                                    <Mail className="h-4 w-4 shrink-0 text-brand-700" />
+                                    {t('footer.email')}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             )}
         </header>

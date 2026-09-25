@@ -30,6 +30,8 @@ const ro = {
     'common.notFound': 'Pagina nu a fost găsită.',
     'common.noImage': 'Fără imagine',
     'common.language': 'Limba',
+    'common.openMenu': 'Deschide meniul',
+    'common.closeMenu': 'Închide meniul',
 
     'home.servicesTitle': 'Serviciile noastre',
     'home.newsTitle': 'Noutăți și evenimente',
@@ -40,7 +42,6 @@ const ro = {
     'home.infoEmergency': 'Urgențe',
     'home.infoAllContacts': 'Toate contactele',
     'home.infoShortAddress': 'Hartă',
-    'home.infoShortPhone': 'Sună',
 
     'transparency.view': 'Vizualizează',
     'transparency.empty': 'Nu există documente în această categorie.',
@@ -111,6 +112,8 @@ const ru: Record<UiKey, string> = {
     'common.notFound': 'Страница не найдена.',
     'common.noImage': 'Без изображения',
     'common.language': 'Язык',
+    'common.openMenu': 'Открыть меню',
+    'common.closeMenu': 'Закрыть меню',
 
     'home.servicesTitle': 'Наши услуги',
     'home.newsTitle': 'Новости и события',
@@ -121,7 +124,6 @@ const ru: Record<UiKey, string> = {
     'home.infoEmergency': 'Экстренная помощь',
     'home.infoAllContacts': 'Все контакты',
     'home.infoShortAddress': 'Карта',
-    'home.infoShortPhone': 'Позвонить',
 
     'transparency.view': 'Посмотреть',
     'transparency.empty': 'В этой категории пока нет документов.',

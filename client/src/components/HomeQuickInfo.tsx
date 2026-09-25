@@ -3,17 +3,14 @@ import { ArrowRight, Mail, MapPin, Phone, Siren } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { useLocale, useT } from "../i18n";
 import type { UiKey } from "../i18n/ui";
-
-// Google Maps search for the street address; opens the app on phones.
-const MAPS_URL =
-    "https://www.google.com/maps/search/?api=1&query=" +
-    encodeURIComponent("str. Columna 150, Chișinău, Moldova");
+import { MAPS_URL, telHref } from "./contactLinks.ts";
 
 type InfoItem = {
     icon: LucideIcon;
     labelKey: UiKey;
-    // Label under the icon in the compact phone-width strip.
-    shortLabel: string;
+    // Label of the compact pill shown on phones; items without one are
+    // left out there.
+    shortLabel?: string;
     value: string;
     href?: string;
     external?: boolean;
@@ -34,45 +31,35 @@ export function HomeQuickInfo() {
         {
             icon: Phone,
             labelKey: "home.infoPhone",
-            shortLabel: t("home.infoShortPhone"),
+            shortLabel: t("footer.phone"),
             value: t("footer.phone"),
-            href: `tel:${t("footer.phone").replace(/[^\d+]/g, "")}`,
+            href: telHref(t("footer.phone")),
             withContactsLink: true,
         },
-        { icon: Mail, labelKey: "home.infoEmail", shortLabel: t("home.infoEmail"), value: t("footer.email"), href: `mailto:${t("footer.email")}` },
-        { icon: Siren, labelKey: "home.infoEmergency", shortLabel: "112", value: "112", href: "tel:112", urgent: true },
+        { icon: Mail, labelKey: "home.infoEmail", value: t("footer.email"), href: `mailto:${t("footer.email")}` },
+        { icon: Siren, labelKey: "home.infoEmergency", value: "112", href: "tel:112", urgent: true },
     ];
 
     return (
         <>
-        {/* Phones: one row of icon buttons instead of four full-width cards,
-            so the services are visible without scrolling. The bottom nav
-            already links to the contact page. */}
-        <section className="grid grid-cols-4 gap-2 sm:hidden">
-            {items.map(({ icon: Icon, labelKey, shortLabel, href, external, urgent }) => (
-                <a
-                    key={labelKey}
-                    href={href}
-                    aria-label={t(labelKey)}
-                    {...(external && { target: "_blank", rel: "noopener noreferrer" })}
-                    className="card flex flex-col items-center gap-1.5 px-1 py-3"
-                >
-                    <span
-                        className={`flex h-10 w-10 items-center justify-center rounded-xl ${
-                            urgent ? "bg-red-50 text-red-600" : "bg-brand-50 text-brand-700"
-                        }`}
+        {/* Phones: just the map and phone as two small pills at the edges,
+            so the services are visible without scrolling. E-mail and 112 are
+            in the mobile menu and on the contact page. */}
+        <section className="flex items-center justify-between gap-2 sm:hidden">
+            {items
+                .filter((item) => item.shortLabel)
+                .map(({ icon: Icon, labelKey, shortLabel, href, external }) => (
+                    <a
+                        key={labelKey}
+                        href={href}
+                        aria-label={t(labelKey)}
+                        {...(external && { target: "_blank", rel: "noopener noreferrer" })}
+                        className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-brand-900"
                     >
-                        <Icon className="h-5 w-5" />
-                    </span>
-                    <span
-                        className={`max-w-full truncate text-xs font-semibold ${
-                            urgent ? "text-red-600" : "text-brand-900"
-                        }`}
-                    >
+                        <Icon className="h-4 w-4 text-brand-700" />
                         {shortLabel}
-                    </span>
-                </a>
-            ))}
+                    </a>
+                ))}
         </section>
 
         <section className="hidden gap-4 sm:grid sm:grid-cols-2 lg:grid-cols-4">
