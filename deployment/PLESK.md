@@ -3,10 +3,9 @@
 Процедура установки сайта на `scm4.md` и того, что приходится повторять при
 обновлениях.
 
-Проект изначально ставился на субдомен `new.scm4.md` и оттуда переехал на
-основной домен (см. «Переезд на основной домен»). Каталог на диске при этом
-остался прежним — `~/new.scm4.md/`, поэтому пути ниже содержат `new.scm4.md`:
-это имя папки, а не адрес сайта.
+Сайт живёт в собственном каталоге домена — `~/httpdocs/`. Тестовый субдомен
+`new.scm4.md`, с которого проект начинался, больше не нужен: как от него
+отказаться, не потеряв базу и картинки, — в разделе «Перезаливка на scm4.md».
 
 Файл лежит рядом с `nginx-plesk.conf` по той же причине, что и он: панель Plesk
 ничего не версионирует, и восстанавливать настройку пришлось бы по памяти.
@@ -17,7 +16,7 @@
 сервере — `node_modules` весит около 300 МБ при квоте 2 ГБ на весь аккаунт.
 Результат складывается в ветку `deploy`, её и тянет Plesk.
 
-Document root домена `scm4.md` смотрит в `new.scm4.md/server/public`, где рядом лежат
+Document root домена `scm4.md` смотрит в `httpdocs/server/public`, где рядом лежат
 `index.html` собранного React и `index.php` Laravel. Кому какой запрос
 достаётся — разводится в `nginx-plesk.conf`.
 
@@ -42,7 +41,8 @@ Websites & Domains → Databases → Add Database. Имя, пользовате�
 
 Поле **Related site** — только группировка в интерфейсе Plesk, на доступность
 оно не влияет: PHP подключается к MySQL по логину и паролю, а не «через домен».
-База, привязанная к `scm4.md`, работает с `new.scm4.md` ровно так же.
+Поэтому база `scmmd_new`, созданная когда-то под субдомен, без переименования
+работает и с `scm4.md`.
 
 На той же странице посмотреть **хост сервера БД**. Если это не `localhost` —
 MySQL на host.md бывает вынесен отдельно — подставить его в `DB_HOST` вместо
@@ -60,7 +60,7 @@ php artisan key:generate --show
 Дальше на сервере:
 
 ```bash
-cd ~/new.scm4.md/server
+cd ~/httpdocs/server
 cp .env.production.example .env
 nano .env    # APP_KEY, DB_DATABASE, DB_USERNAME, DB_PASSWORD, DB_HOST
 ```
@@ -84,7 +84,7 @@ done
 ```
 
 ```bash
-cd ~/new.scm4.md/server
+cd ~/httpdocs/server
 
 composer install --no-dev --optimize-autoloader
 # если composer не в PATH — в репозитории лежит свой:
@@ -155,7 +155,7 @@ nginx-директивы применены верно и PHP-FPM запуска
 браузер показывает пустой 500, а стектрейс лежит в логе:
 
 ```bash
-tail -n 50 ~/new.scm4.md/server/storage/logs/laravel.log
+tail -n 50 ~/httpdocs/server/storage/logs/laravel.log
 ```
 
 Если файла нет вообще — нет прав на запись в `storage/` либо нет `vendor/`.
@@ -180,7 +180,7 @@ tail -n 50 ~/new.scm4.md/server/storage/logs/laravel.log
 Plesk тянет ветку `deploy`. После pull:
 
 ```bash
-cd ~/new.scm4.md/server
+cd ~/httpdocs/server
 composer install --no-dev --optimize-autoloader   # если менялся composer.lock
 php artisan migrate --force                       # если добавились миграции
 php artisan optimize:clear
@@ -189,32 +189,58 @@ php artisan optimize:clear
 `.env`, `vendor/` и симлинк `public/storage` переживают обновление и заново не
 создаются.
 
-## Переезд на основной домен
+## Перезаливка на scm4.md (отказ от new.scm4.md)
 
-Сайт переезжал с `new.scm4.md` на `scm4.md` без копирования: основной домен
-просто направлен в тот же каталог. База (`scmmd_new`) и загруженные файлы в
-`server/storage/app/public` остаются на месте, а дубль проекта не съедает квоту.
+Раньше document root `scm4.md` смотрел в каталог тестового субдомена
+`new.scm4.md/server/public`, и удалить субдомен было нельзя — Plesk удаляет
+вместе с ним его каталог, то есть живой сайт. Поэтому проект ставится заново
+в собственный каталог домена `~/httpdocs/`, а из старой установки переносятся
+только три вещи: **база** (`scmmd_new` остаётся как есть, её не трогаем),
+**`server/.env`** и **загруженные файлы** `server/storage/app/public`.
+
+Пока новая установка не проверена, старая продолжает работать — откат
+занимает одну смену document root.
 
 Адрес в бандл не зашит: `VITE_API_URL=/api` и `VITE_STORAGE_URL=/storage` в
-`deploy.yml` относительные, так что одна и та же сборка работает на обоих
-доменах и на время переезда пересборка не нужна.
+`deploy.yml` относительные, пересборка не нужна.
 
-1. **Бэкап.** Backup Manager, или хотя бы скачать старый document root
-   `scm4.md` и выгрузить дамп старой базы (Databases → Export Dump). Дамп
-   `scmmd_new` — тоже.
-2. **Hosting Settings** домена `scm4.md` → Document root →
-   `new.scm4.md/server/public`. Субдомен лежит в том же webspace, Plesk это
-   разрешает.
-3. **PHP Settings** `scm4.md` → PHP 8.4, режим «FPM application served by nginx».
-4. **Apache & nginx Settings** `scm4.md` → вставить `nginx-plesk.conf`.
-5. **SSL/TLS** → Let's Encrypt на `scm4.md` и `www.scm4.md`, включить
-   постоянный редирект HTTP → HTTPS.
-6. **`server/.env`**: `DB_*` не трогать, сменить только
-   `APP_URL=https://scm4.md`, `SESSION_DOMAIN=scm4.md`,
-   `CORS_ALLOWED_ORIGINS=https://scm4.md`. Затем
-   `/opt/plesk/php/8.4/bin/php artisan optimize:clear`. Сессия админки
-   сбросится один раз — кука привязана к домену.
-7. **Абсолютные ссылки в контенте.** TinyMCE пишет относительные
+1. **Бэкап.** Backup Manager, или хотя бы дамп `scmmd_new`
+   (Databases → Export Dump) и архив `~/new.scm4.md/server/storage/app/public`.
+   Если в `~/httpdocs` лежит что-то от старого сайта — скачать и это.
+2. **Освободить `~/httpdocs`.** Удалить из него всё (после бэкапа), чтобы
+   файлы старого сайта не смешались с новыми.
+3. **Git.** Websites & Domains → `scm4.md` → Git → Add Repository: тот же
+   репозиторий, ветка `deploy`, Deployment path — `/httpdocs`, режим
+   автоматического деплоя. Нажать Pull / Deploy.
+4. **Перенести `.env` и картинки** (путь PHP — см. «Зависимости, миграции, права»):
+
+   ```bash
+   cp ~/new.scm4.md/server/.env ~/httpdocs/server/.env
+   cp -a ~/new.scm4.md/server/storage/app/public/. ~/httpdocs/server/storage/app/public/
+
+   cd ~/httpdocs/server
+   composer install --no-dev --optimize-autoloader
+   /opt/plesk/php/8.4/bin/php artisan optimize:clear
+   /opt/plesk/php/8.4/bin/php artisan migrate --force
+   /opt/plesk/php/8.4/bin/php artisan storage:link
+   chmod -R ug+rw storage bootstrap/cache
+   /opt/plesk/php/8.4/bin/php artisan optimize
+   ```
+
+   `.env` копируется целиком, вместе с `APP_KEY`: с другим ключом Laravel не
+   расшифрует уже выданные куки. `storage:link` создаёт ссылку с абсолютным
+   путём, поэтому старую не переносить — только создать заново.
+   В `.env` проверить `APP_URL=https://scm4.md`, `SESSION_DOMAIN=scm4.md`,
+   `CORS_ALLOWED_ORIGINS=https://scm4.md`, `APP_DEBUG=false`.
+5. **Hosting Settings** `scm4.md` → Document root → `httpdocs/server/public`.
+   PHP Settings (PHP 8.4, «FPM application served by nginx») и nginx-директивы
+   из `nginx-plesk.conf` привязаны к домену, а не к каталогу, — проверить, что
+   они на месте.
+6. **Scheduled Tasks.** Если есть задачи с путём `~/new.scm4.md/...`
+   (`schedule:run`, `queue:work`) — поменять на `~/httpdocs/...`.
+7. **Проверка** — таблица из раздела «Проверка» выше, плюс картинки на
+   главной и вход в `/admin`.
+8. **Абсолютные ссылки в контенте.** TinyMCE пишет относительные
    `../storage/...`, но проверить стоит:
 
    ```sql
@@ -225,7 +251,7 @@ php artisan optimize:clear
    Найденное исправить через
    `UPDATE pages SET content_ro = REPLACE(content_ro, 'https://new.scm4.md', '')`
    (и так же `content_ru`, и другие таблицы с `content_*`).
-8. **Проверка** — таблица из раздела «Проверка» выше.
-9. **`new.scm4.md`** → 301-редирект на `https://scm4.md` (Hosting Settings
-   субдомена или Websites & Domains → Forwarding). Старые файлы и базу старого
-   сайта удалить после проверки бэкапа — это освобождает квоту.
+9. **Удалить субдомен.** Сначала Databases → `scmmd_new` → **Related site**
+   сменить на `scm4.md`, чтобы база не ушла вместе с субдоменом. Затем удалить
+   Git-репозиторий у `new.scm4.md` и сам субдомен — вместе с ним Plesk удалит
+   `~/new.scm4.md/` и освободит квоту.
