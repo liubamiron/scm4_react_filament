@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { localized, useLocale } from "../i18n";
 import { htmlToText } from "../utils/htmlToText.ts";
+import { Emblem } from "./Emblem.tsx";
 import type { ServicePage } from "../types";
 
 // Thumbnail + title + 3-line excerpt, linking to the page. Used wherever a
@@ -15,37 +16,21 @@ export function PageCard({ page }: { page: ServicePage }) {
     return (
         <Link to="/$lang/pages/$slug" params={{ lang, slug: page.slug }} className="group block">
             <article className="card h-full overflow-hidden hover:border-brand-700">
-                {/* 16:10 matches the ratio the admin form crops thumbnails to,
-                    so uploads are shown whole instead of being cut off. */}
+                {/* Same framing as the news cards: the whole image on a tinted,
+                    padded background, scaled down but never cropped or upscaled. */}
                 {page.image ? (
-                    <div className="aspect-[16/10] w-full overflow-hidden bg-brand-50">
+                    <div className="flex h-56 items-center justify-center overflow-hidden bg-brand-50 p-4 md:p-6">
                         <img
                             src={`${storageUrl}/${page.image}`}
                             alt={title}
-                            width={1200}
-                            height={750}
+                            loading="lazy"
                             decoding="async"
-                            className="h-full w-full object-cover"
+                            className="max-h-full max-w-full rounded-xl object-contain shadow-sm"
                         />
                     </div>
                 ) : (
                     <div className="flex h-28 items-center justify-center bg-brand-50">
-                        {/* The emblem is white on transparent, so it is used as a
-                            mask and tinted with a brand colour instead. */}
-                        <div
-                            aria-hidden="true"
-                            className="h-16 w-16 bg-brand-200"
-                            style={{
-                                maskImage: "url(/img/logo_white.png)",
-                                WebkitMaskImage: "url(/img/logo_white.png)",
-                                maskSize: "contain",
-                                WebkitMaskSize: "contain",
-                                maskRepeat: "no-repeat",
-                                WebkitMaskRepeat: "no-repeat",
-                                maskPosition: "center",
-                                WebkitMaskPosition: "center",
-                            }}
-                        />
+                        <Emblem className="h-16 w-16 bg-brand-200" />
                     </div>
                 )}
 

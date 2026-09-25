@@ -34,6 +34,11 @@ const ro = {
     'home.servicesTitle': 'Serviciile noastre',
     'home.newsTitle': 'Noutăți și evenimente',
     'home.newsAll': 'Toate noutățile',
+    'home.heroText': 'Servicii medicale de calitate pentru locuitorii municipiului Chișinău.',
+    'home.infoAddress': 'Adresa',
+    'home.infoPhone': 'Telefon / fax',
+    'home.infoEmail': 'E-mail',
+    'home.infoEmergency': 'Urgențe',
 
     'transparency.view': 'Vizualizează',
     'transparency.empty': 'Nu există documente în această categorie.',
@@ -108,6 +113,11 @@ const ru: Record<UiKey, string> = {
     'home.servicesTitle': 'Наши услуги',
     'home.newsTitle': 'Новости и события',
     'home.newsAll': 'Все новости',
+    'home.heroText': 'Качественная медицинская помощь жителям муниципия Кишинёв.',
+    'home.infoAddress': 'Адрес',
+    'home.infoPhone': 'Телефон / факс',
+    'home.infoEmail': 'E-mail',
+    'home.infoEmergency': 'Экстренная помощь',
 
     'transparency.view': 'Посмотреть',
     'transparency.empty': 'В этой категории пока нет документов.',
