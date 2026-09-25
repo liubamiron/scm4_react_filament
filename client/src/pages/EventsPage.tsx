@@ -195,7 +195,7 @@ export function EventListItem({ event }: { event: EventItem }) {
 
     return (
         <Link to="/$lang/events/$slug" params={{ lang, slug: event.slug }} className="group block">
-            <article className="card flex items-center gap-5 overflow-hidden p-3 hover:border-brand-700">
+            <article className="card flex items-center gap-6 overflow-hidden p-4 hover:border-brand-700">
                 <div className="h-20 w-28 shrink-0 overflow-hidden rounded-xl bg-brand-50 sm:w-32">
                     {imageUrl && (
                         <img

@@ -55,7 +55,7 @@ export function HomePage() {
                     {isEventsLoading ? (
                         <PageStatus>{t("common.loading")}</PageStatus>
                     ) : (
-                        <div className="flex flex-col gap-3">
+                        <div className="flex flex-col gap-6">
                             {latestNews.map((event) => (
                                 <EventListItem key={event.id} event={event} />
                             ))}

@@ -38,6 +38,7 @@ const ro = {
     'home.infoPhone': 'Telefon / fax',
     'home.infoEmail': 'E-mail',
     'home.infoEmergency': 'Urgențe',
+    'home.infoAllContacts': 'Toate contactele',
 
     'transparency.view': 'Vizualizează',
     'transparency.empty': 'Nu există documente în această categorie.',
@@ -116,6 +117,7 @@ const ru: Record<UiKey, string> = {
     'home.infoPhone': 'Телефон / факс',
     'home.infoEmail': 'E-mail',
     'home.infoEmergency': 'Экстренная помощь',
+    'home.infoAllContacts': 'Все контакты',
 
     'transparency.view': 'Посмотреть',
     'transparency.empty': 'В этой категории пока нет документов.',
