@@ -151,7 +151,7 @@ function EventRow({ event, reversed }: { event: EventItem; reversed: boolean }) 
     return (
         <Link to="/$lang/events/$slug" params={{ lang, slug: event.slug }} className="group block">
             <article
-                className={`card grid grid-cols-1 overflow-hidden hover:shadow-md lg:h-[340px] ${
+                className={`card grid grid-cols-1 overflow-hidden hover:border-brand-700 lg:h-[340px] ${
                     reversed
                         ? 'lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]'
                         : 'lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]'
@@ -192,7 +192,7 @@ export function EventCard({ event }: { event: EventItem }) {
 
     return (
         <Link to="/$lang/events/$slug" params={{ lang, slug: event.slug }} className="group block h-full">
-            <article className="card flex h-full flex-col overflow-hidden hover:-translate-y-0.5 hover:shadow-md">
+            <article className="card flex h-full flex-col overflow-hidden hover:border-brand-700">
                 <div className="h-56 w-full">
                     <EventImage src={imageUrl} alt={title} />
                 </div>
