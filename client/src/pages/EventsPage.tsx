@@ -6,6 +6,7 @@ import { PageStatus } from '../components/PageStatus.tsx'
 import { localized, useLocale, useT } from '../i18n'
 import { transformImageUrls } from '../utils/transformImageUrls.ts'
 import { formatEventDate } from '../utils/formatEventDate.ts'
+import { htmlToText } from '../utils/htmlToText.ts'
 import type { EventItem } from '../types'
 
 // Pagination is done on the client: `/events` returns the whole list (without
@@ -185,51 +186,17 @@ function EventRow({ event, reversed }: { event: EventItem; reversed: boolean }) 
     )
 }
 
-// Vertical card for the home page "latest news" grid.
-export function EventCard({ event }: { event: EventItem }) {
-    const { lang, title, excerpt, imageUrl } = useEventCardData(event)
-    const t = useT()
-
-    return (
-        <Link to="/$lang/events/$slug" params={{ lang, slug: event.slug }} className="group block h-full">
-            <article className="card flex h-full flex-col overflow-hidden hover:border-brand-700">
-                <div className="h-56 w-full">
-                    <EventImage src={imageUrl} alt={title} />
-                </div>
-
-                <div className="flex flex-1 flex-col p-6">
-                    <time dateTime={event.date} className="text-sm font-semibold text-brand-700">
-                        {formatEventDate(event.date, lang)}
-                    </time>
-
-                    <h3 className="mt-2 text-lg font-bold leading-snug text-brand-900 group-hover:text-brand-700 line-clamp-3">
-                        {title}
-                    </h3>
-
-                    <div
-                        className="content-prose mt-3 text-sm line-clamp-3"
-                        dangerouslySetInnerHTML={{ __html: excerpt }}
-                    />
-
-                    <span className="link-accent mt-auto pt-5">
-                        {t('events.readMore')}
-                        <ArrowRight className="h-4 w-4" />
-                    </span>
-                </div>
-            </article>
-        </Link>
-    )
-}
-
-// Compact row for the home page: thumbnail, date and title, no excerpt. Sits
-// beside the large card of the newest event.
+// Thin full-width row for the home page "latest news" list: thumbnail beside
+// date, title, a short plain-text excerpt and a "read more" link.
 export function EventListItem({ event }: { event: EventItem }) {
     const { lang, title, imageUrl } = useEventCardData(event)
+    const t = useT()
+    const excerpt = htmlToText(localized(event, 'description', lang))
 
     return (
         <Link to="/$lang/events/$slug" params={{ lang, slug: event.slug }} className="group block">
-            <article className="card flex items-center gap-4 overflow-hidden p-3 hover:border-brand-700">
-                <div className="h-20 w-28 shrink-0 overflow-hidden rounded-xl bg-brand-50">
+            <article className="card flex items-center gap-5 overflow-hidden p-3 hover:border-brand-700">
+                <div className="h-20 w-28 shrink-0 overflow-hidden rounded-xl bg-brand-50 sm:w-32">
                     {imageUrl && (
                         <img
                             src={imageUrl}
@@ -241,14 +208,22 @@ export function EventListItem({ event }: { event: EventItem }) {
                     )}
                 </div>
 
-                <div className="min-w-0 pr-2">
+                <div className="min-w-0 flex-1">
                     <time dateTime={event.date} className="text-xs font-semibold text-brand-700">
                         {formatEventDate(event.date, lang)}
                     </time>
-                    <h3 className="mt-1 font-bold leading-snug text-brand-900 group-hover:text-brand-700 line-clamp-2">
+                    <h3 className="mt-0.5 font-bold leading-snug text-brand-900 group-hover:text-brand-700 line-clamp-1">
                         {title}
                     </h3>
+                    {excerpt && (
+                        <p className="mt-1 text-sm text-slate-600 line-clamp-1">{excerpt}</p>
+                    )}
                 </div>
+
+                <span className="link-accent hidden shrink-0 pr-3 md:inline-flex">
+                    {t('events.readMore')}
+                    <ArrowRight className="h-4 w-4" />
+                </span>
             </article>
         </Link>
     )

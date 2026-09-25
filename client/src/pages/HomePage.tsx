@@ -4,11 +4,10 @@ import { useFeaturedServices } from "../features/pages/hook/useFeaturedPages.ts"
 import { useEvents } from "../features/pages/hook/useEvents.ts";
 import { PageStatus } from "../components/PageStatus.tsx";
 import { PageCard } from "../components/PageCard.tsx";
-import { EventCard, EventListItem } from "./EventsPage.tsx";
+import { EventListItem } from "./EventsPage.tsx";
 import { HomeQuickInfo } from "../components/HomeQuickInfo.tsx";
 import { useLocale, useT } from "../i18n";
 
-// The newest event gets a large card, the rest a compact list beside it.
 const LATEST_NEWS_COUNT = 4;
 
 export function HomePage() {
@@ -21,7 +20,6 @@ export function HomePage() {
     const latestNews = [...(events ?? [])]
         .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
         .slice(0, LATEST_NEWS_COUNT);
-    const [featuredNews, ...otherNews] = latestNews;
 
     return (
         <div className="page">
@@ -57,20 +55,10 @@ export function HomePage() {
                     {isEventsLoading ? (
                         <PageStatus>{t("common.loading")}</PageStatus>
                     ) : (
-                        <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
-                            {featuredNews && (
-                                <div className={otherNews.length > 0 ? "lg:col-span-3" : "lg:col-span-5"}>
-                                    <EventCard event={featuredNews} />
-                                </div>
-                            )}
-
-                            {otherNews.length > 0 && (
-                                <div className="flex flex-col gap-4 lg:col-span-2">
-                                    {otherNews.map((event) => (
-                                        <EventListItem key={event.id} event={event} />
-                                    ))}
-                                </div>
-                            )}
+                        <div className="flex flex-col gap-3">
+                            {latestNews.map((event) => (
+                                <EventListItem key={event.id} event={event} />
+                            ))}
                         </div>
                     )}
                 </section>
