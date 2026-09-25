@@ -38,8 +38,6 @@ const ro = {
     'home.newsAll': 'Toate noutățile',
     'home.infoAddress': 'Adresa',
     'home.infoPhone': 'Telefon / fax',
-    'home.infoEmail': 'E-mail',
-    'home.infoEmergency': 'Urgențe',
     'home.infoAllContacts': 'Toate contactele',
     'home.infoShortAddress': 'Hartă',
 
@@ -120,8 +118,6 @@ const ru: Record<UiKey, string> = {
     'home.newsAll': 'Все новости',
     'home.infoAddress': 'Адрес',
     'home.infoPhone': 'Телефон / факс',
-    'home.infoEmail': 'E-mail',
-    'home.infoEmergency': 'Экстренная помощь',
     'home.infoAllContacts': 'Все контакты',
     'home.infoShortAddress': 'Карта',
 

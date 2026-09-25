@@ -4,6 +4,7 @@ import { usePartners } from "../features/pages/hook/usePartners.ts";
 import { localePath } from "./navigation.ts";
 import { useNavigation } from "./useNavigation.ts";
 import { PartnersStrip } from "./PartnersStrip.tsx";
+import { SiteLogo } from "./SiteLogo.tsx";
 import { useLocale, useT, type UiKey } from "../i18n";
 
 // Fixed menu entries that are left out of the footer link list. CMS pages are
@@ -45,10 +46,8 @@ export function AppFooter() {
                 <div className="grid gap-10 px-5 py-10 text-sm md:grid-cols-[1.1fr_2fr_1.1fr]">
                     {/* Brand */}
                     <div className="space-y-4">
-                        <Link to="/$lang" params={{ lang }} className="inline-flex items-center gap-3">
-                            {/* Transparent white emblem, generated from the header logo's caduceus. */}
-                            <img src="/img/logo_white.png" alt="" width={256} height={234} loading="lazy" className="h-10 w-auto object-contain" />
-                            <span className="font-serif text-xl font-semibold tracking-wide">IMSP SCM Nr.4</span>
+                        <Link to="/$lang" params={{ lang }}>
+                            <SiteLogo emblemClassName="h-10 w-11 bg-white" textClassName="text-xl text-white" />
                         </Link>
                         <p className="leading-relaxed text-white/80">
                             {t("site.name1")}

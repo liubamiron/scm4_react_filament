@@ -5,6 +5,7 @@ import { LOCALE_LABELS, SUPPORTED_LOCALES, useLocale, useSwitchLocale, useT } fr
 import { localePath } from './navigation'
 import { useNavigation } from './useNavigation'
 import { MAPS_URL, telHref } from './contactLinks'
+import { SiteLogo } from './SiteLogo'
 
 function AppHeader() {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -88,15 +89,8 @@ function AppHeader() {
 
             {/* Main Navigation */}
             <nav className="flex items-center justify-between px-5">
-                <Link to="/$lang" params={{ lang }} className="flex items-center gap-3">
-                    <img
-                        src="/img/scm4_logo.jpg"
-                        alt={t('site.name')}
-                        width={742}
-                        height={212}
-                        fetchPriority="high"
-                        className="w-62.5 h-15.5"
-                    />
+                <Link to="/$lang" params={{ lang }} aria-label={t('site.name')} className="py-3">
+                    <SiteLogo />
                 </Link>
 
                 {/* Desktop Menu */}
@@ -167,8 +161,8 @@ function AppHeader() {
             {isMenuOpen && (
                 <div className="fixed inset-0 z-[60] flex flex-col bg-white lg:hidden">
                     <div className="flex items-center justify-between border-b border-slate-100 px-5">
-                        <Link to="/$lang" params={{ lang }} onClick={closeMenu}>
-                            <img src="/img/scm4_logo.jpg" alt={t('site.name')} width={742} height={212} className="h-auto w-40 py-3" />
+                        <Link to="/$lang" params={{ lang }} aria-label={t('site.name')} onClick={closeMenu} className="py-3">
+                            <SiteLogo emblemClassName="h-9 w-10 bg-brand-700" textClassName="text-lg text-brand-900" />
                         </Link>
                         <div className="flex items-center gap-3">
                             {/* The top bar's language switcher is hidden under the sheet. */}
