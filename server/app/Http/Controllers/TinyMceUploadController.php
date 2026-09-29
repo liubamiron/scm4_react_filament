@@ -23,8 +23,8 @@ class TinyMceUploadController extends Controller
         $this->downscale(Storage::disk('public')->path($path), $file);
 
         return response()->json([
-                    'location' => asset('storage/' . $path),
-                ]);
+            'location' => asset('storage/'.$path),
+        ]);
     }
 
     /**

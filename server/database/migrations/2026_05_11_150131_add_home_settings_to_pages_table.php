@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('pages', function (Blueprint $table) {
-                $table->boolean('is_featured')->default(false)->after('slug');
-                $table->string('image')->nullable()->after('is_featured');
-            });
+            $table->boolean('is_featured')->default(false)->after('slug');
+            $table->string('image')->nullable()->after('is_featured');
+        });
     }
 
     /**
@@ -22,8 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-       Schema::table('pages', function (Blueprint $table) {
-               $table->dropColumn(['is_featured', 'image']);
-           });
+        Schema::table('pages', function (Blueprint $table) {
+            $table->dropColumn(['is_featured', 'image']);
+        });
     }
 };

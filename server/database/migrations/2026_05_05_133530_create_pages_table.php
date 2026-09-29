@@ -11,19 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-       Schema::create('pages', function (Blueprint $table) {
-               $table->id();
-               $table->string('type'); // 'about', 'service', etc.
-               $table->string('slug')->unique();
+        Schema::create('pages', function (Blueprint $table) {
+            $table->id();
+            $table->string('type'); // 'about', 'service', etc.
+            $table->string('slug')->unique();
 
-               // Multilingual Content
-               $table->string('title_ro');
-               $table->text('content_ro');
-               $table->string('title_ru')->nullable();
-               $table->text('content_ru')->nullable();
+            // Multilingual Content
+            $table->string('title_ro');
+            $table->text('content_ro');
+            $table->string('title_ru')->nullable();
+            $table->text('content_ru')->nullable();
 
-               $table->timestamps();
-           });
+            $table->timestamps();
+        });
     }
 
     /**

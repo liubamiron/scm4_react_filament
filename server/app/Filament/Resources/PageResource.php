@@ -2,29 +2,26 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Forms\Components\TinyMceEditor;
 use App\Filament\Resources\Page\Pages;
 use App\Models\Page;
-use Filament\Resources\Resource;
-use Filament\Schemas\Schema;
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Tables\Table;
-
-// UNIFIED FILAMENT v4 ACTIONS
-use Filament\Actions\EditAction;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\BulkActionGroup;
-
-// SCHEMA LAYOUT COMPONENTS
-use Filament\Schemas\Components\Tabs;
-use Filament\Schemas\Components\Tabs\Tab;
-use Filament\Schemas\Components\Section;
-use Filament\Schemas\Components\Utilities\Get;
-
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Forms;
+// UNIFIED FILAMENT v4 ACTIONS
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Components\FileUpload;
-use App\Filament\Forms\Components\TinyMceEditor;
+// SCHEMA LAYOUT COMPONENTS
+use Filament\Resources\Resource;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Schema;
+use Filament\Tables;
+use Filament\Tables\Table;
 
 class PageResource extends Resource
 {
@@ -32,161 +29,161 @@ class PageResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-       return $schema
-           ->components([
+        return $schema
+            ->components([
 
-               Forms\Components\Select::make('type')
-                   ->options([
-                       'general' => '📄 General',
-                       'about' => '📋 Despre Noi',
-                       'service' => '🏥 Servicii Medicale',
-                       'section' => '🏢 Secții',
-                       'partnership' => '🤝 Parteneriat',
-                       'donations' => '💝 Donații',
-                       'contact' => '📞 Contact',
-                   ])
-                   ->default('general')
-                   ->live()
-                   ->native(false)
-                   ->columnSpanFull(),
+                Forms\Components\Select::make('type')
+                    ->options([
+                        'general' => '📄 General',
+                        'about' => '📋 Despre Noi',
+                        'service' => '🏥 Servicii Medicale',
+                        'section' => '🏢 Secții',
+                        'partnership' => '🤝 Parteneriat',
+                        'donations' => '💝 Donații',
+                        'contact' => '📞 Contact',
+                    ])
+                    ->default('general')
+                    ->live()
+                    ->native(false)
+                    ->columnSpanFull(),
 
-               Forms\Components\TextInput::make('slug')
-                   ->required()
-                   ->unique(ignoreRecord: true)
-                   ->columnSpanFull(),
+                Forms\Components\TextInput::make('slug')
+                    ->required()
+                    ->unique(ignoreRecord: true)
+                    ->columnSpanFull(),
 
-               // Where the page is listed. Both off → reachable by URL only.
-               Section::make('Meniu')
-                   ->schema([
-                       Toggle::make('show_in_header')
-                           ->label('Arata in header')
-                           ->helperText('Meniul din partea de sus a site-ului. / Меню в шапке сайта.')
-                           ->default(true)
-                           ->inline(false),
+                // Where the page is listed. Both off → reachable by URL only.
+                Section::make('Meniu')
+                    ->schema([
+                        Toggle::make('show_in_header')
+                            ->label('Arata in header')
+                            ->helperText('Meniul din partea de sus a site-ului. / Меню в шапке сайта.')
+                            ->default(true)
+                            ->inline(false),
 
-                       Toggle::make('show_in_footer')
-                           ->label('Arata in footer')
-                           ->helperText('Lista de linkuri din subsolul site-ului. / Список ссылок в подвале сайта.')
-                           ->default(true)
-                           ->inline(false),
-                   ])
-                   ->columns(2),
+                        Toggle::make('show_in_footer')
+                            ->label('Arata in footer')
+                            ->helperText('Lista de linkuri din subsolul site-ului. / Список ссылок в подвале сайта.')
+                            ->default(true)
+                            ->inline(false),
+                    ])
+                    ->columns(2),
 
-               Section::make('Setarile pentru pagina Principala')
-                ->visible(fn (Get $get) => in_array($get('type'), ['general', 'about', 'service', 'partnership', 'donations']))
-                   ->schema([
-                       Toggle::make('is_featured')
-                           ->label('Arata')
-                           ->inline(false),
+                Section::make('Setarile pentru pagina Principala')
+                    ->visible(fn (Get $get) => in_array($get('type'), ['general', 'about', 'service', 'partnership', 'donations']))
+                    ->schema([
+                        Toggle::make('is_featured')
+                            ->label('Arata')
+                            ->inline(false),
 
-                       FileUpload::make('image')
-                           ->image()
-                           ->disk('public')
-                           ->directory('pages-thumbnails')
-                           ->visibility('public')
-                           // The home-page card shows this at 16:10, so let the
-                           // editor crop to that ratio and save a size that stays
-                           // sharp on retina screens without uploading megabytes.
-                           ->imageEditor()
-                           ->imageEditorAspectRatios(['16:10'])
-                           ->imageResizeMode('cover')
-                           ->imageCropAspectRatio('16:10')
-                           ->imageResizeTargetWidth('1200')
-                           ->imageResizeTargetHeight('750')
-                           ->imageResizeUpscale(false)
-                           ->helperText('Recomandat: minim 1200×750 px. / Рекомендуется: минимум 1200×750 px.'),
-                   ])
-                   ->columns(2),
+                        FileUpload::make('image')
+                            ->image()
+                            ->disk('public')
+                            ->directory('pages-thumbnails')
+                            ->visibility('public')
+                            // The home-page card shows this at 16:10, so let the
+                            // editor crop to that ratio and save a size that stays
+                            // sharp on retina screens without uploading megabytes.
+                            ->imageEditor()
+                            ->imageEditorAspectRatios(['16:10'])
+                            ->imageResizeMode('cover')
+                            ->imageCropAspectRatio('16:10')
+                            ->imageResizeTargetWidth('1200')
+                            ->imageResizeTargetHeight('750')
+                            ->imageResizeUpscale(false)
+                            ->helperText('Recomandat: minim 1200×750 px. / Рекомендуется: минимум 1200×750 px.'),
+                    ])
+                    ->columns(2),
 
-               // Contacts
-              Section::make('Contacte (Tabel)')
-                  ->visible(fn (Get $get) => $get('type') === 'contact')
-                  ->columnSpanFull()
-                  ->schema([
-                      Repeater::make('contact_list')
-                          ->label('Tabel Contacte')
-                          ->schema([
-                              Forms\Components\TextInput::make('nr')
-                                  ->label('Nr.')
-                                  ->numeric()
-                                  ->required(),
+                // Contacts
+                Section::make('Contacte (Tabel)')
+                    ->visible(fn (Get $get) => $get('type') === 'contact')
+                    ->columnSpanFull()
+                    ->schema([
+                        Repeater::make('contact_list')
+                            ->label('Tabel Contacte')
+                            ->schema([
+                                Forms\Components\TextInput::make('nr')
+                                    ->label('Nr.')
+                                    ->numeric()
+                                    ->required(),
 
-                              Forms\Components\TextInput::make('section')
-                                  ->label('Secţia')
-                                  ->required(),
+                                Forms\Components\TextInput::make('section')
+                                    ->label('Secţia')
+                                    ->required(),
 
-                              Forms\Components\TextInput::make('name')
-                                  ->label('Nume / Prenume')
-                                  ->required(),
+                                Forms\Components\TextInput::make('name')
+                                    ->label('Nume / Prenume')
+                                    ->required(),
 
-                              Forms\Components\TextInput::make('role')
-                                  ->label('Funcția / Rol'),
+                                Forms\Components\TextInput::make('role')
+                                    ->label('Funcția / Rol'),
 
-                              Forms\Components\Textarea::make('phones')
-                                  ->label('Numărul de telefon')
-                                  ->rows(3)
-                                  ->columnSpanFull(),
-                          ])
-                          ->columns(2)
-                          ->collapsible()
-                          ->reorderable(),
-                  ]),
+                                Forms\Components\Textarea::make('phones')
+                                    ->label('Numărul de telefon')
+                                    ->rows(3)
+                                    ->columnSpanFull(),
+                            ])
+                            ->columns(2)
+                            ->collapsible()
+                            ->reorderable(),
+                    ]),
 
-               // Multilingual Content
-               Tabs::make('Content')
-                   ->tabs([
-                       Tab::make('RO')
-                           ->schema([
-                               Forms\Components\TextInput::make('title_ro')
-                                   ->required(),
+                // Multilingual Content
+                Tabs::make('Content')
+                    ->tabs([
+                        Tab::make('RO')
+                            ->schema([
+                                Forms\Components\TextInput::make('title_ro')
+                                    ->required(),
 
-                               TinyMceEditor::make('content_ro')
-                                   ->required(),
-                           ]),
+                                TinyMceEditor::make('content_ro')
+                                    ->required(),
+                            ]),
 
-                      Tab::make('RU')
-                                  ->schema([
-                                      Forms\Components\TextInput::make('title_ru'),
+                        Tab::make('RU')
+                            ->schema([
+                                Forms\Components\TextInput::make('title_ru'),
 
-                                      TinyMceEditor::make('content_ru'),
-                                  ]),
-                   ])
-                   ->columnSpanFull(),
-           ]);
+                                TinyMceEditor::make('content_ru'),
+                            ]),
+                    ])
+                    ->columnSpanFull(),
+            ]);
     }
 
-   public static function table(Table $table): Table
-   {
-       return $table
-           ->columns([
-               Tables\Columns\TextColumn::make('type')->badge(),
-               Tables\Columns\TextColumn::make('title_ro')->label('Titlu (RO)'),
-               Tables\Columns\TextColumn::make('slug'),
-               Tables\Columns\IconColumn::make('show_in_header')
-                   ->label('Header')
-                   ->boolean(),
-               Tables\Columns\IconColumn::make('show_in_footer')
-                   ->label('Footer')
-                   ->boolean(),
-           ])
-           ->filters([
-               Tables\Filters\SelectFilter::make('type')
-                   ->options([
-                       'about' => 'Despre Noi',
-                       'service' => 'Servicii',
-                       'partnership' => 'Parteneriat',
-                       'donations' => 'Donații',
-                   ]),
-           ])
-           ->actions([
-               EditAction::make(),
-           ])
-           ->bulkActions([
-               BulkActionGroup::make([
-                   DeleteBulkAction::make(),
-               ]),
-           ]);
-   }
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                Tables\Columns\TextColumn::make('type')->badge(),
+                Tables\Columns\TextColumn::make('title_ro')->label('Titlu (RO)'),
+                Tables\Columns\TextColumn::make('slug'),
+                Tables\Columns\IconColumn::make('show_in_header')
+                    ->label('Header')
+                    ->boolean(),
+                Tables\Columns\IconColumn::make('show_in_footer')
+                    ->label('Footer')
+                    ->boolean(),
+            ])
+            ->filters([
+                Tables\Filters\SelectFilter::make('type')
+                    ->options([
+                        'about' => 'Despre Noi',
+                        'service' => 'Servicii',
+                        'partnership' => 'Parteneriat',
+                        'donations' => 'Donații',
+                    ]),
+            ])
+            ->actions([
+                EditAction::make(),
+            ])
+            ->bulkActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                ]),
+            ]);
+    }
 
     public static function getPages(): array
     {

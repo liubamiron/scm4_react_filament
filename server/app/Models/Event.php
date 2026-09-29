@@ -7,18 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 class Event extends Model
 {
     protected $fillable = [
-          'slug',
-          'title_ro',
-          'title_ru',
-          'description_ro',
-          'description_ru',
-          'content_ro',
-          'content_ru',
-           'date',
-           'image',
-        ];
+        'slug',
+        'title_ro',
+        'title_ru',
+        'description_ro',
+        'description_ru',
+        'content_ro',
+        'content_ru',
+        'date',
+        'image',
+    ];
 
-        protected $casts = [
-            'date' => 'date',
-        ];
+    protected $casts = [
+        'date' => 'date',
+    ];
 }

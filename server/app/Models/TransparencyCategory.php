@@ -18,8 +18,8 @@ class TransparencyCategory extends Model
     /**
      * Relationship to the documents
      */
- public function documents(): HasMany
- {
-     return $this->hasMany(TransparencyDocument::class)->where('is_active', true);
- }
+    public function documents(): HasMany
+    {
+        return $this->hasMany(TransparencyDocument::class)->where('is_active', true);
+    }
 }

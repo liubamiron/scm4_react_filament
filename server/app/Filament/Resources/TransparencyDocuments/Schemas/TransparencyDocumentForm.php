@@ -2,17 +2,15 @@
 
 namespace App\Filament\Resources\TransparencyDocuments\Schemas;
 
-use Filament\Schemas\Components\Section;
-use Filament\Schemas\Components\Grid;
-use Filament\Schemas\Components\Tabs;
-use Filament\Schemas\Components\Tabs\Tab;
-
+use Filament\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Actions\Action;
-
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 
 class TransparencyDocumentForm
@@ -39,7 +37,7 @@ class TransparencyDocumentForm
                                 ->default(true)
                                 ->inline(false) // makes it align nicer
                                 ->columnSpan(2),
-                        ])
+                        ]),
                     ]),
 
                 // 🌍 Titles with Tabs
@@ -70,25 +68,25 @@ class TransparencyDocumentForm
                 Section::make('Fișier document')
                     ->icon('heroicon-o-document-arrow-up')
                     ->schema([
-                       FileUpload::make('file_path')
-                           ->label('Document PDF')
-                           ->disk('public')
-                           ->directory('transparency')
-                           ->acceptedFileTypes(['application/pdf'])
-                           ->maxSize(10240)
-                           ->helperText('Acceptă doar PDF (max 10MB)')
-                           ->downloadable()
-                           ->previewable(true)
-                           ->preserveFilenames()
-                           ->required()
-                           ->hintActions([
-                               Action::make('preview')
-                                   ->label('Previzualizare')
-                                   ->icon('heroicon-o-eye')
-                                   ->url(fn ($state) => $state ? asset('storage/' . $state) : null, true)
-                                   ->visible(fn ($state) => filled($state))
-                           ])
-                           ->columnSpanFull()
+                        FileUpload::make('file_path')
+                            ->label('Document PDF')
+                            ->disk('public')
+                            ->directory('transparency')
+                            ->acceptedFileTypes(['application/pdf'])
+                            ->maxSize(10240)
+                            ->helperText('Acceptă doar PDF (max 10MB)')
+                            ->downloadable()
+                            ->previewable(true)
+                            ->preserveFilenames()
+                            ->required()
+                            ->hintActions([
+                                Action::make('preview')
+                                    ->label('Previzualizare')
+                                    ->icon('heroicon-o-eye')
+                                    ->url(fn ($state) => $state ? asset('storage/'.$state) : null, true)
+                                    ->visible(fn ($state) => filled($state)),
+                            ])
+                            ->columnSpanFull(),
                     ]),
             ]);
     }

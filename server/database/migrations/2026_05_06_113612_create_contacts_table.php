@@ -12,17 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('contacts', function (Blueprint $table) {
-                $table->id();
-                $table->integer('sort_order')->default(0); // For the "Nr." column
-                $table->string('department_ro');           // Secția
-                $table->string('department_ru')->nullable();
-                $table->string('staff_name_ro');            // Nume / Prenume
-                $table->string('staff_name_ru')->nullable();
-                $table->string('position_ro')->nullable();  // Ex: "Șef secție"
-                $table->string('position_ru')->nullable();
-                $table->text('phone_numbers');              // Can store multiple numbers
-                $table->timestamps();
-            });
+            $table->id();
+            $table->integer('sort_order')->default(0); // For the "Nr." column
+            $table->string('department_ro');           // Secția
+            $table->string('department_ru')->nullable();
+            $table->string('staff_name_ro');            // Nume / Prenume
+            $table->string('staff_name_ru')->nullable();
+            $table->string('position_ro')->nullable();  // Ex: "Șef secție"
+            $table->string('position_ru')->nullable();
+            $table->text('phone_numbers');              // Can store multiple numbers
+            $table->timestamps();
+        });
     }
 
     /**

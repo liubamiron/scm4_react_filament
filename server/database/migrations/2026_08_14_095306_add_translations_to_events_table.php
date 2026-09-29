@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('events', function (Blueprint $table) {
-             $table->renameColumn('title', 'title_ro');
-                        $table->renameColumn('description', 'description_ro');
-                        $table->renameColumn('content', 'content_ro');
+            $table->renameColumn('title', 'title_ro');
+            $table->renameColumn('description', 'description_ro');
+            $table->renameColumn('content', 'content_ro');
 
-                        $table->string('title_ru')->nullable()->after('title_ro');
-                        $table->text('description_ru')->nullable()->after('description_ro');
-                        $table->longText('content_ru')->nullable()->after('content_ro');
+            $table->string('title_ru')->nullable()->after('title_ro');
+            $table->text('description_ru')->nullable()->after('description_ro');
+            $table->longText('content_ru')->nullable()->after('content_ro');
         });
     }
 
@@ -26,17 +26,17 @@ return new class extends Migration
      * Reverse the migrations.
      */
     public function down(): void
-        {
-            Schema::table('events', function (Blueprint $table) {
-                $table->dropColumn([
-                    'title_ru',
-                    'description_ru',
-                    'content_ru',
-                ]);
+    {
+        Schema::table('events', function (Blueprint $table) {
+            $table->dropColumn([
+                'title_ru',
+                'description_ru',
+                'content_ru',
+            ]);
 
-                $table->renameColumn('title_ro', 'title');
-                $table->renameColumn('description_ro', 'description');
-                $table->renameColumn('content_ro', 'content');
-            });
-        }
+            $table->renameColumn('title_ro', 'title');
+            $table->renameColumn('description_ro', 'description');
+            $table->renameColumn('content_ro', 'content');
+        });
+    }
 };
