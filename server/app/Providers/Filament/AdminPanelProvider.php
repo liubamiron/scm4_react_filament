@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use Filament\Auth\MultiFactor\App\AppAuthentication;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -32,6 +33,12 @@ class AdminPanelProvider extends PanelProvider
             // всех, кто ведёт сайт. Без этой страницы сменить себе пароль можно
             // было бы только через artisan tinker.
             ->profile()
+            // 2FA через приложение (Google Authenticator и т.п.) включается
+            // каждым в своём профиле; без кода из телефона украденный пароль
+            // ничего не даёт.
+            ->multiFactorAuthentication([
+                AppAuthentication::make()->recoverable(),
+            ])
             ->colors([
                 'primary' => Color::Amber,
             ])
