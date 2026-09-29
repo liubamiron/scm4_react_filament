@@ -114,19 +114,21 @@ php artisan make:filament-user
 php artisan make:filament-user --name="Admin" --email="..." --password="..."
 ```
 
-**После создания обязательно проставить роль.** `canAccessPanel()` в
-`app/Models/User.php` требует `role === 'admin'`, а колонка `role` в миграции
-создана с `default('client')` — про неё `make:filament-user` ничего не знает.
-Пароль такой пользователь пройдёт, а на панель его не пустят:
+**После создания обязательно проставить роль.** Роли хранятся в таблицах
+`spatie/laravel-permission`: `admin` управляет пользователями, `client` только
+наполняет сайт. `canAccessPanel()` пускает лишь с одной из них, а
+`make:filament-user` роль не назначает — пароль такой пользователь пройдёт, а на
+панель его не пустят. Роль ставится по id пользователя:
 
 ```bash
-php artisan tinker --execute='$u = App\Models\User::where("email","<e-mail>")->firstOrFail(); $u->role = "admin"; $u->save(); echo $u->role;'
+php artisan tinker --execute='echo App\Models\User::where("email","<e-mail>")->value("id");'
+php artisan permission:assign-role admin <id>
 ```
 
-Этой же командой меняется и пароль (`$u->password = "..."`) — каст
-`'password' => 'hashed'` в модели захеширует его сам. С Filament 4.11.2 у панели
-включён `->profile()`, так что после первого входа пароль меняется уже из
-интерфейса, в меню пользователя справа сверху.
+Остальных пользователей (редакторов) дальше заводит admin в разделе
+«Пользователи». Пароль — не короче 12 символов, с заглавными, строчными буквами
+и цифрами; меняется в профиле, в меню пользователя справа сверху. Там же
+включается вход по коду из приложения (2FA).
 
 **Не запускать `db:seed`:** сидер в `database/seeders/DatabaseSeeder.php` создаёт
 фабричного `test@example.com` со случайным паролем, войти под ним нельзя.
@@ -188,6 +190,15 @@ php artisan optimize:clear
 
 `.env`, `vendor/` и симлинк `public/storage` переживают обновление и заново не
 создаются.
+
+Без SSH то же самое запускается через Scheduled Tasks → Add Task → «Run a
+command» (одной строкой, `composer.phar` лежит в репозитории) → OK → Run Now:
+
+```bash
+cd ~/httpdocs/server && /opt/plesk/php/8.4/bin/php composer.phar install --no-dev --optimize-autoloader --no-interaction && /opt/plesk/php/8.4/bin/php artisan optimize:clear && /opt/plesk/php/8.4/bin/php artisan migrate --force && /opt/plesk/php/8.4/bin/php artisan optimize
+```
+
+Задачу потом выключить (Active) или удалить — повторять её по расписанию незачем.
 
 ## Перезаливка на scm4.md (отказ от new.scm4.md)
 
