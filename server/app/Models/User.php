@@ -38,13 +38,11 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
     ];
 
     /**
-     * Администратору — сложный пароль, редактору контента хватает 4 символов.
+     * Администратору — от 6 символов, редактору контента — от 4.
      */
     public static function passwordRuleFor(?string $role): Password
     {
-        return $role === self::ROLE_ADMIN
-            ? Password::min(12)->letters()->mixedCase()->numbers()
-            : Password::min(4);
+        return Password::min($role === self::ROLE_ADMIN ? 6 : 4);
     }
 
     /**

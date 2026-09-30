@@ -77,7 +77,7 @@ class UserAccessTest extends TestCase
         $this->assertTrue(User::firstWhere('email', 'editor@example.com')->hasRole(User::ROLE_CLIENT));
     }
 
-    public function test_admin_role_requires_strong_password(): void
+    public function test_admin_role_requires_six_characters(): void
     {
         $this->actingAs($this->admin());
 
@@ -95,7 +95,7 @@ class UserAccessTest extends TestCase
             ->fillForm([
                 'name' => 'Second admin',
                 'email' => 'admin2@example.com',
-                'password' => 'Str0ngPassword',
+                'password' => 'abcdef',
                 'role' => User::ROLE_ADMIN,
             ])
             ->call('create')
