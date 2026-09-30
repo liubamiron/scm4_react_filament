@@ -1,0 +1,1 @@
+function e(e){let t=e.replace(/<\/(p|div|li|h[1-6]|td|th|tr|blockquote)>|<br\s*\/?>/gi,` $&`);return(new DOMParser().parseFromString(t,`text/html`).body.textContent??``).replace(/\s+/g,` `).trim()}export{e as t};
