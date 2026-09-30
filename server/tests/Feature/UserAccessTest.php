@@ -50,7 +50,7 @@ class UserAccessTest extends TestCase
         $this->assertFalse($client->can('delete', $admin));
     }
 
-    public function test_admin_creates_client_with_role_and_strong_password(): void
+    public function test_admin_creates_client_with_short_password(): void
     {
         $this->actingAs($this->admin());
 
@@ -58,7 +58,7 @@ class UserAccessTest extends TestCase
             ->fillForm([
                 'name' => 'Editor',
                 'email' => 'editor@example.com',
-                'password' => 'simple',
+                'password' => 'abc',
                 'role' => User::ROLE_CLIENT,
             ])
             ->call('create')
@@ -68,13 +68,38 @@ class UserAccessTest extends TestCase
             ->fillForm([
                 'name' => 'Editor',
                 'email' => 'editor@example.com',
-                'password' => 'Str0ngPassword',
+                'password' => 'abcd',
                 'role' => User::ROLE_CLIENT,
             ])
             ->call('create')
             ->assertHasNoFormErrors();
 
         $this->assertTrue(User::firstWhere('email', 'editor@example.com')->hasRole(User::ROLE_CLIENT));
+    }
+
+    public function test_admin_role_requires_strong_password(): void
+    {
+        $this->actingAs($this->admin());
+
+        Livewire::test(CreateUser::class)
+            ->fillForm([
+                'name' => 'Second admin',
+                'email' => 'admin2@example.com',
+                'password' => 'abcd',
+                'role' => User::ROLE_ADMIN,
+            ])
+            ->call('create')
+            ->assertHasFormErrors(['password']);
+
+        Livewire::test(CreateUser::class)
+            ->fillForm([
+                'name' => 'Second admin',
+                'email' => 'admin2@example.com',
+                'password' => 'Str0ngPassword',
+                'role' => User::ROLE_ADMIN,
+            ])
+            ->call('create')
+            ->assertHasNoFormErrors();
     }
 
     public function test_editing_without_password_keeps_old_one(): void

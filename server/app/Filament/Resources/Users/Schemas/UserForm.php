@@ -6,6 +6,7 @@ use App\Models\User;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Illuminate\Validation\Rules\Password;
 
@@ -28,7 +29,9 @@ class UserForm
                     ->label('Parolă / Пароль')
                     ->password()
                     ->revealable()
-                    ->rule(Password::default())
+                    // Иначе браузер подставляет сохранённый пароль админа и при сохранении меняет чужой пароль.
+                    ->autocomplete('new-password')
+                    ->rule(fn (Get $get): Password => User::passwordRuleFor($get('role')))
                     ->required(fn (string $operation): bool => $operation === 'create')
                     ->dehydrated(fn (?string $state): bool => filled($state)),
                 // Свою роль администратор снять не может, чтобы не потерять доступ к пользователям.

@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 
@@ -20,7 +21,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Действует и в форме пользователя, и на странице профиля Filament.
-        Password::defaults(fn () => Password::min(12)->letters()->mixedCase()->numbers());
+        // Страница профиля Filament: требования зависят от роли вошедшего пользователя.
+        // В форме пользователя правило берётся по выбранной роли (UserForm).
+        Password::defaults(fn () => User::passwordRuleFor(
+            auth()->user()?->hasRole(User::ROLE_ADMIN) ? User::ROLE_ADMIN : User::ROLE_CLIENT
+        ));
     }
 }

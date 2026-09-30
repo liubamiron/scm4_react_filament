@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Validation\Rules\Password;
 use Spatie\Permission\Traits\HasRoles;
 
 #[Fillable(['name', 'email', 'password'])]
@@ -35,6 +36,16 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
         self::ROLE_ADMIN => 'Administrator / Администратор',
         self::ROLE_CLIENT => 'Editor conținut / Редактор контента',
     ];
+
+    /**
+     * Администратору — сложный пароль, редактору контента хватает 4 символов.
+     */
+    public static function passwordRuleFor(?string $role): Password
+    {
+        return $role === self::ROLE_ADMIN
+            ? Password::min(12)->letters()->mixedCase()->numbers()
+            : Password::min(4);
+    }
 
     /**
      * Get the attributes that should be cast.
