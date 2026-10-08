@@ -67,6 +67,19 @@ export interface EventItem {
     updated_at?: string
 }
 
+// Either `file_path` (uploaded PDF) or `url` (official text) is set.
+export interface LawDocument {
+    id: number
+    title_ro: string
+    title_ru: string | null
+    file_path: string | null
+    url: string | null
+    sort_order: number
+    is_active: boolean
+    created_at: string
+    updated_at: string
+}
+
 export interface Transparency {
     id: number
     name_ro: string

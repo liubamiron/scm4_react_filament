@@ -13,5 +13,6 @@ export function transformImageUrls(content: string): string {
         ? storageUrl.replace(/\/storage\/?$/, '')
         : apiBaseUrl?.replace(/\/api\/?$/, '') || '';
 
-    return content.replace(/src=(['"])(?:\.\.\/)*storage\//g, `src=$1${baseUrl}/storage/`);
+    // `href` too: PDFs linked from the editor are saved as `../storage/...` like images.
+    return content.replace(/(src|href)=(['"])(?:\.\.\/)*storage\//g, `$1=$2${baseUrl}/storage/`);
 }

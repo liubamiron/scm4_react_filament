@@ -2,6 +2,7 @@
 
 use App\Models\ContactMessage;
 use App\Models\Event;
+use App\Models\LawDocument;
 use App\Models\Page;
 use App\Models\Partner;
 use App\Models\TransparencyCategory;
@@ -118,5 +119,12 @@ Route::get('/transparency', function () {
         $query->where('is_active', true);
     }])
         ->orderBy('sort_order', 'asc')
+        ->get();
+});
+
+Route::get('/law-documents', function () {
+    return LawDocument::where('is_active', true)
+        ->orderBy('sort_order')
+        ->orderBy('id')
         ->get();
 });

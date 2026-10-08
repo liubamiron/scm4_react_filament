@@ -18,7 +18,7 @@ class TransparencyDocumentResource extends Resource
 {
     protected static ?string $model = TransparencyDocument::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedDocumentCheck;
 
     protected static ?string $recordTitleAttribute = 'title_ro';
 

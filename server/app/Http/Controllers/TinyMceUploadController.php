@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class TinyMceUploadController extends Controller
 {
@@ -21,6 +22,25 @@ class TinyMceUploadController extends Controller
         $path = $file->store('tinymce', 'public');
 
         $this->downscale(Storage::disk('public')->path($path), $file);
+
+        return response()->json([
+            'location' => asset('storage/'.$path),
+        ]);
+    }
+
+    /**
+     * Documents linked from page content (e.g. the Legislație PDFs). Stored
+     * under a readable name so the URL tells visitors what they are opening.
+     */
+    public function uploadFile(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:pdf|max:20480',
+        ]);
+
+        $file = $request->file('file');
+        $name = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) ?: 'document';
+        $path = $file->storeAs('documents', $name.'-'.now()->format('YmdHis').'.pdf', 'public');
 
         return response()->json([
             'location' => asset('storage/'.$path),

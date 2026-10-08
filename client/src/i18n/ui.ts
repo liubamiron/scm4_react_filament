@@ -44,6 +44,8 @@ const ro = {
     'transparency.view': 'Vizualizează',
     'transparency.empty': 'Nu există documente în această categorie.',
 
+    'legislation.empty': 'Nu există acte legislative publicate.',
+
     'events.title': 'Evenimente',
     'events.empty': 'Nu există evenimente publicate.',
     'events.readMore': 'Citește mai mult',
@@ -123,6 +125,8 @@ const ru: Record<UiKey, string> = {
 
     'transparency.view': 'Посмотреть',
     'transparency.empty': 'В этой категории пока нет документов.',
+
+    'legislation.empty': 'Опубликованных законодательных актов нет.',
 
     'events.title': 'События',
     'events.empty': 'Опубликованных событий нет.',

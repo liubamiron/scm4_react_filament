@@ -21,13 +21,13 @@ export const localePath = (lang: string, href: string) =>
     `/${lang}${href}` as unknown as LinkProps['to']
 
 // Shared by the header menu and the footer link list. `general` pages are not a
-// menu category — they are linked individually (Legislație) or not at all.
+// menu category — they are linked individually or not at all.
 export const navigation: NavItem[] = [
     { labelKey: 'nav.about', href: '/about', pageType: 'about' },
     { labelKey: 'nav.transparency', href: '/transparenta' },
     { labelKey: 'nav.services', pageType: 'service' },
     { labelKey: 'nav.sections', pageType: 'section' },
-    { labelKey: 'nav.legislation', href: '/pages/legislatie' },
+    { labelKey: 'nav.legislation', href: '/legislatie' },
     { labelKey: 'nav.events', href: '/events' },
     { labelKey: 'nav.donations', pageType: 'donations' },
     { labelKey: 'nav.partnership', pageType: 'partnership' },

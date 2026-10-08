@@ -36,7 +36,8 @@
 
                         image_dimensions: false,
 
-                        file_picker_types: 'image',
+                        // `file` adds a browse button to the link dialog for PDFs.
+                        file_picker_types: 'file image',
 
                         style_formats: [
                             {
@@ -75,6 +76,34 @@
                                     }
 
                                     reader.readAsDataURL(file)
+                                }
+
+                                input.click()
+                            }
+
+                            // PDFs are uploaded right away (images wait for the blob
+                            // cache), so the link points at the stored file on save.
+                            if (meta.filetype === 'file') {
+                                const input = document.createElement('input')
+                                input.setAttribute('type', 'file')
+                                input.setAttribute('accept', 'application/pdf')
+
+                                input.onchange = function () {
+                                    const file = this.files[0]
+                                    const formData = new FormData()
+                                    formData.append('file', file)
+
+                                    fetch('/admin/tinymce/upload-file', {
+                                        method: 'POST',
+                                        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Accept': 'application/json' },
+                                        body: formData,
+                                    })
+                                        .then((response) => response.ok ? response.json() : Promise.reject(response))
+                                        .then((json) => cb(json.location, { text: file.name.replace(/\.pdf$/i, '') }))
+                                        .catch(() => tinymce.activeEditor.notificationManager.open({
+                                            text: 'Nu s-a putut încărca PDF-ul (max 20 MB) / Не удалось загрузить PDF (макс. 20 МБ)',
+                                            type: 'error',
+                                        }))
                                 }
 
                                 input.click()
