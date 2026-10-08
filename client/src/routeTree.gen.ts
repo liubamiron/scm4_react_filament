@@ -13,6 +13,7 @@ import { Route as LangRouteImport } from './routes/$lang'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LangIndexRouteImport } from './routes/$lang/index'
 import { Route as LangTransparentaRouteImport } from './routes/$lang/transparenta'
+import { Route as LangLegislatieRouteImport } from './routes/$lang/legislatie'
 import { Route as LangAboutRouteImport } from './routes/$lang/about'
 import { Route as LangEventsIndexRouteImport } from './routes/$lang/events/index'
 import { Route as LangPagesSlugRouteImport } from './routes/$lang/pages/$slug'
@@ -36,6 +37,11 @@ const LangIndexRoute = LangIndexRouteImport.update({
 const LangTransparentaRoute = LangTransparentaRouteImport.update({
   id: '/transparenta',
   path: '/transparenta',
+  getParentRoute: () => LangRoute,
+} as any)
+const LangLegislatieRoute = LangLegislatieRouteImport.update({
+  id: '/legislatie',
+  path: '/legislatie',
   getParentRoute: () => LangRoute,
 } as any)
 const LangAboutRoute = LangAboutRouteImport.update({
@@ -63,6 +69,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$lang': typeof LangRouteWithChildren
   '/$lang/about': typeof LangAboutRoute
+  '/$lang/legislatie': typeof LangLegislatieRoute
   '/$lang/transparenta': typeof LangTransparentaRoute
   '/$lang/': typeof LangIndexRoute
   '/$lang/events/$slug': typeof LangEventsSlugRoute
@@ -72,6 +79,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$lang/about': typeof LangAboutRoute
+  '/$lang/legislatie': typeof LangLegislatieRoute
   '/$lang/transparenta': typeof LangTransparentaRoute
   '/$lang': typeof LangIndexRoute
   '/$lang/events/$slug': typeof LangEventsSlugRoute
@@ -83,6 +91,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/$lang': typeof LangRouteWithChildren
   '/$lang/about': typeof LangAboutRoute
+  '/$lang/legislatie': typeof LangLegislatieRoute
   '/$lang/transparenta': typeof LangTransparentaRoute
   '/$lang/': typeof LangIndexRoute
   '/$lang/events/$slug': typeof LangEventsSlugRoute
@@ -95,6 +104,7 @@ export interface FileRouteTypes {
     | '/'
     | '/$lang'
     | '/$lang/about'
+    | '/$lang/legislatie'
     | '/$lang/transparenta'
     | '/$lang/'
     | '/$lang/events/$slug'
@@ -104,6 +114,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/$lang/about'
+    | '/$lang/legislatie'
     | '/$lang/transparenta'
     | '/$lang'
     | '/$lang/events/$slug'
@@ -114,6 +125,7 @@ export interface FileRouteTypes {
     | '/'
     | '/$lang'
     | '/$lang/about'
+    | '/$lang/legislatie'
     | '/$lang/transparenta'
     | '/$lang/'
     | '/$lang/events/$slug'
@@ -156,6 +168,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LangTransparentaRouteImport
       parentRoute: typeof LangRoute
     }
+    '/$lang/legislatie': {
+      id: '/$lang/legislatie'
+      path: '/legislatie'
+      fullPath: '/$lang/legislatie'
+      preLoaderRoute: typeof LangLegislatieRouteImport
+      parentRoute: typeof LangRoute
+    }
     '/$lang/about': {
       id: '/$lang/about'
       path: '/about'
@@ -189,6 +208,7 @@ declare module '@tanstack/react-router' {
 
 interface LangRouteChildren {
   LangAboutRoute: typeof LangAboutRoute
+  LangLegislatieRoute: typeof LangLegislatieRoute
   LangTransparentaRoute: typeof LangTransparentaRoute
   LangIndexRoute: typeof LangIndexRoute
   LangEventsSlugRoute: typeof LangEventsSlugRoute
@@ -198,6 +218,7 @@ interface LangRouteChildren {
 
 const LangRouteChildren: LangRouteChildren = {
   LangAboutRoute: LangAboutRoute,
+  LangLegislatieRoute: LangLegislatieRoute,
   LangTransparentaRoute: LangTransparentaRoute,
   LangIndexRoute: LangIndexRoute,
   LangEventsSlugRoute: LangEventsSlugRoute,
