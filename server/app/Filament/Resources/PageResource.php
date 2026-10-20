@@ -31,21 +31,24 @@ class PageResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedDocumentText;
 
+    // Shared by the form's type select and the list page's category tabs.
+    public const TYPES = [
+        'general' => '📄 General',
+        'about' => '📋 Despre Noi',
+        'service' => '🏥 Servicii Medicale',
+        'section' => '🏢 Secții',
+        'partnership' => '🤝 Parteneriat',
+        'donations' => '💝 Donații',
+        'contact' => '📞 Contact',
+    ];
+
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->components([
 
                 Forms\Components\Select::make('type')
-                    ->options([
-                        'general' => '📄 General',
-                        'about' => '📋 Despre Noi',
-                        'service' => '🏥 Servicii Medicale',
-                        'section' => '🏢 Secții',
-                        'partnership' => '🤝 Parteneriat',
-                        'donations' => '💝 Donații',
-                        'contact' => '📞 Contact',
-                    ])
+                    ->options(self::TYPES)
                     ->default('general')
                     ->live()
                     ->native(false)
@@ -169,15 +172,6 @@ class PageResource extends Resource
                 Tables\Columns\IconColumn::make('show_in_footer')
                     ->label('Footer')
                     ->boolean(),
-            ])
-            ->filters([
-                Tables\Filters\SelectFilter::make('type')
-                    ->options([
-                        'about' => 'Despre Noi',
-                        'service' => 'Servicii',
-                        'partnership' => 'Parteneriat',
-                        'donations' => 'Donații',
-                    ]),
             ])
             ->actions([
                 EditAction::make(),
