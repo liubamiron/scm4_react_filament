@@ -1,5 +1,5 @@
 // Links built from the hospital's `footer.*` contact strings, shared by the
-// home page info cards and the mobile menu.
+// header and the mobile menu.
 
 // Google Maps search for the street address; opens the app on phones.
 export const MAPS_URL =

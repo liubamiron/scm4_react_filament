@@ -5,7 +5,6 @@ import { useEvents } from "../features/pages/hook/useEvents.ts";
 import { PageStatus } from "../components/PageStatus.tsx";
 import { PageCard } from "../components/PageCard.tsx";
 import { EventListItem } from "./EventsPage.tsx";
-import { HomeQuickInfo } from "../components/HomeQuickInfo.tsx";
 import { useLocale, useT } from "../i18n";
 
 const LATEST_NEWS_COUNT = 4;
@@ -23,8 +22,6 @@ export function HomePage() {
 
     return (
         <div className="page">
-            <HomeQuickInfo />
-
             {/* Services */}
             <section className="space-y-8">
                 <h2 className="section-title text-center">{t("home.servicesTitle")}</h2>

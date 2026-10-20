@@ -6,6 +6,10 @@ import { localePath } from './navigation'
 import { useNavigation } from './useNavigation'
 import { MAPS_URL, telHref } from './contactLinks'
 import { SiteLogo } from './SiteLogo'
+import { Emblem } from './Emblem'
+
+const contactIconClass = 'flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-700'
+const menuItemClass = 'flex w-full items-center justify-center gap-1 whitespace-nowrap px-4 py-4 text-[15px] font-bold text-white hover:bg-brand-900 [&.active]:bg-brand-900'
 
 function AppHeader() {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -37,35 +41,38 @@ function AppHeader() {
         setOpenDropdown((prev) => (prev === name ? null : name))
     }
 
+    const phone = t('footer.phone')
+    const email = t('footer.email')
+
+    // Three rows, like scm1.md: a light utility bar (quick links + language),
+    // the white identity row (emblem, full name, e-mail and phone) and a blue
+    // menu bar. They are siblings rather than one <header> so each can be
+    // sticky on its own: the menu bar on desktop, the logo row on phones.
     return (
-        <header className="w-full bg-white shadow-sm sticky top-0 z-50">
-            {/* Top Bar */}
-            <div className="flex items-center justify-between border-b-2 border-gold-500 bg-brand-950 px-5 py-2.5 text-sm tracking-wide text-white/85">
-        <span>
-          {t('site.name')}
-        </span>
+        <>
+            {/* Utility bar */}
+            <div className="flex items-center justify-between bg-slate-100 px-5 py-2 text-xs font-semibold text-slate-500">
+                <div className="flex items-center gap-6">
+                    <Link to="/$lang" params={{ lang }} className="hover:text-brand-700">
+                        {t('nav.home')}
+                    </Link>
+                    <Link to="/$lang/pages/$slug" params={{ lang, slug: 'contacte' }} className="hover:text-brand-700">
+                        {t('nav.contacts')}
+                    </Link>
+                </div>
                 <div className="relative">
                     <button
                         onClick={() => setIsLangOpen(!isLangOpen)}
                         aria-label={t('common.language')}
-                        className="flex items-center gap-2 hover:opacity-80"
+                        className="flex items-center gap-1.5 hover:text-brand-700"
                     >
                         <Globe size={14} />
-
-                        <span className="font-semibold uppercase">
-            {lang}
-        </span>
-
-                        <ChevronDown
-                            size={12}
-                            className={`${
-                                isLangOpen ? 'rotate-180' : ''
-                            }`}
-                        />
+                        <span className="uppercase">{lang}</span>
+                        <ChevronDown size={12} className={isLangOpen ? 'rotate-180' : ''} />
                     </button>
 
                     {isLangOpen && (
-                        <div className="absolute right-0 mt-2 bg-white text-slate-700 border border-slate-200 rounded-md shadow-lg overflow-hidden min-w-[80px] z-50">
+                        <div className="absolute right-0 mt-2 bg-white text-sm font-normal text-slate-700 border border-slate-200 rounded-md shadow-lg overflow-hidden min-w-[80px] z-[55]">
                             {SUPPORTED_LOCALES.map((code) => (
                                 <button
                                     key={code}
@@ -74,9 +81,7 @@ function AppHeader() {
                                         setIsLangOpen(false)
                                     }}
                                     className={`w-full text-left px-4 py-2 hover:bg-slate-100 ${
-                                        lang === code
-                                            ? 'font-bold text-brand-700'
-                                            : ''
+                                        lang === code ? 'font-bold text-brand-700' : ''
                                     }`}
                                 >
                                     {LOCALE_LABELS[code]}
@@ -87,34 +92,73 @@ function AppHeader() {
                 </div>
             </div>
 
-            {/* Main Navigation */}
-            <nav className="flex items-center justify-between px-5">
-                <Link to="/$lang" params={{ lang }} aria-label={t('site.name')} className="py-3">
-                    <SiteLogo />
+            {/* Identity row */}
+            <header className="sticky top-0 z-50 flex items-center justify-between gap-6 bg-white px-5 shadow-sm lg:static lg:shadow-none">
+                <Link to="/$lang" params={{ lang }} aria-label={t('site.name')} className="flex items-center gap-4 py-3 lg:py-5">
+                    <span className="lg:hidden">
+                        <SiteLogo />
+                    </span>
+                    <Emblem className="hidden h-14 w-14 shrink-0 bg-brand-700 lg:block" />
+                    <span className="hidden text-lg font-bold leading-snug text-brand-700 xl:text-xl lg:block">
+                        {t('site.name1')}
+                        <br />
+                        {t('site.name2')}
+                    </span>
                 </Link>
 
-                {/* Desktop Menu */}
-                <ul className="hidden lg:flex items-center gap-1">
+                <div className="hidden items-center gap-8 lg:flex">
+                    <a href={`mailto:${email}`} className="group flex items-center gap-3">
+                        <span className={contactIconClass}>
+                            <Mail size={20} />
+                        </span>
+                        <span className="text-sm">
+                            <span className="block text-slate-500">{t('header.email')}</span>
+                            <span className="block font-semibold text-brand-700 group-hover:text-brand-900">{email}</span>
+                        </span>
+                    </a>
+                    <a href={telHref(phone)} className="group flex items-center gap-3">
+                        <span className={contactIconClass}>
+                            <Phone size={20} />
+                        </span>
+                        <span className="text-sm">
+                            <span className="block text-slate-500">{t('header.phone')}</span>
+                            <span className="block font-semibold text-brand-700 group-hover:text-brand-900">{phone}</span>
+                        </span>
+                    </a>
+                </div>
+
+                {/* Mobile Button */}
+                <button
+                    className="lg:hidden p-2 text-slate-600"
+                    aria-label={t('common.openMenu')}
+                    aria-expanded={isMenuOpen}
+                    onClick={() => setIsMenuOpen(true)}
+                >
+                    <Menu size={28} />
+                </button>
+            </header>
+
+            {/* Desktop Menu */}
+            <nav className="sticky top-0 z-50 hidden bg-brand-700 shadow-md lg:block">
+                <ul className="flex items-stretch">
                     {navigation.map((item) => (
-                        <li key={item.labelKey} className="relative">
-                            {/* MAIN BUTTON */}
+                        <li key={item.labelKey} className="relative flex-auto">
                             {item.children ? (
                                 <button
                                     onClick={() => toggleDropdown(item.labelKey)}
-                                    className="flex items-center gap-1 rounded-md px-2 py-2 font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-700"
+                                    aria-expanded={openDropdown === item.labelKey}
+                                    className={`${menuItemClass} ${openDropdown === item.labelKey ? 'bg-brand-900' : ''}`}
                                 >
                                     {t(item.labelKey)}
                                     <ChevronDown
-                                        size={14}
-                                        className={`text-slate-400 ${
-                                            openDropdown === item.labelKey ? 'rotate-180' : ''
-                                        }`}
+                                        size={16}
+                                        className={openDropdown === item.labelKey ? 'rotate-180' : ''}
                                     />
                                 </button>
                             ) : (
                                 <Link
                                     to={localePath(lang, item.href!)}
-                                    className="rounded-md px-2 py-2 font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-700"
+                                    className={menuItemClass}
                                 >
                                     {t(item.labelKey)}
                                 </Link>
@@ -122,7 +166,7 @@ function AppHeader() {
 
                             {/* DROPDOWN */}
                             {item.children && openDropdown === item.labelKey && (
-                                <div className="absolute left-0 top-full mt-2 bg-white border border-slate-100 shadow-xl rounded-lg py-2 min-w-[180px] z-50">
+                                <div className="absolute left-0 top-full bg-white border border-slate-100 shadow-xl rounded-b-md py-2 min-w-[220px] z-50">
                                     {item.children.map((child) => (
                                         <Link
                                             key={child.slug}
@@ -142,16 +186,6 @@ function AppHeader() {
                         </li>
                     ))}
                 </ul>
-
-                {/* Mobile Button */}
-                <button
-                    className="lg:hidden p-2 text-slate-600"
-                    aria-label={t('common.openMenu')}
-                    aria-expanded={isMenuOpen}
-                    onClick={() => setIsMenuOpen(true)}
-                >
-                    <Menu size={28} />
-                </button>
             </nav>
 
             {/* Mobile Menu — a full-screen sheet over the site (and the bottom
@@ -257,7 +291,7 @@ function AppHeader() {
                     </div>
                 </div>
             )}
-        </header>
+        </>
     )
 }
 

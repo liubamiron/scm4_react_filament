@@ -6,13 +6,12 @@
  * Brand palette. Every blue on the site comes from here — use `text-brand-900`,
  * `bg-brand-200`, ... instead of hex values or Tailwind's generic blues.
  *
- *   brand-900  headings, header/footer bar text
- *   brand-700  links, accents, primary buttons
- *   brand-500  footer body
- *   brand-200  header top bar / footer bottom bar
+ *   brand-900  headings, menu bar hover
+ *   brand-700  links, accents, header menu bar, footer body
+ *   brand-200  soft borders, focus rings, card placeholders
  *   brand-50   light tints (badges, hover backgrounds)
- *   brand-950  header top bar, footer, primary buttons
- *   gold-500   thin accents: title rules, footer rule, footer icons
+ *   brand-950  primary buttons
+ *   gold-500   thin accents: title rules
  *
  * Headings use the serif face (same as the logo wordmark), body text Onest.
  */

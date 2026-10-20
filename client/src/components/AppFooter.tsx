@@ -5,6 +5,7 @@ import { localePath } from "./navigation.ts";
 import { useNavigation } from "./useNavigation.ts";
 import { PartnersStrip } from "./PartnersStrip.tsx";
 import { SiteLogo } from "./SiteLogo.tsx";
+import { telHref } from "./contactLinks.ts";
 import { useLocale, useT, type UiKey } from "../i18n";
 
 // Fixed menu entries that are left out of the footer link list. CMS pages are
@@ -14,8 +15,11 @@ const FOOTER_HIDDEN: UiKey[] = ["nav.services", "nav.sections"];
 // A link list longer than this flows into two columns and takes two grid cells.
 const SINGLE_COLUMN_MAX = 4;
 
-// Mirrors the header: same horizontal inset (px-5), the same brand-950 colour
-// with a gold rule, square edges, and the same link size as the header menu.
+const iconClass = "flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/15 text-white";
+
+// Mirrors the header: same horizontal inset (px-5), the brand-700 blue of the
+// menu bar, round contact icons like the identity row, and a light bottom bar
+// matching the utility bar.
 export function AppFooter() {
     const { data: partners } = usePartners();
     const lang = useLocale();
@@ -24,8 +28,8 @@ export function AppFooter() {
 
     const activePartners = (partners ?? []).filter((p) => p.is_active !== false);
 
-    const linkClass = "font-medium text-white/85 hover:text-white";
-    const subLinkClass = "text-white/70 hover:text-white";
+    const linkClass = "font-bold text-white hover:text-white/80";
+    const subLinkClass = "text-white/80 hover:text-white";
 
     // The footer shows a trimmed copy of the header menu.
     const footerNav = navigation.filter((item) => !FOOTER_HIDDEN.includes(item.labelKey));
@@ -42,14 +46,14 @@ export function AppFooter() {
             )}
 
             {/* BODY */}
-            <div className="border-t-2 border-gold-500 bg-brand-950 text-white">
+            <div className="bg-brand-700 text-white">
                 <div className="grid gap-10 px-5 py-10 text-sm md:grid-cols-[1.1fr_2fr_1.1fr]">
                     {/* Brand */}
                     <div className="space-y-4">
                         <Link to="/$lang" params={{ lang }}>
                             <SiteLogo emblemClassName="h-10 w-11 bg-white" textClassName="text-xl text-white" />
                         </Link>
-                        <p className="leading-relaxed text-white/80">
+                        <p className="leading-relaxed text-white/85">
                             {t("site.name1")}
                             <br />
                             {t("site.name2")}
@@ -112,19 +116,25 @@ export function AppFooter() {
 
                     {/* Contact */}
                     <div>
-                        <ul className="space-y-2.5 text-white/85">
-                            <li className="flex items-start gap-3">
-                                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-gold-300" />
+                        <ul className="space-y-3 text-white/90">
+                            <li className="flex items-center gap-3">
+                                <span className={iconClass}>
+                                    <MapPin className="h-4 w-4" />
+                                </span>
                                 <span>{t("footer.address")}</span>
                             </li>
                             <li className="flex items-center gap-3">
-                                <Phone className="h-4 w-4 shrink-0 text-gold-300" />
-                                <a href={`tel:${t("footer.phone").replace(/[^\d+]/g, "")}`} className={linkClass}>
+                                <span className={iconClass}>
+                                    <Phone className="h-4 w-4" />
+                                </span>
+                                <a href={telHref(t("footer.phone"))} className={linkClass}>
                                     {t("footer.phone")}
                                 </a>
                             </li>
                             <li className="flex items-center gap-3">
-                                <Mail className="h-4 w-4 shrink-0 text-gold-300" />
+                                <span className={iconClass}>
+                                    <Mail className="h-4 w-4" />
+                                </span>
                                 <a href={`mailto:${t("footer.email")}`} className={linkClass}>
                                     {t("footer.email")}
                                 </a>
@@ -135,7 +145,7 @@ export function AppFooter() {
             </div>
 
             {/* BOTTOM BAR */}
-            <div className="flex flex-col items-center justify-end gap-1 border-t border-white/10 bg-brand-950 px-5 py-4 text-xs tracking-wide text-white/55 sm:flex-row">
+            <div className="flex flex-col items-center justify-end gap-1 bg-slate-100 px-5 py-3 text-xs font-semibold text-slate-500 sm:flex-row">
                 <span>© {new Date().getFullYear()} — {t("footer.rights")}</span>
             </div>
         </footer>
