@@ -196,15 +196,28 @@ export function EventListItem({ event }: { event: EventItem }) {
     return (
         <Link to="/$lang/events/$slug" params={{ lang, slug: event.slug }} className="group block">
             <article className="card flex items-center gap-6 overflow-hidden p-4 hover:border-brand-700">
-                <div className="h-20 w-28 shrink-0 overflow-hidden rounded-md bg-brand-50 sm:w-32">
+                {/* The image is shown whole (object-contain) so portrait photos
+                    and posters aren't cropped to a strip; a blurred copy of the
+                    same image fills the leftover space instead of a flat color. */}
+                <div className="relative h-24 w-32 shrink-0 overflow-hidden rounded-md bg-brand-50 sm:h-28 sm:w-44">
                     {imageUrl && (
-                        <img
-                            src={imageUrl}
-                            alt={title}
-                            loading="lazy"
-                            decoding="async"
-                            className="h-full w-full object-cover"
-                        />
+                        <>
+                            <img
+                                src={imageUrl}
+                                alt=""
+                                aria-hidden="true"
+                                loading="lazy"
+                                decoding="async"
+                                className="absolute inset-0 h-full w-full scale-110 object-cover opacity-60 blur-md"
+                            />
+                            <img
+                                src={imageUrl}
+                                alt={title}
+                                loading="lazy"
+                                decoding="async"
+                                className="relative h-full w-full object-contain"
+                            />
+                        </>
                     )}
                 </div>
 
