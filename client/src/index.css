@@ -111,6 +111,12 @@ body {
     --tw-prose-headings: var(--color-brand-900);
     --tw-prose-links: var(--color-brand-700);
   }
+
+  /* Preflight makes every img a block, so images placed side by side in the
+     editor would stack one per line. Keep them inline like TinyMCE shows them. */
+  .content-prose img {
+    @apply inline-block align-top;
+  }
 }
 
 .prose blockquote {
