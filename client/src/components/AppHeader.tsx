@@ -5,7 +5,6 @@ import { LOCALE_LABELS, SUPPORTED_LOCALES, useLocale, useSwitchLocale, useT } fr
 import { localePath } from './navigation'
 import { useNavigation } from './useNavigation'
 import { MAPS_URL, telHref } from './contactLinks'
-import { SiteLogo } from './SiteLogo'
 import { Emblem } from './Emblem'
 
 const contactIconClass = 'flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-700'
@@ -120,12 +119,9 @@ function AppHeader() {
 
             {/* Identity row */}
             <header className="sticky top-0 z-50 flex items-center justify-between gap-6 bg-white px-5 shadow-sm lg:static lg:shadow-none">
-                <Link to="/$lang" params={{ lang }} aria-label={t('site.name')} className="flex items-center gap-4 py-3 lg:py-5">
-                    <span className="lg:hidden">
-                        <SiteLogo />
-                    </span>
-                    <Emblem className="hidden h-14 w-14 shrink-0 bg-brand-700 lg:block" />
-                    <span className="hidden text-lg font-bold leading-snug text-brand-700 xl:text-xl lg:block">
+                <Link to="/$lang" params={{ lang }} aria-label={t('site.name')} className="flex items-center gap-3 py-3 lg:gap-4 lg:py-5">
+                    <Emblem className="h-10 w-10 shrink-0 bg-brand-700 lg:h-14 lg:w-14" />
+                    <span className="text-[13px] font-bold leading-snug text-brand-700 sm:text-base lg:text-lg xl:text-xl">
                         {t('site.name1')}
                         <br />
                         {t('site.name2')}
@@ -230,29 +226,17 @@ function AppHeader() {
             {isMenuOpen && (
                 <div className="fixed inset-0 z-[60] flex flex-col bg-white lg:hidden">
                     <div className="flex items-center justify-between border-b border-slate-100 px-5">
-                        <Link to="/$lang" params={{ lang }} aria-label={t('site.name')} onClick={closeMenu} className="py-3">
-                            <SiteLogo emblemClassName="h-9 w-10 bg-brand-700" textClassName="text-lg text-brand-900" />
+                        <Link to="/$lang" params={{ lang }} aria-label={t('site.name')} onClick={closeMenu} className="flex items-center gap-3 py-3">
+                            <Emblem className="h-10 w-10 shrink-0 bg-brand-700" />
+                            <span className="text-[13px] font-bold leading-snug text-brand-700 sm:text-base">
+                                {t('site.name1')}
+                                <br />
+                                {t('site.name2')}
+                            </span>
                         </Link>
-                        <div className="flex items-center gap-3">
-                            {/* The top bar's language switcher is hidden under the sheet. */}
-                            <div role="group" aria-label={t('common.language')} className="flex rounded-full border border-slate-200 p-0.5">
-                                {SUPPORTED_LOCALES.map((code) => (
-                                    <button
-                                        key={code}
-                                        onClick={() => switchLocale(code)}
-                                        aria-pressed={lang === code}
-                                        className={`rounded-full px-3 py-1 text-sm font-semibold uppercase ${
-                                            lang === code ? 'bg-brand-700 text-white' : 'text-slate-600'
-                                        }`}
-                                    >
-                                        {code}
-                                    </button>
-                                ))}
-                            </div>
-                            <button className="p-2 text-slate-600" aria-label={t('common.closeMenu')} onClick={closeMenu}>
-                                <X size={28} />
-                            </button>
-                        </div>
+                        <button className="p-2 text-slate-600" aria-label={t('common.closeMenu')} onClick={closeMenu}>
+                            <X size={28} />
+                        </button>
                     </div>
 
                     <div className="flex-1 overflow-y-auto px-4 py-3">
