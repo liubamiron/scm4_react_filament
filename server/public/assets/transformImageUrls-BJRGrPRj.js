@@ -1,0 +1,1 @@
+function e(e){let t=`/storage`.replace(/\/storage\/?$/,``);return e.replace(/(src|href)=(['"])(?:\.\.\/)*storage\//g,`$1=$2${t}/storage/`)}export{e as t};

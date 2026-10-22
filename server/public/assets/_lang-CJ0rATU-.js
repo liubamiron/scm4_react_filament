@@ -1,0 +1,1 @@
+import{G as e,U as t,b as n,l as r,m as i,u as a}from"./i18n-mZ0j-yDo.js";import{b as o}from"./index-C8a_CFnI.js";var s=e(t(),1),c=n();function l(){let{lang:e}=i({from:`/$lang`});return(0,s.useEffect)(()=>{r(e)&&a(e)},[e]),(0,c.jsx)(o,{})}var u=l;export{u as component};
