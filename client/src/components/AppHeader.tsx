@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { Link } from '@tanstack/react-router'
+import { useEffect, useRef, useState } from 'react'
+import { Link, useRouterState } from '@tanstack/react-router'
 import { ChevronDown, Globe, Mail, MapPin, Menu, Phone, X } from 'lucide-react'
 import { LOCALE_LABELS, SUPPORTED_LOCALES, useLocale, useSwitchLocale, useT } from '../i18n'
 import { localePath } from './navigation'
@@ -9,7 +9,12 @@ import { SiteLogo } from './SiteLogo'
 import { Emblem } from './Emblem'
 
 const contactIconClass = 'flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-700'
-const menuItemClass = 'flex w-full items-center justify-center gap-1 whitespace-nowrap px-4 py-4 text-[15px] font-bold text-white hover:bg-brand-900 [&.active]:bg-brand-900'
+// The current section gets a gold underline rather than a dark block, so
+// hover, an open dropdown and the active page no longer look the same.
+const menuItemClass =
+    'relative flex w-full items-center justify-center gap-1 whitespace-nowrap px-4 py-4 text-[15px] font-semibold text-white/85 transition-colors hover:bg-white/10 hover:text-white ' +
+    'after:absolute after:inset-x-5 after:bottom-0 after:h-[3px] after:rounded-t-full after:bg-gold-500 after:opacity-0 after:transition-opacity ' +
+    '[&.active]:text-white [&.active]:after:opacity-100'
 
 function AppHeader() {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -20,6 +25,27 @@ function AppHeader() {
     const switchLocale = useSwitchLocale()
     const t = useT()
     const navigation = useNavigation('header')
+    const pathname = useRouterState({ select: (s) => s.location.pathname })
+    const navRef = useRef<HTMLElement>(null)
+
+    // Desktop dropdowns close on a click outside the menu bar or on Escape.
+    // Not while the mobile sheet is open: it shares `openDropdown` and lives
+    // outside the nav.
+    useEffect(() => {
+        if (!openDropdown || isMenuOpen) return
+        const onPointerDown = (e: PointerEvent) => {
+            if (!navRef.current?.contains(e.target as Node)) setOpenDropdown(null)
+        }
+        const onKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') setOpenDropdown(null)
+        }
+        document.addEventListener('pointerdown', onPointerDown)
+        document.addEventListener('keydown', onKeyDown)
+        return () => {
+            document.removeEventListener('pointerdown', onPointerDown)
+            document.removeEventListener('keydown', onKeyDown)
+        }
+    }, [openDropdown, isMenuOpen])
 
     // The open mobile menu covers the whole screen; stop the page behind it
     // from scrolling.
@@ -139,7 +165,7 @@ function AppHeader() {
             </header>
 
             {/* Desktop Menu */}
-            <nav className="sticky top-0 z-50 hidden bg-brand-700 shadow-md lg:block">
+            <nav ref={navRef} className="sticky top-0 z-50 hidden bg-brand-700 shadow-md lg:block">
                 <ul className="flex items-stretch">
                     {navigation.map((item) => (
                         <li key={item.labelKey} className="relative flex-auto">
@@ -147,12 +173,21 @@ function AppHeader() {
                                 <button
                                     onClick={() => toggleDropdown(item.labelKey)}
                                     aria-expanded={openDropdown === item.labelKey}
-                                    className={`${menuItemClass} ${openDropdown === item.labelKey ? 'bg-brand-900' : ''}`}
+                                    className={`${menuItemClass} ${
+                                        openDropdown === item.labelKey ? 'bg-white/10 text-white' : ''
+                                    } ${
+                                        // A group is the current section when one of its pages is open.
+                                        item.children.some((child) => pathname.endsWith(`/pages/${child.slug}`))
+                                            ? 'active'
+                                            : ''
+                                    }`}
                                 >
                                     {t(item.labelKey)}
                                     <ChevronDown
                                         size={16}
-                                        className={openDropdown === item.labelKey ? 'rotate-180' : ''}
+                                        className={`opacity-80 transition-transform ${
+                                            openDropdown === item.labelKey ? 'rotate-180' : ''
+                                        }`}
                                     />
                                 </button>
                             ) : (
@@ -166,7 +201,7 @@ function AppHeader() {
 
                             {/* DROPDOWN */}
                             {item.children && openDropdown === item.labelKey && (
-                                <div className="absolute left-0 top-full bg-white border border-slate-100 shadow-xl rounded-b-md py-2 min-w-[220px] z-50">
+                                <div className="absolute left-1/2 top-full z-50 min-w-[240px] -translate-x-1/2 overflow-hidden rounded-b-lg border-t-[3px] border-gold-500 bg-white py-2 shadow-xl ring-1 ring-black/5">
                                     {item.children.map((child) => (
                                         <Link
                                             key={child.slug}
@@ -176,7 +211,7 @@ function AppHeader() {
                                                 slug: child.slug,
                                             }}
                                             onClick={() => setOpenDropdown(null)}
-                                            className="block px-4 py-2 text-slate-600 hover:bg-brand-50 hover:text-brand-700"
+                                            className="block border-l-[3px] border-transparent px-5 py-2.5 text-[15px] text-slate-700 transition-colors hover:bg-brand-50 hover:text-brand-700 [&.active]:border-brand-700 [&.active]:bg-brand-50 [&.active]:font-semibold [&.active]:text-brand-700"
                                         >
                                             {child.label}
                                         </Link>
