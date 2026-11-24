@@ -6,6 +6,7 @@ use App\Filament\Forms\Components\TinyMceEditor;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
@@ -80,6 +81,11 @@ class EventForm
                     ->imageResizeTargetWidth('1600')
                     ->imageResizeTargetHeight('1600')
                     ->imageResizeUpscale(false),
+
+                Toggle::make('is_published')
+                    ->label('Afișează pe site / Показывать на сайте')
+                    ->helperText('Dezactivați pentru a ascunde evenimentul. / Отключите, чтобы скрыть событие.')
+                    ->default(true),
             ]);
     }
 }

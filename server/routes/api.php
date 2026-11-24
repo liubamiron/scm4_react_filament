@@ -72,7 +72,7 @@ Route::get('/partners', function () {
 // The list omits `content` — the cards only need the summary, and the full
 // article is fetched per event on the detail page.
 Route::get('/events', function () {
-    return Event::orderBy('date', 'desc')->get([
+    return Event::where('is_published', true)->orderBy('date', 'desc')->get([
         'id',
         'slug',
         'title_ro',
@@ -85,7 +85,7 @@ Route::get('/events', function () {
 });
 
 Route::get('/events/{slug}', function ($slug) {
-    return Event::where('slug', $slug)->firstOrFail();
+    return Event::where('is_published', true)->where('slug', $slug)->firstOrFail();
 });
 
 // The only write endpoint. Messages land in the admin panel ("Mesaje"), nothing
