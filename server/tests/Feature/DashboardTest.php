@@ -2,11 +2,16 @@
 
 namespace Tests\Feature;
 
+use App\Filament\Widgets\MedicalDaysWidget;
+use App\Filament\Widgets\PendingEventsWidget;
+use App\Filament\Widgets\SiteStatsOverview;
+use App\Models\Event;
 use App\Models\User;
 use App\Support\LogReader;
 use App\Support\MedicalDays;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Livewire\Livewire;
 use Tests\TestCase;
 
 class DashboardTest extends TestCase
@@ -16,13 +21,20 @@ class DashboardTest extends TestCase
     public function test_dashboard_with_widgets_renders(): void
     {
         $admin = User::factory()->create()->assignRole(User::ROLE_ADMIN);
+        $this->actingAs($admin);
 
-        $this->actingAs($admin)->get('/admin')->assertOk();
+        Event::create([
+            'slug' => 'pending', 'title_ro' => 'Pending', 'description_ro' => 'd', 'content_ro' => 'c',
+            'date' => today()->addWeek()->toDateString(), 'is_published' => false,
+        ])->update(['title_ro' => 'Pending edited']);
+
+        $this->get('/admin')->assertOk();
+        $this->get('/admin/activities')->assertOk();
+        $this->get('/admin/events')->assertOk();
 
         // Widgets are lazy-loaded, so render each one on its own.
-        foreach ([SiteStatsOverview::class, MessagesChart::class, EventsPerMonthChart::class] as $widget) {
-            Livewire::test($widget)->assertOk();
-        }
+        Livewire::test(SiteStatsOverview::class)->assertOk();
+        Livewire::test(PendingEventsWidget::class)->assertSee('Pending edited');
         Livewire::test(MedicalDaysWidget::class)->assertSee('Zile importante în medicină');
     }
 

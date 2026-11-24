@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Activities;
 
 use App\Filament\Resources\Activities\Pages\ListActivities;
+use App\Models\User;
 use BackedEnum;
 use Filament\Actions\ViewAction;
 use Filament\Infolists\Components\KeyValueEntry;
@@ -110,9 +111,14 @@ class ActivityResource extends Resource
                         ->filter()
                         ->mapWithKeys(fn ($type) => [$type => class_basename($type)])
                         ->all()),
+                // `causer` is a morphTo, which ->relationship() can't query.
                 SelectFilter::make('causer_id')
                     ->label('Utilizator / Пользователь')
-                    ->relationship('causer', 'name'),
+                    ->options(fn () => User::orderBy('name')->pluck('name', 'id')->all())
+                    ->query(fn ($query, array $data) => $query->when(
+                        $data['value'] ?? null,
+                        fn ($q, $id) => $q->where('causer_type', (new User)->getMorphClass())->where('causer_id', $id),
+                    )),
             ])
             ->recordActions([
                 ViewAction::make(),
