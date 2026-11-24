@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Concerns\LogsChanges;
 use Illuminate\Database\Eloquent\Model;
 
 class Partner extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsChanges;
 
     /**
      * The attributes that are mass assignable.

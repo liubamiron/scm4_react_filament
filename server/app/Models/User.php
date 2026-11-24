@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Models\Concerns\LogsChanges;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Validation\Rules\Password;
 use Spatie\Permission\Traits\HasRoles;
@@ -21,7 +22,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable implements FilamentUser, HasAppAuthentication, HasAppAuthenticationRecovery
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, HasRoles, Notifiable;
+    use HasFactory, HasRoles, LogsChanges, Notifiable;
 
     // Роли и права хранятся в таблицах spatie/laravel-permission и создаются
     // миграцией move_user_roles_to_permission_tables.

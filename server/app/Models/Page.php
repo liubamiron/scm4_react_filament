@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\LogsChanges;
 use Illuminate\Database\Eloquent\Model;
 
 class Page extends Model
 {
+    use LogsChanges;
+
     protected $fillable = [
         'type',
         'slug',

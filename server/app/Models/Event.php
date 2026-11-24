@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\LogsChanges;
 use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model
 {
+    use LogsChanges;
+
     protected $fillable = [
         'slug',
         'title_ro',
@@ -16,9 +19,11 @@ class Event extends Model
         'content_ru',
         'date',
         'image',
+        'is_published',
     ];
 
     protected $casts = [
         'date' => 'date',
+        'is_published' => 'boolean',
     ];
 }
