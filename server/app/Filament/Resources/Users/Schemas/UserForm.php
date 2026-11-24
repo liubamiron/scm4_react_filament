@@ -37,7 +37,8 @@ class UserForm
                 // Свою роль администратор снять не может, чтобы не потерять доступ к пользователям.
                 Select::make('role')
                     ->label('Rol / Роль')
-                    ->options(User::ROLES)
+                    ->options(fn () => auth()->user()->assignableRoles())
+                    ->in(fn () => array_keys(auth()->user()->assignableRoles()))
                     ->default(User::ROLE_CLIENT)
                     ->required()
                     ->selectablePlaceholder(false)

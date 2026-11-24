@@ -26,15 +26,22 @@ class UserPolicy
         return $user->can('manage users');
     }
 
+    // Суперадмина меняет и удаляет только суперадмин — иначе admin мог бы
+    // сбросить ему пароль и войти под ним.
     public function update(User $user, User $model): bool
     {
-        return $user->can('manage users');
+        return $user->can('manage users') && $this->canTouch($user, $model);
     }
 
     // Себя удалить нельзя — иначе можно остаться без единого администратора.
     public function delete(User $user, User $model): bool
     {
-        return $user->can('manage users') && $user->isNot($model);
+        return $user->can('manage users') && $user->isNot($model) && $this->canTouch($user, $model);
+    }
+
+    private function canTouch(User $user, User $model): bool
+    {
+        return ! $model->hasRole(User::ROLE_SUPER_ADMIN) || $user->hasRole(User::ROLE_SUPER_ADMIN);
     }
 
     public function deleteAny(User $user): bool

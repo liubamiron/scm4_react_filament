@@ -44,7 +44,7 @@ class ActivityResource extends Resource
 
     public static function canAccess(): bool
     {
-        return auth()->user()?->can('manage users') ?? false;
+        return auth()->user()?->can('view system') ?? false;
     }
 
     public static function canCreate(): bool
